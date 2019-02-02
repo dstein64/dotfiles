@@ -1,6 +1,7 @@
 " *********************************************************
 " * Defaults (when there is no .vimrc)
-" * These are taken/modified from $VIMRUNTIME/defaults.vim
+" * This subset is taken/modified from:
+" *   $VIMRUNTIME/defaults.vim
 " *********************************************************
 
 set nocompatible        " disable vi compatibility
@@ -30,7 +31,7 @@ filetype plugin on      " enable loading filetype plugins
 filetype indent on      " enable loading filetype indent files
 
 " *********************************************************
-" * Additional customizations
+" * Additional Customizations
 " *********************************************************
 
 set number              " show line numbers
