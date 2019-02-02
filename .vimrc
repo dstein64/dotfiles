@@ -41,7 +41,7 @@ set tabstop=4           " 4 spaces for tab (and expandtab)
 set shiftwidth=4        " 4 spaces for shifting indentation
 set hlsearch            " highlight search (turn off with :noh[lsearch]
 " Add a mapping for :nohlsearch to turn off highlight.
-:noremap <silent> <F4> :nohlsearch <Bar> :echo <CR>
+:noremap <silent> <F4> :nohlsearch<Bar>:echo<CR>
 " Disable insertion of two spaces after periods when joining lines.
 " E.g., when using 'gw' to format lines.
 set nojoinspaces
