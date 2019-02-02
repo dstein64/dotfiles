@@ -1,6 +1,6 @@
 " *********************************************************
 " * Defaults (when there is no .vimrc)
-" * This subset is taken/modified from:
+" * These options are a subset taken/modified from:
 " *   $VIMRUNTIME/defaults.vim
 " *********************************************************
 
