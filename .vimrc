@@ -44,7 +44,12 @@ set shiftwidth=4        " 4 spaces for shifting indentation
 " Ignore case when pattern is only lowercase. Disable with \C.
 set ignorecase
 set smartcase
-set hlsearch            " highlight search (turn off with :noh[lsearch]
+" Highlight search (turn off with :noh[lsearch]
+" Use a conditional to prevent this from turning on highlighting when
+" :nohlsearch was already executed and .vimrc is manually source'd.
+if !&hlsearch
+    set hlsearch
+endif
 " Add mappings for :nohlsearch to turn off highlight.
 :noremap <silent> <F4> :nohlsearch<Bar>:echo<CR>
 :imap <silent> <F4> <C-O><F4>
