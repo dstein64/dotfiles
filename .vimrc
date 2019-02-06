@@ -39,8 +39,8 @@ set number              " show line numbers
 set relativenumber      " show relative line numbers
 set expandtab           " convert tabs to spaces
 set autoindent          " indent newlines using prededing line indent
-set tabstop=4           " 4 spaces for tab (and expandtab)
-set shiftwidth=4        " 4 spaces for shifting indentation
+set tabstop=2           " 4 spaces for tab (and expandtab)
+set shiftwidth=2        " 4 spaces for shifting indentation
 " Ignore case when pattern is only lowercase. Disable with \C.
 set ignorecase
 set smartcase
