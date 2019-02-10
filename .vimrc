@@ -35,6 +35,7 @@ filetype indent on      " enable loading filetype indent files
 " * Additional Customizations
 " *********************************************************
 
+let mapleader="\\"			" set <leader>
 set number              " show line numbers
 set relativenumber      " show relative line numbers
 set expandtab           " convert tabs to spaces
@@ -50,13 +51,12 @@ set smartcase
 if !&hlsearch
     set hlsearch
 endif
-" Add mappings for :nohlsearch to turn off highlight.
-:noremap <silent> <F4> :nohlsearch<Bar>:echo<CR>
-:imap <silent> <F4> <C-O><F4>
+" Add mapping for :nohlsearch to turn off highlight.
+:noremap <silent> <leader>n :nohlsearch<Bar>:echo<CR>
 " Disable insertion of two spaces after periods when joining lines.
 " E.g., when using 'gw' to format lines.
 set nojoinspaces
 " Only insert longest common text of matches for Ctrl-N/Ctrl-P.
 set completeopt+=longest
-set pastetoggle=<F5>    " use <F5> to toggle paste mode (for literal pastes)
+set pastetoggle=<leader>p    " to toggle paste mode (for literal pastes)
 
