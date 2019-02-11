@@ -52,7 +52,7 @@ if !&hlsearch
     set hlsearch
 endif
 " Add mapping for :nohlsearch to turn off highlight.
-:noremap <silent> <leader>n :nohlsearch<Bar>:echo<CR>
+noremap <silent> <leader>n :nohlsearch<Bar>:echo<CR>
 " Disable insertion of two spaces after periods when joining lines.
 " E.g., when using 'gw' to format lines.
 set nojoinspaces
