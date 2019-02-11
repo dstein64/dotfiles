@@ -42,6 +42,8 @@ set expandtab           " convert tabs to spaces
 set autoindent          " indent newlines using prededing line indent
 set tabstop=2           " 2 spaces for tab (and expandtab)
 set shiftwidth=2        " 2 spaces for shifting indentation
+set formatoptions-=t    " Don't autowrap text
+set formatoptions-=c    " Don't autowrap comments
 " Ignore case when pattern is only lowercase. Disable with \C.
 set ignorecase
 set smartcase
@@ -61,4 +63,13 @@ set completeopt+=longest
 set pastetoggle=<leader>p    " to toggle paste mode (for literal pastes)
 " Add mapping to change working directory to directory of current file.
 noremap <leader>cd :cd %:h<bar>:pwd<cr>
+" Add mapping to change working directory up a directory.
+noremap <leader>.. :execute ':cd ' . fnamemodify(getcwd(), ':h')<cr>
+        \:pwd<cr>
+" Add mapping to launch terminal in current window.
+if has('mac')
+  noremap <leader>t :terminal ++curwin bash -l<cr>
+else
+  noremap <leader>t :terminal ++curwin<cr>
+endif
 
