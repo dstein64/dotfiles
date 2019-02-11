@@ -49,7 +49,7 @@ set smartcase
 " Use a conditional to prevent this from turning on highlighting when
 " :nohlsearch was already executed and .vimrc is manually source'd.
 if !&hlsearch
-    set hlsearch
+  set hlsearch
 endif
 " Add mapping for :nohlsearch to turn off highlight.
 noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
