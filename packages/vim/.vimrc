@@ -20,11 +20,11 @@ set display=truncate
 " text scroll if you mouse-click near the start or end of the window.
 set scrolloff=5
 set incsearch           " incremental search
-set nrformats-=octal    " no Ctrl-A or Ctrl-X for octal numbers
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-" Revert with ":iunmap <C-U>".
-inoremap <C-U> <C-G>u<C-U>
+set nrformats-=octal    " no <c-a> or <c-x> for octal numbers
+" <c-u> in insert mode deletes a lot.  Use <c-g>u to first break undo,
+" so that you can undo <c-u> after inserting a line break.
+" Revert with ":iunmap <c-u>.
+inoremap <c-u> <c-g>u<c-u>.
 set mouse=a             " mouse works fine in many terminal emulators
 syntax on               " syntax highlighting
 filetype on             " enable filetype detection
@@ -52,11 +52,13 @@ if !&hlsearch
     set hlsearch
 endif
 " Add mapping for :nohlsearch to turn off highlight.
-noremap <silent> <leader>n :nohlsearch<Bar>:echo<CR>
+noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
 " Disable insertion of two spaces after periods when joining lines.
 " E.g., when using 'gw' to format lines.
 set nojoinspaces
-" Only insert longest common text of matches for Ctrl-N/Ctrl-P.
+" Only insert longest common text of matches for <c-n>/<c-p>.
 set completeopt+=longest
 set pastetoggle=<leader>p    " to toggle paste mode (for literal pastes)
+" Add mapping to change working directory to directory of current file.
+noremap <leader>cd :cd %:h<bar>:pwd<cr>
 
