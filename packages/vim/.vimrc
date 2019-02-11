@@ -62,14 +62,14 @@ set nojoinspaces
 set completeopt+=longest
 set pastetoggle=<leader>p    " to toggle paste mode (for literal pastes)
 " Add mapping to change working directory to directory of current file.
-noremap <leader>cd :cd %:h<bar>:pwd<cr>
+noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
-noremap <leader>.. :execute ':cd ' . fnamemodify(getcwd(), ':h')<cr>
-        \:pwd<cr>
+noremap <silent> <leader>.. :execute ':cd ' . fnamemodify(getcwd(), ':h')
+        \<cr>:pwd<cr>
 " Add mapping to launch terminal in current window.
 if has('mac')
-  noremap <leader>t :terminal ++curwin bash -l<cr>
+  noremap <silent> <leader>t :terminal ++curwin bash -l<cr>
 else
-  noremap <leader>t :terminal ++curwin<cr>
+  noremap <silent> <leader>t :terminal ++curwin<cr>
 endif
 
