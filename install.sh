@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 if ! which stow &>/dev/null; then
   echo "missing dependency: stow" >&2
   exit 1
