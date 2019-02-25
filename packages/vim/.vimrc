@@ -60,7 +60,8 @@ noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
 set nojoinspaces
 " Only insert longest common text of matches for <c-n>/<c-p>.
 set completeopt+=longest
-set pastetoggle=<leader>p    " to toggle paste mode (for literal pastes)
+" Set a binding to toggle paste mode (for literal pastes).
+set pastetoggle=<leader>p
 " Add mapping to change working directory to directory of current file.
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
@@ -73,3 +74,10 @@ else
   noremap <silent> <leader>t :terminal ++curwin<cr>
 endif
 
+" *********************************************************
+" * GUI-specific Customizations
+" *********************************************************
+
+if has('gui_running')
+  set cursorline        " highlight current line
+endif
