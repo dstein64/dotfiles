@@ -65,13 +65,24 @@ set pastetoggle=<leader>p
 " Add mapping to change working directory to directory of current file.
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
-noremap <silent> <leader>.. :execute ':cd ' . fnamemodify(getcwd(), ':h')
+noremap <silent> <leader>.. :execute ':cd '
+        \. fnameescape(fnamemodify(getcwd(), ':h'))
         \<cr>:pwd<cr>
 " Add mapping to launch terminal in current window.
 if has('mac')
   noremap <silent> <leader>t :terminal ++curwin bash -l<cr>
 else
   noremap <silent> <leader>t :terminal ++curwin<cr>
+endif
+" Update path to include /usr/local/include
+if isdirectory('/usr/local/include')
+  set path+=/usr/local/include
+endif
+" Update path to include the SDK include path on macOS
+if has('mac') && executable('xcrun')
+  let sdk_include_path = systemlist('xcrun --show-sdk-path')[0] . '/usr/include'
+  let sdk_include_path = fnameescape(sdk_include_path)
+  :execute 'set path+=' . sdk_include_path
 endif
 
 " *********************************************************
@@ -81,3 +92,4 @@ endif
 if has('gui_running')
   set cursorline        " highlight current line
 endif
+
