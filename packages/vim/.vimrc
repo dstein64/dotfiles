@@ -84,6 +84,8 @@ if has('mac') && executable('xcrun')
   let sdk_include_path = fnameescape(sdk_include_path)
   :execute 'set path+=' . sdk_include_path
 endif
+" Load man page ftplugin (so :Man is available)
+runtime ftplugin/man.vim
 
 " *********************************************************
 " * GUI-specific Customizations
