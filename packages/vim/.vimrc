@@ -24,7 +24,7 @@ set nrformats-=octal    " no <c-a> or <c-x> for octal numbers
 " <c-u> in insert mode deletes a lot.  Use <c-g>u to first break undo,
 " so that you can undo <c-u> after inserting a line break.
 " Revert with ":iunmap <c-u>.
-inoremap <c-u> <c-g>u<c-u>.
+inoremap <c-u> <c-g>u<c-u>
 set mouse=a             " mouse works fine in many terminal emulators
 syntax on               " syntax highlighting
 filetype on             " enable filetype detection
