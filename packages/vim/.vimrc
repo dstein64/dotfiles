@@ -65,9 +65,7 @@ set pastetoggle=<leader>p
 " Add mapping to change working directory to directory of current file.
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
-noremap <silent> <leader>.. :execute ':cd '
-        \. fnameescape(fnamemodify(getcwd(), ':h'))
-        \<cr>:pwd<cr>
+noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to launch terminal in current window.
 if has('mac')
   noremap <silent> <leader>t :terminal ++curwin bash -l<cr>
