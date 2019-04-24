@@ -72,18 +72,20 @@ if has('mac')
 else
   noremap <silent> <leader>t :terminal ++curwin<cr>
 endif
-" Update path to include /usr/local/include
+" Update path to include /usr/local/include.
 if isdirectory('/usr/local/include')
   set path+=/usr/local/include
 endif
-" Update path to include the SDK include path on macOS
+" Update path to include the SDK include path on macOS.
 if has('mac') && executable('xcrun')
-  let sdk_include_path = systemlist('xcrun --show-sdk-path')[0] . '/usr/include'
-  let sdk_include_path = fnameescape(sdk_include_path)
-  :execute 'set path+=' . sdk_include_path
+  let sdk_path = systemlist('xcrun --show-sdk-path')[0]
+  let sdk_include_path = sdk_path . '/usr/include'
+  :execute 'set path+=' . fnameescape(sdk_include_path)
 endif
-" Load man page ftplugin (so :Man is available)
+" Load man page ftplugin (so :Man is available).
 runtime ftplugin/man.vim
+" Add a command for generating tags (requires exuberant/universal ctags).
+command! Tags !ctags -R .
 
 " *********************************************************
 " * GUI-specific Customizations
