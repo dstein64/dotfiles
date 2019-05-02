@@ -84,6 +84,8 @@ if has('mac') && executable('xcrun')
 endif
 " Load man page ftplugin (so :Man is available).
 runtime ftplugin/man.vim
+" Use :Man for the K command.
+set keywordprg=:Man
 " Add a command for generating tags (requires exuberant/universal ctags).
 command! Tags !ctags -R .
 
