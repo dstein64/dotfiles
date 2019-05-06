@@ -36,6 +36,7 @@ filetype indent on      " enable loading filetype indent files
 " *********************************************************
 
 " TODO: Organize this section into subsections.
+" TODO: You have some comments that don't require their own lines.
 
 let mapleader="\\"      " set <leader>
 set number              " show line numbers
@@ -93,6 +94,8 @@ command! Tags !ctags -R .
 " Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
 " warning before closing the window. There's no warning for :qall!.
 set hidden
+" Always show the status line.
+set laststatus=2
 
 " *********************************************************
 " * GUI-specific Customizations
