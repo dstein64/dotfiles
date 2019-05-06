@@ -35,6 +35,8 @@ filetype indent on      " enable loading filetype indent files
 " * Additional Customizations
 " *********************************************************
 
+" TODO: Organize this section into subsections.
+
 let mapleader="\\"      " set <leader>
 set number              " show line numbers
 set relativenumber      " show relative line numbers
@@ -88,6 +90,9 @@ runtime ftplugin/man.vim
 set keywordprg=:Man
 " Add a command for generating tags (requires exuberant/universal ctags).
 command! Tags !ctags -R .
+" Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
+" warning before closing the window. There's no warning for :qall!.
+set hidden
 
 " *********************************************************
 " * GUI-specific Customizations
