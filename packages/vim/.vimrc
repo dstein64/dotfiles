@@ -36,6 +36,7 @@ filetype indent on      " enable loading filetype indent files
 " *********************************************************
 
 " TODO: Organize this section into subsections.
+"       E.g., Basic Settings, FileType Settings, Mappings, Status Line
 " TODO: You have some comments that don't require their own lines.
 
 let mapleader="\\"      " set <leader>
@@ -69,6 +70,12 @@ set pastetoggle=<leader>p
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
+" Add mapping to open current file in new tab.
+noremap <silent> <leader>f :tabnew %<cr>
+" Add mapping to open current buffer in new tab. In certain circumstances
+" (e.g., terminal launched with [command], empty window, etc.), opening a
+" current file in a new tab doesn't work.
+noremap <leader>b :execute 'tabnew \| ' . bufnr('%') . 'b'<cr>
 " Add mapping to launch terminal in current window.
 if has('mac')
   noremap <silent> <leader>t :terminal ++curwin bash -l<cr>
@@ -81,9 +88,9 @@ if isdirectory('/usr/local/include')
 endif
 " Update path to include the SDK include path on macOS.
 if has('mac') && executable('xcrun')
-  let sdk_path = systemlist('xcrun --show-sdk-path')[0]
-  let sdk_include_path = sdk_path . '/usr/include'
-  :execute 'set path+=' . fnameescape(sdk_include_path)
+  let s:sdk_path = systemlist('xcrun --show-sdk-path')[0]
+  let s:sdk_include_path = s:sdk_path . '/usr/include'
+  :execute 'set path+=' . fnameescape(s:sdk_include_path)
 endif
 " Load man page ftplugin (so :Man is available).
 runtime ftplugin/man.vim
