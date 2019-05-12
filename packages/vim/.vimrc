@@ -70,10 +70,8 @@ set pastetoggle=<leader>p
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
-" Add mapping to open current buffer in new tab. In certain circumstances
-" (e.g., terminal launched with [command], empty window, etc.), opening a
-" current file in a new tab (:tabnew %) doesn't work.
-noremap <leader>b :execute 'tabnew \| ' . bufnr('%') . 'b'<cr>
+" Add mapping to open current buffer in new tab.
+noremap <leader>b :tab split<cr>
 " Add mapping to launch terminal in current window.
 if has('mac')
   noremap <silent> <leader>t :terminal ++curwin bash -l<cr>
