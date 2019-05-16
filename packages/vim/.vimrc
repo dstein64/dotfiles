@@ -64,6 +64,8 @@ noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
 set nojoinspaces
 " Only insert longest common text of matches for <c-n>/<c-p>.
 set completeopt+=longest
+" Only insert longest common text of matches for command-line completion.
+set wildmode=longest:full,full
 " Set a binding to toggle paste mode (for literal pastes).
 set pastetoggle=<leader>p
 " Add mapping to change working directory to directory of current file.
