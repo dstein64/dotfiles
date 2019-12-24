@@ -102,8 +102,8 @@ set hidden
 " Always show the status line.
 set laststatus=2
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
-" ftplugin file doesn't work, since the setting is clobbered by
-" $VIMRUNTIME/autoload/netrw.vim.
+" ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
+" by $VIMRUNTIME/autoload/netrw.vim.
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 
 " *********************************************************
