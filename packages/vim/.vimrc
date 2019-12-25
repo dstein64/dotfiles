@@ -75,8 +75,8 @@ noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to open current buffer in new tab.
 noremap <leader>b :tab split<cr>
 " Use a login shell on macOS.
-if has('mac')
-  set shell=bash\ -l
+if has('mac') && match(&shell, '/\?bash$')
+  set shell+=\ -l
 endif
 " Add mapping to launch terminal in current window.
 noremap <silent> <leader>t :terminal ++curwin<cr>
