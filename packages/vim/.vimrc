@@ -32,7 +32,18 @@ filetype plugin on      " enable loading filetype plugins
 filetype indent on      " enable loading filetype indent files
 
 " *********************************************************
-" * Additional Customizations
+" * Variables
+" *********************************************************
+
+" has('mac') is not sufficient for checking for macOS, as the vim that
+" comes with macOS returns 0. Use uname instead.
+let s:uname=''
+if has('unix') && executable('uname')
+  let s:uname=substitute(system('uname -s'), "\n", '', '')
+endif
+
+" *********************************************************
+" * Customizations
 " *********************************************************
 
 " TODO: Organize this section into subsections.
@@ -75,7 +86,7 @@ noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to open current buffer in new tab.
 noremap <leader>b :tab split<cr>
 " Use a login shell on macOS.
-if has('mac') && match(&shell, '/\?bash$')
+if s:uname ==# 'Darwin' && match(&shell, '/\?bash$')
   set shell+=\ -l
 endif
 " Add mapping to launch terminal in current window.
