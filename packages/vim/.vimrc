@@ -74,12 +74,12 @@ noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to open current buffer in new tab.
 noremap <leader>b :tab split<cr>
-" Add mapping to launch terminal in current window.
+" Use a login shell on macOS.
 if has('mac')
-  noremap <silent> <leader>t :terminal ++curwin bash -l<cr>
-else
-  noremap <silent> <leader>t :terminal ++curwin<cr>
+  set shell=bash\ -l
 endif
+" Add mapping to launch terminal in current window.
+noremap <silent> <leader>t :terminal ++curwin<cr>
 " Update path to include /usr/local/include.
 if isdirectory('/usr/local/include')
   set path+=/usr/local/include
