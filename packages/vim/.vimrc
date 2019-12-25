@@ -39,7 +39,7 @@ filetype indent on      " enable loading filetype indent files
 "       E.g., Basic Settings, FileType Settings, Mappings, Status Line
 " TODO: You have some comments that don't require their own lines.
 
-let mapleader="\\"      " set <leader>
+let mapleader='\'       " set <leader>
 set number              " show line numbers
 set relativenumber      " show relative line numbers
 set expandtab           " convert tabs to spaces
