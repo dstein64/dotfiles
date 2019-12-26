@@ -75,39 +75,19 @@ set keywordprg=:Man
 set hidden
 " Always show the status line.
 set laststatus=2
-" Update path with the preprocessor's #include search paths. The C search
-" paths are a subset of the C++ search paths, so they don't have to be
-" additionally included.
-if has('unix') && executable('gcc')
-  let s:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
-  let s:lines = systemlist(s:expr)
-  if v:shell_error ==# 0
-    for s:line in s:lines
-      if match(s:line, '^ ') ==# -1 | continue | endif
-      let s:include = substitute(s:line, '^ ', '', '')
-      " Remove ' (framework directory)' suffix (applicable on macOS).
-      if match(s:include, ' (framework directory)$') && !isdirectory(s:include)
-        let s:include = substitute(s:include, ' (framework directory)$', '', '')
-      endif
-      if !isdirectory(s:include) | continue | endif
-      " Escape the path, including additional handling for spaces and commas.
-      let s:include = fnameescape(s:include)
-      let s:include = substitute(s:include, ',', '\\\\,', 'g')
-      let s:include = substitute(s:include, '\ ', '\\\\ ', 'g')
-      execute 'set path+=' . s:include
-    endfor
-  endif
+if has('gui_running')
+  set cursorline        " highlight current line
 endif
 
 " *********************************************************
-" * Commands
+" * Basic Commands
 " *********************************************************
 
 " Add a command for generating tags (requires exuberant/universal ctags).
 command! Tags !ctags -R .
 
 " *********************************************************
-" * Mappings
+" * Basic Mappings
 " *********************************************************
 
 " Add mapping for :nohlsearch to turn off highlight.
@@ -118,8 +98,8 @@ noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to open current buffer in new tab.
 noremap <leader>b :tab split<cr>
-" Add mapping to launch terminal in current window.
-noremap <silent> <leader>t :terminal ++curwin<cr>
+" Add mapping to launch a terminal.
+noremap <silent> <leader>t :terminal<cr>
 
 " *********************************************************
 " * Plugins
@@ -132,10 +112,38 @@ packadd termdebug       " source termdebug
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 
 " *********************************************************
-" * GUI-specific Customizations
+" * Customizations
 " *********************************************************
 
-if has('gui_running')
-  set cursorline        " highlight current line
-endif
+" Update path with the preprocessor's #include search paths. The C search
+" paths are a subset of the C++ search paths, so they don't have to be
+" additionally included. This is implemented with a function, command, and
+" mapping, to prevent slowing vim's startup time.
+function! s:UpdatePath()
+  let l:count = 0
+  if has('unix') && executable('gcc')
+    let l:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
+    let l:lines = systemlist(l:expr)
+    if v:shell_error ==# 0
+      for l:line in l:lines
+        if match(l:line, '^ ') ==# -1 | continue | endif
+        let l:include = substitute(l:line, '^ ', '', '')
+        " Remove ' (framework directory)' suffix (applicable on macOS).
+        if match(l:include, ' (framework directory)$') && !isdirectory(l:include)
+          let l:include = substitute(l:include, ' (framework directory)$', '', '')
+        endif
+        if !isdirectory(l:include) | continue | endif
+        " Escape the path, including additional handling for spaces and commas.
+        let l:include = fnameescape(l:include)
+        let l:include = substitute(l:include, ',', '\\\\,', 'g')
+        let l:include = substitute(l:include, '\ ', '\\\\ ', 'g')
+        let l:count += 1
+        execute 'set path+=' . l:include
+      endfor
+    endif
+  endif
+  return l:count
+endfunction
+command! UpdatePath :call s:UpdatePath()
+noremap <silent> <leader>p :UpdatePath<cr>
 
