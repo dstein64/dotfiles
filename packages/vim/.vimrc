@@ -32,12 +32,8 @@ filetype plugin on      " enable loading filetype plugins
 filetype indent on      " enable loading filetype indent files
 
 " *********************************************************
-" * Customizations
+" * Basic Settings
 " *********************************************************
-
-" TODO: Organize this section into subsections.
-"       E.g., Basic Settings, FileType Settings, Mappings, Status Line
-" TODO: You have some comments that don't require their own lines.
 
 let mapleader='\'       " set <leader>
 set number              " show line numbers
@@ -57,8 +53,6 @@ set smartcase
 if !&hlsearch
   set hlsearch
 endif
-" Add mapping for :nohlsearch to turn off highlight.
-noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
 " Disable insertion of two spaces after periods when joining lines.
 " E.g., when using 'gw' to format lines.
 set nojoinspaces
@@ -68,18 +62,19 @@ set completeopt+=longest
 set wildmode=longest:full,full
 " Set a binding to toggle paste mode (for literal pastes).
 set pastetoggle=<leader>p
-" Add mapping to change working directory to directory of current file.
-noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
-" Add mapping to change working directory up a directory.
-noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
-" Add mapping to open current buffer in new tab.
-noremap <leader>b :tab split<cr>
 " Use a bash login shell on macOS.
 if has('mac') && match(&shell, '/\?bash$') !=# -1
   set shell+=\ -l
 endif
-" Add mapping to launch terminal in current window.
-noremap <silent> <leader>t :terminal ++curwin<cr>
+" Load man page ftplugin (so :Man is available).
+runtime ftplugin/man.vim
+" Use :Man for the K command.
+set keywordprg=:Man
+" Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
+" warning before closing the window. There's no warning for :qall!.
+set hidden
+" Always show the status line.
+set laststatus=2
 " Update path with the preprocessor's #include search paths. The C search
 " paths are a subset of the C++ search paths, so they don't have to be
 " additionally included.
@@ -103,17 +98,34 @@ if has('unix') && executable('gcc')
     endfor
   endif
 endif
-" Load man page ftplugin (so :Man is available).
-runtime ftplugin/man.vim
-" Use :Man for the K command.
-set keywordprg=:Man
+
+" *********************************************************
+" * Commands
+" *********************************************************
+
 " Add a command for generating tags (requires exuberant/universal ctags).
 command! Tags !ctags -R .
-" Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
-" warning before closing the window. There's no warning for :qall!.
-set hidden
-" Always show the status line.
-set laststatus=2
+
+" *********************************************************
+" * Mappings
+" *********************************************************
+
+" Add mapping for :nohlsearch to turn off highlight.
+noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
+" Add mapping to change working directory to directory of current file.
+noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
+" Add mapping to change working directory up a directory.
+noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
+" Add mapping to open current buffer in new tab.
+noremap <leader>b :tab split<cr>
+" Add mapping to launch terminal in current window.
+noremap <silent> <leader>t :terminal ++curwin<cr>
+
+" *********************************************************
+" * Plugins
+" *********************************************************
+
+packadd termdebug       " source termdebug
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
