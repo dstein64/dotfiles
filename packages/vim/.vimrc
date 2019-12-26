@@ -32,17 +32,6 @@ filetype plugin on      " enable loading filetype plugins
 filetype indent on      " enable loading filetype indent files
 
 " *********************************************************
-" * Variables
-" *********************************************************
-
-" has('mac') is not sufficient for checking for macOS, as the vim that
-" comes with macOS returns 0. Use uname instead.
-let s:uname=''
-if has('unix') && executable('uname')
-  let s:uname=substitute(system('uname -s'), "\n", '', '')
-endif
-
-" *********************************************************
 " * Customizations
 " *********************************************************
 
@@ -85,21 +74,34 @@ noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to open current buffer in new tab.
 noremap <leader>b :tab split<cr>
-" Use a login shell on macOS.
-if s:uname ==# 'Darwin' && match(&shell, '/\?bash$') !=# -1
+" Use a bash login shell on macOS.
+if has('mac') && match(&shell, '/\?bash$') !=# -1
   set shell+=\ -l
 endif
 " Add mapping to launch terminal in current window.
 noremap <silent> <leader>t :terminal ++curwin<cr>
-" Update path to include /usr/local/include.
-if isdirectory('/usr/local/include')
-  set path+=/usr/local/include
-endif
-" Update path to include the SDK include path on macOS.
-if has('mac') && executable('xcrun')
-  let s:sdk_path = systemlist('xcrun --show-sdk-path')[0]
-  let s:sdk_include_path = s:sdk_path . '/usr/include'
-  :execute 'set path+=' . fnameescape(s:sdk_include_path)
+" Update path with the preprocessor's #include search paths. The C search
+" paths are a subset of the C++ search paths, so they don't have to be
+" additionally included.
+if has('unix') && executable('gcc')
+  let s:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
+  let s:lines = systemlist(s:expr)
+  if v:shell_error ==# 0
+    for s:line in s:lines
+      if match(s:line, '^ ') ==# -1 | continue | endif
+      let s:include = substitute(s:line, '^ ', '', '')
+      " Remove ' (framework directory)' suffix (applicable on macOS).
+      if match(s:include, ' (framework directory)$') && !isdirectory(s:include)
+        let s:include = substitute(s:include, ' (framework directory)$', '', '')
+      endif
+      if !isdirectory(s:include) | continue | endif
+      " Escape the path, including additional handling for spaces and commas.
+      let s:include = fnameescape(s:include)
+      let s:include = substitute(s:include, ',', '\\\\,', 'g')
+      let s:include = substitute(s:include, '\ ', '\\\\ ', 'g')
+      execute 'set path+=' . s:include
+    endfor
+  endif
 endif
 " Load man page ftplugin (so :Man is available).
 runtime ftplugin/man.vim
