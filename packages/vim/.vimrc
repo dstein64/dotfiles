@@ -105,7 +105,8 @@ noremap <silent> <leader>t :terminal<cr>
 " * Plugins
 " *********************************************************
 
-packadd termdebug       " source termdebug
+packadd! termdebug      " source termdebug
+packadd! matchit        " source matchit
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
