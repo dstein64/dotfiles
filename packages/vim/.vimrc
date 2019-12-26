@@ -119,30 +119,35 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 " When called, updates path with the preprocessor's #include search paths. The
 " C search paths are a subset of the C++ search paths, so they don't have to
 " be additionally included. This is implemented with a function, command, and
-" mapping, to prevent slowing vim's startup time.
+" mapping, to prevent slowing vim's startup time. The function returns the
+" number of search preprocessor #include search paths, or -1 on error.
 function! s:UpdatePath()
-  let l:count = 0
-  if has('unix') && executable('gcc')
-    let l:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
-    let l:lines = systemlist(l:expr)
-    if v:shell_error ==# 0
-      for l:line in l:lines
-        if match(l:line, '^ ') ==# -1 | continue | endif
-        let l:include = substitute(l:line, '^ ', '', '')
-        " Remove ' (framework directory)' suffix (applicable on macOS).
-        if match(l:include, ' (framework directory)$') && !isdirectory(l:include)
-          let l:include = substitute(l:include, ' (framework directory)$', '', '')
-        endif
-        if !isdirectory(l:include) | continue | endif
-        " Escape the path, including additional handling for spaces and commas.
-        let l:include = fnameescape(l:include)
-        let l:include = substitute(l:include, ',', '\\\\,', 'g')
-        let l:include = substitute(l:include, '\ ', '\\\\ ', 'g')
-        let l:count += 1
-        execute 'set path+=' . l:include
-      endfor
-    endif
+  if !has('unix') || !executable('gcc')
+    echoerr 'A Unix environment with gcc is required.'
+    return -1
   endif
+  let l:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
+  let l:lines = systemlist(l:expr)
+  if v:shell_error !=# 0
+    echoerr 'Error ' . v:shell_error . ' returned when running gcc.'
+    return -1
+  endif
+  let l:count = 0
+  for l:line in l:lines
+    if match(l:line, '^ ') ==# -1 | continue | endif
+    let l:include = substitute(l:line, '^ ', '', '')
+    " Remove ' (framework directory)' suffix (applicable on macOS).
+    if match(l:include, ' (framework directory)$') && !isdirectory(l:include)
+      let l:include = substitute(l:include, ' (framework directory)$', '', '')
+    endif
+    if !isdirectory(l:include) | continue | endif
+    " Escape the path, including additional handling for spaces and commas.
+    let l:include = fnameescape(l:include)
+    let l:include = substitute(l:include, ',', '\\\\,', 'g')
+    let l:include = substitute(l:include, '\ ', '\\\\ ', 'g')
+    let l:count += 1
+    execute 'set path+=' . l:include
+  endfor
   return l:count
 endfunction
 command! UpdatePath :call s:UpdatePath()
