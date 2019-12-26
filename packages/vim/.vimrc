@@ -115,9 +115,9 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 " * Customizations
 " *********************************************************
 
-" Update path with the preprocessor's #include search paths. The C search
-" paths are a subset of the C++ search paths, so they don't have to be
-" additionally included. This is implemented with a function, command, and
+" When called, updates path with the preprocessor's #include search paths. The
+" C search paths are a subset of the C++ search paths, so they don't have to
+" be additionally included. This is implemented with a function, command, and
 " mapping, to prevent slowing vim's startup time.
 function! s:UpdatePath()
   let l:count = 0
