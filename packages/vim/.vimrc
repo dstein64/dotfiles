@@ -119,8 +119,10 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 " When called, updates path with the preprocessor's #include search paths. The
 " C search paths are a subset of the C++ search paths, so they don't have to
 " be additionally included. This is implemented with a function, command, and
-" mapping, to prevent slowing vim's startup time. The function returns the
-" number of search preprocessor #include search paths, or -1 on error.
+" mapping, 1) to prevent slowing vim's startup time, and 2) so the
+" functionality is only used when wanted (as it can slow vim responsiveness).
+" The function returns the number of search preprocessor #include search
+" paths, or -1 on error.
 function! s:UpdatePath()
   if !has('unix') || !executable('gcc')
     echoerr 'A Unix environment with gcc is required.'
