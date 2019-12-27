@@ -91,7 +91,7 @@ command! Tags !ctags -R .
 " *********************************************************
 
 " Add mapping for :nohlsearch to turn off highlight.
-noremap <silent> <leader>n :nohlsearch<bar>:echo<cr>
+noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
 " Add mapping to change working directory to directory of current file.
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
@@ -100,6 +100,8 @@ noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 noremap <leader>b :tab split<cr>
 " Add mapping to launch a terminal.
 noremap <silent> <leader>t :terminal<cr>
+" Add mapping to open a new tab.
+noremap <silent> <leader>n :tabnew<cr>
 
 " *********************************************************
 " * Plugins
