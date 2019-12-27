@@ -156,4 +156,3 @@ function! s:UpdatePath()
 endfunction
 command! UpdatePath :call s:UpdatePath()
 noremap <silent> <leader>p :UpdatePath<cr>
-
