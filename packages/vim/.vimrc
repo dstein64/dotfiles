@@ -155,4 +155,4 @@ function! s:UpdatePath()
   return l:count
 endfunction
 command! UpdatePath :call s:UpdatePath()
-noremap <silent> <leader>p :UpdatePath<cr>
+noremap <silent> <leader>up :UpdatePath<cr>
