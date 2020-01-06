@@ -1,4 +1,6 @@
 *.swp
 .DS_Store
+/.idea/
 /packages/vim/.vim/pack/
+/packages/vim/.vim/view/
 /packages/vim/.vim/.netrwhist
