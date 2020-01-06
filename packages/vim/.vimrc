@@ -44,6 +44,7 @@ set tabstop=2           " 2 spaces for tab (and expandtab)
 set shiftwidth=2        " 2 spaces for shifting indentation
 set formatoptions-=t    " Don't autowrap text
 set formatoptions-=c    " Don't autowrap comments
+set formatoptions+=j    " remove comment leader when joining lines
 " Ignore case when pattern is only lowercase. Disable with \C.
 set ignorecase
 set smartcase
