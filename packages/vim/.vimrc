@@ -67,11 +67,6 @@ set pastetoggle=<leader>p
 if has('mac') && match(&shell, '/\?bash$') !=# -1
   set shell+=\ -l
 endif
-" Lazy load man page ftplugin (so :Man is available).
-command -nargs=* Man
-      \ delcommand Man |
-      \ runtime ftplugin/man.vim |
-      \ Man <args>
 " Use :Man for the K command.
 set keywordprg=:Man
 " Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
@@ -113,6 +108,11 @@ noremap <silent> <leader>n :tabnew<cr>
 
 packadd! termdebug      " source termdebug
 packadd! matchit        " source matchit
+" Lazy load man page ftplugin (so :Man is available).
+command -nargs=* Man
+      \ delcommand Man |
+      \ runtime ftplugin/man.vim |
+      \ Man <args>
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
