@@ -32,7 +32,7 @@ Usage
 $ ls -1 ~/.dotfiles/packages
 ```
 
-#### Install specified packages
+#### Install specific packages
 
 ```sh
 $ ~/.dotfiles/install.sh package1 [package2 ...]
