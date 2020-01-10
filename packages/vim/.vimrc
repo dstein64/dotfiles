@@ -42,8 +42,8 @@ set expandtab           " convert tabs to spaces
 set autoindent          " indent newlines using prededing line indent
 set tabstop=2           " 2 spaces for tab (and expandtab)
 set shiftwidth=2        " 2 spaces for shifting indentation
-set formatoptions-=t    " Don't autowrap text
-set formatoptions-=c    " Don't autowrap comments
+set formatoptions-=t    " don't autowrap text
+set formatoptions-=c    " don't autowrap comments
 set formatoptions+=j    " remove comment leader when joining lines
 " Ignore case when pattern is only lowercase. Disable with \C.
 set ignorecase
@@ -67,8 +67,11 @@ set pastetoggle=<leader>p
 if has('mac') && match(&shell, '/\?bash$') !=# -1
   set shell+=\ -l
 endif
-" Load man page ftplugin (so :Man is available).
-runtime ftplugin/man.vim
+" Lazy load man page ftplugin (so :Man is available).
+command -nargs=* Man
+      \ delcommand Man |
+      \ runtime ftplugin/man.vim |
+      \ Man <args>
 " Use :Man for the K command.
 set keywordprg=:Man
 " Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
@@ -118,6 +121,8 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 " *********************************************************
 " * Customizations
 " *********************************************************
+
+" TODO Move the following customization(s) to autoload and profile.
 
 " When called, updates path with the preprocessor's #include search paths. The
 " C search paths are a subset of the C++ search paths, so they don't have to
