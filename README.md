@@ -35,13 +35,13 @@ $ ls -1 ~/.dotfiles/packages
 #### Install specified packages
 
 ```sh
-$ .dotfiles/install.sh package1 [package2 ...]
+$ ~/.dotfiles/install.sh package1 [package2 ...]
 ```
 
 #### Install all packages
 
 ```sh
-$ .dotfiles/install.sh
+$ ~/.dotfiles/install.sh
 ```
 
 Cleanup
