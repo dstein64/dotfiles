@@ -108,8 +108,9 @@ noremap <silent> <leader>n :tabnew<cr>
 
 packadd! termdebug      " source termdebug
 packadd! matchit        " source matchit
-" Lazy load man page ftplugin (so :Man is available).
-command -nargs=* Man
+" Lazy load man page plugin, providing :Man command. Eager loading adds too
+" much latency to Vim's startup (as of 2020/01/10, 220ms on a 2016 laptop).
+silent! command -nargs=* Man
       \ delcommand Man |
       \ runtime ftplugin/man.vim |
       \ Man <args>
