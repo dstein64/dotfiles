@@ -63,11 +63,6 @@ set completeopt+=longest
 set wildmode=longest:full,full
 " Set a binding to toggle paste mode (for literal pastes).
 set pastetoggle=<leader>p
-" Use a bash login shell on macOS.
-if has('mac') && match(&shell, '/\?bash$') !=# -1
-  set shell+=\ -l
-endif
-" Use :Man for the K command.
 set keywordprg=:Man
 " Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
 " warning before closing the window. There's no warning for :qall!.
@@ -96,9 +91,7 @@ noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
 " Add mapping to change working directory up a directory.
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Add mapping to open current buffer in new tab.
-noremap <leader>b :tab split<cr>
-" Add mapping to launch a terminal.
-noremap <silent> <leader>t :terminal<cr>
+noremap <silent> <leader>b :tab split<cr>
 " Add mapping to open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
 
@@ -108,12 +101,7 @@ noremap <silent> <leader>n :tabnew<cr>
 
 packadd! termdebug      " source termdebug
 packadd! matchit        " source matchit
-" Lazy load man page plugin, providing :Man command. Eager loading adds too
-" much latency to Vim's startup (as of 2020/01/10, 220ms on a 2016 laptop).
-silent! command -nargs=* Man
-      \ delcommand Man |
-      \ runtime ftplugin/man.vim |
-      \ Man <args>
+runtime ftplugin/man.vim
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
@@ -122,8 +110,6 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 " *********************************************************
 " * Customizations
 " *********************************************************
-
-" TODO Move the following customization(s) to autoload and profile.
 
 " When called, updates path with the preprocessor's #include search paths. The
 " C search paths are a subset of the C++ search paths, so they don't have to
@@ -163,3 +149,15 @@ function! s:UpdatePath()
 endfunction
 command! UpdatePath :call s:UpdatePath()
 noremap <silent> <leader>up :UpdatePath<cr>
+
+" Use a bash login shell on macOS. Updating 'shell' to do this has unwanted
+" side effects (e.g., slowing down execute() calls).
+function! s:Terminal()
+  if has('mac') && match(&shell, '/\?bash$') !=# -1
+    terminal bash -l
+  else
+    terminal
+  endif
+endfunction
+command Terminal call s:Terminal()
+noremap <silent> <leader>t :Terminal<cr>
