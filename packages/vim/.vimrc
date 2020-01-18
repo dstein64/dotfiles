@@ -154,9 +154,9 @@ noremap <silent> <leader>up :UpdatePath<cr>
 " side effects (e.g., slowing down execute() calls).
 function! s:Terminal()
   if has('mac') && match(&shell, '/\?bash$') !=# -1
-    terminal bash -l
+    terminal ++close bash -l
   else
-    terminal
+    terminal ++close
   endif
 endfunction
 command Terminal call s:Terminal()
