@@ -1,0 +1,8 @@
+# JetBrains project settings
+.idea
+
+# macOS Finder metadata
+.DS_Store
+
+# Vim swap files
+*.swp
