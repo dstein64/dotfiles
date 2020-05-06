@@ -97,6 +97,11 @@ noremap <silent> <leader>n :tabnew<cr>
 " Add mapping to insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
 inoremap <expr> <tab> pumvisible() ? "\<c-e>\<c-n>" : "\<tab>"
+" Map <c-k> to <up> for the wildmenu.
+cnoremap <expr> <c-k> wildmenumode() ? "\<up>" : "\<c-k>"
+" Map <c-j> to <down> for the wildmenu. Special handling required.
+"   https://stackoverflow.com/q/14842987/1509433
+cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
 
 " *********************************************************
 " * Plugins
