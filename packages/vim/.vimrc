@@ -94,6 +94,8 @@ noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 noremap <silent> <leader>b :tab split<cr>
 " Add mapping to open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
+" Add mapping for sourcing the current file.
+noremap <leader>s :source %<cr>
 " Add mapping to insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
 inoremap <expr> <tab> pumvisible() ? "\<c-e>\<c-n>" : "\<tab>"
