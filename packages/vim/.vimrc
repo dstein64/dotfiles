@@ -163,11 +163,16 @@ noremap <silent> <leader>up :UpdatePath<cr>
 " Use a bash login shell on macOS. Updating 'shell' to do this has unwanted
 " side effects (e.g., slowing down execute() calls).
 function! s:Terminal()
-  if has('mac') && match(&shell, '/\?bash$') !=# -1
-    terminal ++close bash -l
-  else
-    terminal ++close
+  if has('nvim')
+    topleft split
   endif
+  if has('mac') && match(&shell, '/\?bash$') !=# -1
+    terminal bash -l
+  else
+    terminal
+  endif
+  " Switch to terminal-insert mode (only relevant for Neovim).
+  startinsert
 endfunction
 command Terminal call s:Terminal()
 noremap <silent> <leader>t :Terminal<cr>
