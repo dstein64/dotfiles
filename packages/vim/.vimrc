@@ -174,5 +174,5 @@ function! s:Terminal()
   " Switch to terminal-insert mode (only relevant for Neovim).
   startinsert
 endfunction
-command Terminal call s:Terminal()
+command! Terminal call s:Terminal()
 noremap <silent> <leader>t :Terminal<cr>
