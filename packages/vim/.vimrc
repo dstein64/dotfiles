@@ -118,6 +118,43 @@ runtime ftplugin/man.vim
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 
 " *********************************************************
+" * LSP
+" *********************************************************
+
+" Configure LSP for the buffer, if there is an LSP client.
+function! s:LspConfigBuffer() abort
+  nnoremap <buffer> <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
+  nnoremap <buffer> <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+  nnoremap <buffer> <silent> K     <cmd>lua vim.lsp.buf.hover()<cr>
+  nnoremap <buffer> <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
+  nnoremap <buffer> <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
+  nnoremap <buffer> <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
+  nnoremap <buffer> <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
+  nnoremap <buffer> <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
+  nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+  setlocal omnifunc=v:lua.vim.lsp.omnifunc
+  setlocal signcolumn=yes
+endfunction
+
+" nvim-lspconfig is from: https://github.com/neovim/nvim-lspconfig
+" Installation paths:
+"   Unix: ~/.local/share/nvim/site/pack/plugins/opt/nvim-lspconfig
+"   Windows: ~/AppData/Local/nvim-data/site/pack/plugins/opt/nvim-lspconfig
+function! s:ConfigureLsp() abort
+  if !has('nvim-0.5') | return | endif
+  silent! packadd nvim-lspconfig
+  if !get(g:, 'nvim_lsp', 0) | return | endif
+  if executable('clangd')
+    lua require('nvim_lsp').clangd.setup{}
+    augroup lsp_clangd
+      autocmd!
+      autocmd FileType c,cpp,objc,objcpp call s:LspConfigBuffer()
+    augroup END
+  endif
+endfunction
+call s:ConfigureLsp()
+
+" *********************************************************
 " * Customizations
 " *********************************************************
 
