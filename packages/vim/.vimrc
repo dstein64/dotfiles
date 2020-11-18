@@ -58,7 +58,8 @@ endif
 " E.g., when using 'gw' to format lines.
 set nojoinspaces
 " Only insert longest common text of matches for <c-n>/<c-p>.
-set completeopt+=longest
+" Use a popup menu to show possible completions.
+set completeopt=longest,menu
 " Only insert longest common text of matches for command-line completion.
 set wildmode=longest:full,full
 " Set a binding to toggle paste mode (for literal pastes).
