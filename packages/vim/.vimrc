@@ -146,12 +146,12 @@ endfunction
 function! s:ConfigureLsp() abort
   if !has('nvim-0.5') | return | endif
   silent! packadd nvim-lspconfig
-  if !get(g:, 'nvim_lsp', 0) | return | endif
+  if !get(g:, 'lspconfig', 0) | return | endif
   " Disable virtual text diagnostics (until you use the approach from PR
   " #12655)
   lua vim.lsp.util.buf_diagnostics_virtual_text = function() end
   if executable('clangd')
-    lua require('nvim_lsp').clangd.setup{}
+    lua require('lspconfig').clangd.setup{}
     augroup lsp_clangd
       autocmd!
       autocmd FileType c,cpp,objc,objcpp call s:LspConfigBuffer()
