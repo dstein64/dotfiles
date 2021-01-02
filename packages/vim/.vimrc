@@ -134,7 +134,7 @@ function! s:LspConfigBuffer() abort
   nnoremap <buffer> <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
   nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
   nnoremap <buffer> <silent> <leader>d
-        \ <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+        \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
   setlocal signcolumn=yes
 endfunction
@@ -147,9 +147,12 @@ function! s:ConfigureLsp() abort
   if !has('nvim-0.5') | return | endif
   silent! packadd nvim-lspconfig
   if !get(g:, 'lspconfig', 0) | return | endif
-  " Disable virtual text diagnostics (until you use the approach from PR
-  " #12655)
-  lua vim.lsp.util.buf_diagnostics_virtual_text = function() end
+  " Disable virtual text diagnostics
+  lua vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+        \   vim.lsp.diagnostic.on_publish_diagnostics, {
+        \     virtual_text = false,
+        \   }
+        \ )
   if executable('clangd')
     lua require('lspconfig').clangd.setup{}
     augroup lsp_clangd
