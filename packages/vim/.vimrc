@@ -73,6 +73,8 @@ set laststatus=2
 if has('gui_running')
   set cursorline        " highlight current line
 endif
+" Don't scroll the entire screen for messages (Neovim only as of 2021/1/1)
+try | set display+=msgsep | catch | endtry
 
 " *********************************************************
 " * Basic Commands
