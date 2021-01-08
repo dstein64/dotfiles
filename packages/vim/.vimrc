@@ -137,6 +137,9 @@ function! s:LspConfigBuffer() abort
   nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
   nnoremap <buffer> <silent> <leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+  command! -bar -buffer LspRename :lua vim.lsp.buf.rename()
+  command! -bar -buffer LspNextDiag :lua vim.lsp.diagnostic.goto_next()
+  command! -bar -buffer LspPrevDiag :lua vim.lsp.diagnostic.goto_prev()
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
   setlocal signcolumn=yes
 endfunction
