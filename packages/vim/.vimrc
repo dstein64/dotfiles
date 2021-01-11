@@ -206,6 +206,7 @@ function! s:ConfigureLsp() abort
   " Other
   noremenu <silent> &LSP.&Format\ Document<tab>:LspFormatDocument
         \ <cmd>lua vim.lsp.buf.formatting()<cr>
+  noremenu <silent> &LSP.&Format\ Selection<tab>gq gq
   noremenu <silent> &LSP.&Information<tab>K
         \ <cmd>lua vim.lsp.buf.hover()<cr>
   noremenu <silent> &LSP.&List\ Document\ Symbols<tab>g0
