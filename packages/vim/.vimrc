@@ -126,6 +126,7 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 
 " Configure LSP for the buffer, if there is an LSP client.
 function! s:LspConfigBuffer() abort
+  " Mappings
   nnoremap <buffer> <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
   nnoremap <buffer> <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
   nnoremap <buffer> <silent> K     <cmd>lua vim.lsp.buf.hover()<cr>
@@ -137,9 +138,14 @@ function! s:LspConfigBuffer() abort
   nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
   nnoremap <buffer> <silent> <leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+
+  " Commands
+  command! -bar -buffer LspFormatDocument :lua vim.lsp.buf.formatting()
   command! -bar -buffer LspRename :lua vim.lsp.buf.rename()
   command! -bar -buffer LspNextDiag :lua vim.lsp.diagnostic.goto_next()
   command! -bar -buffer LspPrevDiag :lua vim.lsp.diagnostic.goto_prev()
+
+  " Options
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
   setlocal signcolumn=yes
 endfunction
@@ -165,6 +171,43 @@ function! s:ConfigureLsp() abort
       autocmd FileType c,cpp,objc,objcpp call s:LspConfigBuffer()
     augroup END
   endif
+
+  " Add LSP menu items. The right-aligned text for some entries corresponds to
+  " the mappings and commands defined in s:LspConfigBuffer.
+
+  " Diagnostics
+  noremenu <silent> &LSP.&Diagnostics.Line\ Diagnostics<tab><leader>d
+        \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+  noremenu <silent> &LSP.&Diagnostics.Next\ Diagnostic<tab>:LspNextDiag
+        \ <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+  noremenu <silent> &LSP.&Diagnostics.Previous\ Diagnostic<tab>:LspPrevDiag
+        \ <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+
+  " Jumps
+  noremenu <silent> &LSP.&Jump.Declaration<tab>gd
+        \ <cmd>lua vim.lsp.buf.declaration()<cr>
+  noremenu <silent> &LSP.&Jump.Definition<tab>^]
+        \ <cmd>lua vim.lsp.buf.definition()<cr>
+  noremenu <silent> &LSP.&Jump.Type\ Definition<tab>1gD
+        \ <cmd>lua vim.lsp.buf.type_definition()<cr>
+
+  " Other
+  noremenu <silent> &LSP.&Format\ Document<tab>:LspFormat
+        \ <cmd>lua vim.lsp.buf.formatting()<cr>
+  noremenu <silent> &LSP.&Information<tab>K
+        \ <cmd>lua vim.lsp.buf.hover()<cr>
+  noremenu <silent> &LSP.&List\ Document\ Symbols<tab>g0
+        \ <cmd>lua vim.lsp.buf.document_symbol()<cr>
+  noremenu <silent> &LSP.&List\ Workspace\ Symbols<tab>gW
+        \ <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+  noremenu <silent> &LSP.List\ I&mplementations<tab>gD
+        \ <cmd>lua vim.lsp.buf.implementation()<cr>
+  noremenu <silent> &LSP.List\ Re&ferences<tab>gr
+        \ <cmd>lua vim.lsp.buf.references()<cr>
+  noremenu <silent> &LSP.&Rename<tab>:LspRename
+        \ <cmd>lua vim.lsp.buf.rename()<cr>
+  noremenu <silent> &LSP.&Signature\ Information<tab>^k
+        \ <cmd>lua vim.lsp.buf.signature_help()<cr>
 endfunction
 call s:ConfigureLsp()
 
