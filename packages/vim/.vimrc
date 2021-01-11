@@ -192,7 +192,7 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.type_definition()<cr>
 
   " Other
-  noremenu <silent> &LSP.&Format\ Document<tab>:LspFormat
+  noremenu <silent> &LSP.&Format\ Document<tab>:LspFormatDocument
         \ <cmd>lua vim.lsp.buf.formatting()<cr>
   noremenu <silent> &LSP.&Information<tab>K
         \ <cmd>lua vim.lsp.buf.hover()<cr>
