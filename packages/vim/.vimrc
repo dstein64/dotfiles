@@ -124,6 +124,14 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 " * LSP
 " *********************************************************
 
+" A function for 'formatexpr' that uses the LSP's range formatting.
+function! LspFormatExpr()
+  if mode() !=# 'n' | return 1 | endif
+  lua vim.lsp.buf.range_formatting(
+        \ {}, {vim.v.lnum, 0}, {vim.v.lnum + vim.v.count - 1, 0})
+  return 0
+endfunction
+
 " Configure LSP for the buffer, if there is an LSP client.
 function! s:LspConfigBuffer() abort
   " Mappings
@@ -149,6 +157,7 @@ function! s:LspConfigBuffer() abort
   " Options
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
   setlocal signcolumn=yes
+  setlocal formatexpr=LspFormatExpr()
 endfunction
 
 " nvim-lspconfig is from: https://github.com/neovim/nvim-lspconfig
