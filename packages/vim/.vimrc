@@ -138,12 +138,13 @@ function! s:LspConfigBuffer() abort
   nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
   nnoremap <buffer> <silent> <leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+  nnoremap <buffer> <silent> [d    <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+  nnoremap <buffer> <silent> ]d    <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
 
   " Commands
   command! -bar -buffer LspFormatDocument :lua vim.lsp.buf.formatting()
   command! -bar -buffer LspRename :lua vim.lsp.buf.rename()
-  command! -bar -buffer LspNextDiag :lua vim.lsp.diagnostic.goto_next()
-  command! -bar -buffer LspPrevDiag :lua vim.lsp.diagnostic.goto_prev()
+  command! -bar -buffer LspListDiagnostics :lua vim.lsp.diagnostic.set_loclist()
 
   " Options
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -176,11 +177,13 @@ function! s:ConfigureLsp() abort
   " the mappings and commands defined in s:LspConfigBuffer.
 
   " Diagnostics
-  noremenu <silent> &LSP.&Diagnostics.Line\ Diagnostics<tab><leader>d
+  noremenu <silent> &LSP.&Diagnostics.Show\ Line\ Diagnostics<tab><leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
-  noremenu <silent> &LSP.&Diagnostics.Next\ Diagnostic<tab>:LspNextDiag
+  noremenu <silent> &LSP.&Diagnostics.List\ Diagnostics<tab>:LspListDiagnostics
+        \ <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
+  noremenu <silent> &LSP.&Diagnostics.Next\ Diagnostic<tab>]d
         \ <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
-  noremenu <silent> &LSP.&Diagnostics.Previous\ Diagnostic<tab>:LspPrevDiag
+  noremenu <silent> &LSP.&Diagnostics.Previous\ Diagnostic<tab>]d
         \ <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
 
   " Jumps
