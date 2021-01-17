@@ -23,8 +23,8 @@ fi
 for package in "${PACKAGES[@]}"; do
   echo "installing '${package}'"
   stow --ignore '\.DS_Store' \
-       --verbose 1 \
-       --target ${TARGET} \
+       --verbose 1           \
+       --target ${TARGET}    \
        ${package}
 done
 
