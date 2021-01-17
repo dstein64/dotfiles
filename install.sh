@@ -10,10 +10,10 @@ if ! which stow &>/dev/null; then
   exit 1
 fi
 
-TARGET=${HOME}
+TARGET="${HOME}"
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd ${SCRIPTDIR}/packages
+cd "${SCRIPTDIR}/packages"
 
 PACKAGES=( "$@" )
 if [ ${#PACKAGES[@]} == 0 ]; then
@@ -24,7 +24,6 @@ for package in "${PACKAGES[@]}"; do
   echo "installing '${package}'"
   stow --ignore '\.DS_Store' \
        --verbose 1           \
-       --target ${TARGET}    \
-       ${package}
+       --target "${TARGET}"  \
+       "${package}"
 done
-
