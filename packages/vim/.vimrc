@@ -142,7 +142,7 @@ function! s:LspConfigBuffer() abort
   nnoremap <buffer> <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
   nnoremap <buffer> <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
   nnoremap <buffer> <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
-  nnoremap <buffer> <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
+  nnoremap <buffer> <silent> gO    <cmd>lua vim.lsp.buf.document_symbol()<cr>
   nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
   nnoremap <buffer> <silent> <leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
@@ -209,7 +209,7 @@ function! s:ConfigureLsp() abort
   noremenu <silent> &LSP.&Format\ Selection<tab>gq gq
   noremenu <silent> &LSP.&Information<tab>K
         \ <cmd>lua vim.lsp.buf.hover()<cr>
-  noremenu <silent> &LSP.&List\ Document\ Symbols<tab>g0
+  noremenu <silent> &LSP.&List\ Document\ Symbols<tab>gO
         \ <cmd>lua vim.lsp.buf.document_symbol()<cr>
   noremenu <silent> &LSP.&List\ Workspace\ Symbols<tab>gW
         \ <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
