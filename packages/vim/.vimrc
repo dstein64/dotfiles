@@ -108,6 +108,21 @@ cnoremap <expr> <c-k> wildmenumode() ? "\<up>" : "\<c-k>"
 "   https://stackoverflow.com/q/14842987/1509433
 cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
 
+" Window navigation (the alt mappings may not function properly outside
+" Neovim).
+tnoremap <a-h> <c-\><c-n><c-w>h
+tnoremap <a-j> <c-\><c-n><c-w>j
+tnoremap <a-k> <c-\><c-n><c-w>k
+tnoremap <a-l> <c-\><c-n><c-w>l
+inoremap <a-h> <c-\><c-n><c-w>h
+inoremap <a-j> <c-\><c-n><c-w>j
+inoremap <a-k> <c-\><c-n><c-w>k
+inoremap <a-l> <c-\><c-n><c-w>l
+nnoremap <a-h> <c-w>h
+nnoremap <a-j> <c-w>j
+nnoremap <a-k> <c-w>k
+nnoremap <a-l> <c-w>l
+
 " *********************************************************
 " * Plugins
 " *********************************************************
