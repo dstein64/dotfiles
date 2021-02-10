@@ -80,26 +80,26 @@ try | set display+=msgsep | catch | endtry
 " * Basic Commands
 " *********************************************************
 
-" Add a command for generating tags (requires exuberant/universal ctags).
+" Generate tags (requires exuberant/universal ctags).
 command! Tags !ctags -R .
 
 " *********************************************************
 " * Basic Mappings
 " *********************************************************
 
-" Add mapping for :nohlsearch to turn off highlight.
+" Turn off highlight.
 noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
-" Add mapping to change working directory to directory of current file.
+" Change working directory to directory of current file.
 noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
-" Add mapping to change working directory up a directory.
+" Change working directory up a directory.
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
-" Add mapping to open current buffer in new tab.
+" Open current buffer in new tab.
 noremap <silent> <leader>b :tab split<cr>
-" Add mapping to open a new tab.
+" Open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
-" Add mapping for sourcing the current file.
+" Source the current file.
 noremap <leader>s :source %<cr>
-" Add mapping to insert longest common text when the completion menu is visible
+" Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
 inoremap <expr> <tab> pumvisible() ? "\<c-e>\<c-n>" : "\<tab>"
 " Map <c-k> to <up> for the wildmenu.
