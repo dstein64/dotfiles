@@ -123,6 +123,20 @@ nnoremap <a-j> <c-w>j
 nnoremap <a-k> <c-w>k
 nnoremap <a-l> <c-w>l
 
+" Configure some of Vim's special terminal mappings in Neovim.
+if has('nvim')
+  " Move focus to the next window.
+  tnoremap <c-w><c-w> <c-\><c-n><c-w><c-w>
+  " Go to the next tabpage.
+  tnoremap <c-w>gt <c-\><c-n>gt
+  " Go to the previous tabpage.
+  tnoremap <c-w>gT <c-\><c-n>gT
+  " Paste the specified register.
+  tnoremap <expr> <c-w>" '<c-\><c-n>"' . nr2char(getchar()) . 'pi'
+  " Send <ctrl-w> to the job in the terminal.
+  tnoremap <c-w>. <c-w>
+endif
+
 " *********************************************************
 " * Plugins
 " *********************************************************
