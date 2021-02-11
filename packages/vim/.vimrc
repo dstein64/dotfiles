@@ -150,6 +150,20 @@ if has('nvim')
   tnoremap <c-w>. <c-w>
 endif
 
+" Paired bracket mappings (inspired by vim-unimpaired)
+noremap <silent> [b :bprevious<cr>
+noremap <silent> ]b :bnext<cr>
+noremap <silent> [B :bfirst<cr>
+noremap <silent> ]B :blast<cr>
+noremap <silent> [l :lprevious<cr>
+noremap <silent> ]l :lnext<cr>
+noremap <silent> [L :lfirst<cr>
+noremap <silent> ]L :llast<cr>
+noremap <silent> [q :cprevious<cr>
+noremap <silent> ]q :cnext<cr>
+noremap <silent> [Q :cfirst<cr>
+noremap <silent> ]Q :clast<cr>
+
 " *********************************************************
 " * Plugins
 " *********************************************************
