@@ -163,6 +163,12 @@ noremap <silent> [q :cprevious<cr>
 noremap <silent> ]q :cnext<cr>
 noremap <silent> [Q :cfirst<cr>
 noremap <silent> ]Q :clast<cr>
+" '[-1 and ']+1 are :[range] commands. (see ':h :[range]' or ':h :index' for
+" details.
+noremap <silent> ]<space>
+      \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
+noremap <silent> [<space>
+      \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
 
 " *********************************************************
 " * Plugins
