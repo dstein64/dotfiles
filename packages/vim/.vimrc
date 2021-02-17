@@ -107,6 +107,10 @@ cnoremap <expr> <c-k> wildmenumode() ? "\<up>" : "\<c-k>"
 " Map <c-j> to <down> for the wildmenu. Special handling required.
 "   https://stackoverflow.com/q/14842987/1509433
 cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
+" Move to first non-blank character of the line, in insert mode (override).
+inoremap <silent> <c-a> <c-o>^
+" Move to the end of line in insert mode (override).
+inoremap <silent> <c-e> <end>
 
 " Window navigation (the alt mappings may not function properly outside
 " Neovim).
