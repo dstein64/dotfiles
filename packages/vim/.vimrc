@@ -111,9 +111,14 @@ cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
 inoremap <silent> <c-a> <c-o>^
 " Move to the end of line in insert mode (override).
 inoremap <silent> <c-e> <end>
+" Enable hjkl movements for insert mode.
+inoremap <silent> <c-h> <c-o>h
+inoremap <silent> <c-j> <c-o>j
+inoremap <silent> <c-k> <c-o>k
+inoremap <silent> <c-l> <c-o>l
 
-" Window navigation (the alt mappings may not function properly outside
-" Neovim).
+" === Window navigation ===
+" The alt mappings may not function properly outside Neovim.
 tnoremap <a-h> <c-\><c-n><c-w>h
 tnoremap <a-j> <c-\><c-n><c-w>j
 tnoremap <a-k> <c-\><c-n><c-w>k
@@ -127,6 +132,7 @@ nnoremap <a-j> <c-w>j
 nnoremap <a-k> <c-w>k
 nnoremap <a-l> <c-w>l
 
+" === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
 " some of these mappings switch the mode from Terminal-Job to Terminal-Normal.
 if has('nvim')
@@ -154,7 +160,8 @@ if has('nvim')
   tnoremap <c-w>. <c-w>
 endif
 
-" Paired bracket mappings (inspired by vim-unimpaired)
+" === Paired bracket mappings ===
+" (inspired by vim-unimpaired)
 noremap <silent> [b :bprevious<cr>
 noremap <silent> ]b :bnext<cr>
 noremap <silent> [B :bfirst<cr>
