@@ -112,10 +112,10 @@ inoremap <silent> <c-a> <c-o>^
 " Move to the end of line in insert mode (override).
 inoremap <silent> <c-e> <end>
 " Enable hjkl movements for insert mode.
-inoremap <silent> <c-h> <c-o>h
-inoremap <silent> <c-j> <c-o>j
-inoremap <silent> <c-k> <c-o>k
-inoremap <silent> <c-l> <c-o>l
+inoremap <silent> <c-h> <left>
+inoremap <silent> <c-j> <down>
+inoremap <silent> <c-k> <up>
+inoremap <silent> <c-l> <right>
 
 " === Window navigation ===
 " The alt mappings may not function properly outside Neovim.
