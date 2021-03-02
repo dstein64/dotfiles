@@ -116,21 +116,16 @@ inoremap <silent> <c-h> <left>
 inoremap <silent> <c-j> <down>
 inoremap <silent> <c-k> <up>
 inoremap <silent> <c-l> <right>
-
-" === Window navigation ===
-" The alt mappings may not function properly outside Neovim.
-tnoremap <a-h> <c-\><c-n><c-w>h
-tnoremap <a-j> <c-\><c-n><c-w>j
-tnoremap <a-k> <c-\><c-n><c-w>k
-tnoremap <a-l> <c-\><c-n><c-w>l
-inoremap <a-h> <c-\><c-n><c-w>h
-inoremap <a-j> <c-\><c-n><c-w>j
-inoremap <a-k> <c-\><c-n><c-w>k
-inoremap <a-l> <c-\><c-n><c-w>l
-nnoremap <a-h> <c-w>h
-nnoremap <a-j> <c-w>j
-nnoremap <a-k> <c-w>k
-nnoremap <a-l> <c-w>l
+" Enable alt+(hjkl) for larger movements in insert mode. These may not
+" function properly outside of Neovim.
+inoremap <silent> <m-h> <c-o>b
+inoremap <silent> <m-j> <c-o>5j
+inoremap <silent> <m-k> <c-o>5k
+inoremap <silent> <m-l> <c-o>w
+" Enable <c-s> to save. This key sequence freezes some terminals. Use <c-q> to
+" unfreeze.
+noremap <c-s> :<c-u>write<cr>
+inoremap <c-s> <c-o>:write<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
