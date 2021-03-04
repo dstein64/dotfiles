@@ -121,7 +121,7 @@ inoremap <silent> <c-l> <right>
 inoremap <silent> <m-h> <c-o>b
 inoremap <silent> <m-j> <c-o>5j
 inoremap <silent> <m-k> <c-o>5k
-inoremap <silent> <m-l> <c-o>w
+inoremap <silent> <m-l> <esc>ea
 " Enable <c-s> to save. This key sequence freezes some terminals. Use <c-q> to
 " unfreeze.
 noremap <c-s> :<c-u>write<cr>
