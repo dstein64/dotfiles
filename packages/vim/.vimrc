@@ -111,17 +111,32 @@ cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
 inoremap <silent> <c-a> <c-o>^
 " Move to the end of line in insert mode (override).
 inoremap <silent> <c-e> <end>
+" Move to the beginning of the command-line (override).
+cnoremap <c-a> <home>
 " Enable hjkl movements for insert mode.
 inoremap <silent> <c-h> <left>
 inoremap <silent> <c-j> <down>
 inoremap <silent> <c-k> <up>
 inoremap <silent> <c-l> <right>
+" Enable h and l movements for the command-line (overrides).
+cnoremap <c-h> <left>
+cnoremap <c-l> <right>
 " Enable alt+(hjkl) for larger movements in insert mode. These may not
 " function properly outside of Neovim.
 inoremap <silent> <m-h> <c-o>b
 inoremap <silent> <m-j> <c-o>5j
 inoremap <silent> <m-k> <c-o>5k
 inoremap <silent> <m-l> <esc>ea
+" Enable alt+(hl) for larger movements in command-line mode. These may not
+" function properly outside of Neovim. 'G' ensures that the cursor doesn't
+" move to a preceding command. 'e' is executed with 'silent!' so that it
+" doesn't cause an error when executed from the last character. 'redraw'
+" removes the command-line window. Yanking to the black hole register results
+" in the cursor re-appearing.
+cnoremap <m-h> <c-f>bG<c-c><cmd>redraw<cr><cmd>normal! "_yl<cr>
+cnoremap <m-l>
+      \ <c-f><cmd>silent! normal! e<cr>a<c-c>
+      \<cmd>redraw<cr><cmd>normal! "_yl<cr>
 " Enable <c-s> to save. This key sequence freezes some terminals. Use <c-q> to
 " unfreeze.
 noremap <c-s> :<c-u>write<cr>
