@@ -369,7 +369,3 @@ function! s:Terminal()
 endfunction
 command! Terminal call s:Terminal()
 noremap <silent> <leader>t :Terminal<cr>
-
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-set rtp^=/usr/share/ocp-indent/vim
