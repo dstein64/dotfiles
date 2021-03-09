@@ -128,12 +128,15 @@ inoremap <silent> <m-j> <c-o>5j
 inoremap <silent> <m-k> <c-o>5k
 inoremap <silent> <m-l> <esc>ea
 " Enable alt+(hl) for larger movements in command-line mode. These may not
-" function properly outside of Neovim. 'G' ensures that the cursor doesn't
-" move to a preceding command. 'e' is executed with 'silent!' so that it
-" doesn't cause an error when executed from the last character. 'redraw'
-" removes the command-line window. Yanking to the black hole register results
-" in the cursor re-appearing.
-cnoremap <m-h> <c-f>bG<c-c><cmd>redraw<cr><cmd>normal! "_yl<cr>
+" function properly outside of Neovim. '+' ensures that the cursor doesn't
+" move to a preceding command. 'b', '+' and 'e' are executed with 'silent!' so
+" that they don't cause an error (e.g., when executed from the first
+" character, last line, or last character). 'redraw' removes the command-line
+" window. Yanking to the black hole register results in the cursor
+" re-appearing.
+cnoremap <m-h>
+      \ <c-f><cmd>silent! normal! b+<cr><c-c>
+      \<cmd>redraw<cr><cmd>normal! "_yl<cr>
 cnoremap <m-l>
       \ <c-f><cmd>silent! normal! e<cr>a<c-c>
       \<cmd>redraw<cr><cmd>normal! "_yl<cr>
@@ -366,3 +369,7 @@ function! s:Terminal()
 endfunction
 command! Terminal call s:Terminal()
 noremap <silent> <leader>t :Terminal<cr>
+
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+set rtp^=/usr/share/ocp-indent/vim
