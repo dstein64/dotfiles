@@ -110,6 +110,9 @@ command! Terminal call s:Terminal()
 " * Mappings
 " *********************************************************
 
+" WARN: The usage of <m-...> mappings may not function properly outside of
+" Neovim.
+
 " Turn off highlight.
 noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
 " Change working directory to directory of current file.
@@ -144,19 +147,15 @@ inoremap <silent> <c-l> <right>
 " Enable h and l movements for the command-line (overrides).
 cnoremap <c-h> <left>
 cnoremap <c-l> <right>
-" Enable alt+(hjkl) for larger movements in insert mode. These may not
-" function properly outside of Neovim.
+" Enable alt+(hl) for larger movements in insert mode.
 inoremap <silent> <m-h> <c-o>b
-inoremap <silent> <m-j> <c-o>5j
-inoremap <silent> <m-k> <c-o>5k
 inoremap <silent> <m-l> <esc>ea
-" Enable alt+(hl) for larger movements in command-line mode. These may not
-" function properly outside of Neovim. '+' ensures that the cursor doesn't
-" move to a preceding command. 'b', '+' and 'e' are executed with 'silent!' so
-" that they don't cause an error (e.g., when executed from the first
-" character, last line, or last character). 'redraw' removes the command-line
-" window. Yanking to the black hole register results in the cursor
-" re-appearing.
+" Enable alt+(hl) for larger movements in command-line mode. '+' ensures that
+" the cursor doesn't move to a preceding command. 'b', '+' and 'e' are
+" executed with 'silent!' so that they don't cause an error (e.g., when
+" executed from the first character, last line, or last character). 'redraw'
+" removes the command-line window. Yanking to the black hole register results
+" in the cursor re-appearing.
 cnoremap <m-h>
       \ <c-f><cmd>silent! normal! b+<cr><c-c>
       \<cmd>redraw<cr><cmd>normal! "_yl<cr>
@@ -169,6 +168,8 @@ noremap <c-s> :<c-u>write<cr>
 inoremap <c-s> <c-o>:write<cr>
 " Open a terminal.
 noremap <silent> <leader>t :Terminal<cr>
+" Enable alt+k to delete the text until the end of line in insert mode.
+inoremap <silent> <m-k> <c-o>D
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
