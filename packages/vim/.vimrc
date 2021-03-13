@@ -32,7 +32,28 @@ filetype plugin on      " enable loading filetype plugins
 filetype indent on      " enable loading filetype indent files
 
 " *********************************************************
-" * Basic Settings
+" * Functions
+" *********************************************************
+
+" Opens a terminal, with consistent handling for Neovim and Vim, and handling
+" for macOS.
+function! s:Terminal()
+  if has('nvim')
+    topleft split
+  endif
+  " Use a bash login shell on macOS. Updating 'shell' to do this has unwanted
+  " side effects (e.g., slowing down execute() calls).
+  if has('mac') && match(&shell, '/\?bash$') !=# -1
+    terminal bash -l
+  else
+    terminal
+  endif
+  " Switch to terminal-insert mode (only relevant for Neovim).
+  startinsert
+endfunction
+
+" *********************************************************
+" * Settings
 " *********************************************************
 
 let mapleader='\'       " set <leader>
@@ -77,14 +98,16 @@ endif
 try | set display+=msgsep | catch | endtry
 
 " *********************************************************
-" * Basic Commands
+" * Commands
 " *********************************************************
 
 " Generate tags (requires exuberant/universal ctags).
 command! Tags !ctags -R .
+" Open a terminal.
+command! Terminal call s:Terminal()
 
 " *********************************************************
-" * Basic Mappings
+" * Mappings
 " *********************************************************
 
 " Turn off highlight.
@@ -144,6 +167,8 @@ cnoremap <m-l>
 " unfreeze.
 noremap <c-s> :<c-u>write<cr>
 inoremap <c-s> <c-o>:write<cr>
+" Open a terminal.
+noremap <silent> <leader>t :Terminal<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
@@ -309,63 +334,3 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.signature_help()<cr>
 endfunction
 call s:ConfigureLsp()
-
-" *********************************************************
-" * Customizations
-" *********************************************************
-
-" When called, updates path with the preprocessor's #include search paths. The
-" C search paths are a subset of the C++ search paths, so they don't have to
-" be additionally included. This is implemented with a function, command, and
-" mapping, 1) to prevent slowing vim's startup time, and 2) so the
-" functionality is only used when wanted (as it can slow vim responsiveness).
-" The function returns the number of search preprocessor #include search
-" paths, or -1 on error.
-function! s:UpdatePath()
-  if !has('unix') || !executable('gcc')
-    echoerr 'A Unix environment with gcc is required.'
-    return -1
-  endif
-  let l:expr = 'gcc -Wp,-v -x c++ - -fsyntax-only 2>&1 </dev/null'
-  let l:lines = systemlist(l:expr)
-  if v:shell_error !=# 0
-    echoerr 'Error ' . v:shell_error . ' returned when running gcc.'
-    return -1
-  endif
-  let l:count = 0
-  for l:line in l:lines
-    if match(l:line, '^ ') ==# -1 | continue | endif
-    let l:include = substitute(l:line, '^ ', '', '')
-    " Remove ' (framework directory)' suffix (applicable on macOS).
-    if match(l:include, ' (framework directory)$') && !isdirectory(l:include)
-      let l:include = substitute(l:include, ' (framework directory)$', '', '')
-    endif
-    if !isdirectory(l:include) | continue | endif
-    " Escape the path, including additional handling for spaces and commas.
-    let l:include = fnameescape(l:include)
-    let l:include = substitute(l:include, ',', '\\\\,', 'g')
-    let l:include = substitute(l:include, '\ ', '\\\\ ', 'g')
-    let l:count += 1
-    execute 'set path+=' . l:include
-  endfor
-  return l:count
-endfunction
-command! UpdatePath :call s:UpdatePath()
-noremap <silent> <leader>up :UpdatePath<cr>
-
-" Use a bash login shell on macOS. Updating 'shell' to do this has unwanted
-" side effects (e.g., slowing down execute() calls).
-function! s:Terminal()
-  if has('nvim')
-    topleft split
-  endif
-  if has('mac') && match(&shell, '/\?bash$') !=# -1
-    terminal bash -l
-  else
-    terminal
-  endif
-  " Switch to terminal-insert mode (only relevant for Neovim).
-  startinsert
-endfunction
-command! Terminal call s:Terminal()
-noremap <silent> <leader>t :Terminal<cr>
