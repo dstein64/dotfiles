@@ -52,6 +52,11 @@ function! s:Terminal()
   startinsert
 endfunction
 
+" Return the left key sequence.
+function! s:Left() abort
+  return "\<left>"
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -219,6 +224,16 @@ noremap <silent> ]<space>
       \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
 noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
+
+" *********************************************************
+" * Menus
+" *********************************************************
+
+noremenu <silent> Tools.-sep- <nop>
+noremenu <silent> Tools.Grep<tab>:grep\ TEXT\ -R\ \.
+      \ <cmd>call feedkeys(":grep  -R ." . repeat(<SID>Left(), 5))<cr>
+noremenu <silent> Tools.Vim\ Grep<tab>:vimgrep\ TEXT\ **/*
+      \ <cmd>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5))<cr>
 
 " *********************************************************
 " * Plugins
