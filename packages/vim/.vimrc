@@ -231,9 +231,9 @@ noremap <silent> [<space>
 
 noremenu <silent> Tools.-sep- <nop>
 noremenu <silent> Tools.Grep<tab>:grep\ TEXT\ -R\ \.
-      \ <cmd>call feedkeys(":grep  -R ." . repeat(<SID>Left(), 5))<cr>
+      \ :<c-u>call feedkeys(":grep  -R ." . repeat(<SID>Left(), 5))<cr>
 noremenu <silent> Tools.Vim\ Grep<tab>:vimgrep\ TEXT\ **/*
-      \ <cmd>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5))<cr>
+      \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5))<cr>
 
 " *********************************************************
 " * Plugins
