@@ -239,8 +239,8 @@ noremenu <silent> Tools.Vim\ Grep<tab>:vimgrep\ TEXT\ **/*
 " * Plugins
 " *********************************************************
 
-packadd! termdebug      " source termdebug
-packadd! matchit        " source matchit
+packadd! termdebug        " source termdebug
+silent! packadd! matchit  " source matchit
 runtime ftplugin/man.vim
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
@@ -350,3 +350,13 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.signature_help()<cr>
 endfunction
 call s:ConfigureLsp()
+
+" *********************************************************
+" " * Other
+" " *********************************************************
+
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+set rtp^=/usr/share/ocp-indent/vim
+
+"let g:scrollview_character = 'X'
