@@ -273,6 +273,8 @@ function! s:LspConfigBuffer() abort
   nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
   nnoremap <buffer> <silent> <leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+  nnoremap <buffer> <silent> <leader>f
+        \ <cmd>lua vim.lsp.buf.code_action()<cr>
   nnoremap <buffer> <silent> [d    <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
   nnoremap <buffer> <silent> ]d    <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
 
@@ -315,6 +317,8 @@ function! s:ConfigureLsp() abort
   " Diagnostics
   noremenu <silent> &LSP.&Diagnostics.Show\ Line\ Diagnostics<tab><leader>d
         \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+  noremenu <silent> &LSP.&Diagnostics.Code\ Action\ (apply\ fix)<tab><leader>f
+        \ <cmd>lua vim.lsp.buf.code_action()<cr>
   noremenu <silent> &LSP.&Diagnostics.List\ Diagnostics<tab>:LspListDiagnostics
         \ <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
   noremenu <silent> &LSP.&Diagnostics.Next\ Diagnostic<tab>]d
@@ -350,3 +354,8 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.signature_help()<cr>
 endfunction
 call s:ConfigureLsp()
+
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set runtimepath+=" . g:opamshare . "/merlin/vim"
+execute "set runtimepath^=" . g:opamshare . "/ocp-indent/vim"
+
