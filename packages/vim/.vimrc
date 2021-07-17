@@ -354,8 +354,3 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.signature_help()<cr>
 endfunction
 call s:ConfigureLsp()
-
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set runtimepath+=" . g:opamshare . "/merlin/vim"
-execute "set runtimepath^=" . g:opamshare . "/ocp-indent/vim"
-
