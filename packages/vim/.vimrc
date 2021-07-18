@@ -80,9 +80,9 @@ function! s:EditSiblingFile(offset) abort
   let l:file = expand('%:p')
   if isdirectory(l:file) | return | endif
   let l:parent = fnamemodify(l:file, ':h')
-  let l:files = split(globpath(l:parent, '*'), '\n')
+  let l:files = split(globpath(l:parent, '*', 1), '\n')
   " Add hidden files.
-  call extend(l:files, split(globpath(l:parent, '.*'), '\n'))
+  call extend(l:files, split(globpath(l:parent, '.*', 1), '\n'))
   call map(l:files, 'fnamemodify(v:val, ":p")')
   call filter(l:files, '!isdirectory(v:val)')
   if empty(l:files) | return | endif
