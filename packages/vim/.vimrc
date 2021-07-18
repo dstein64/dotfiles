@@ -248,8 +248,8 @@ noremap <silent> ]<space>
       \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
 noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
-noremap <silent> [n :call <SID>GotoConflictOrDiff(1)<cr>
-noremap <silent> ]n :call <SID>GotoConflictOrDiff(0)<cr>
+noremap <silent> [n :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
+noremap <silent> ]n :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 
 " *********************************************************
 " * Menus
