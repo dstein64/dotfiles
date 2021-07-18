@@ -64,6 +64,13 @@ function! s:Left() abort
   return "\<left>"
 endfunction
 
+" Go to git conflict or diff/patch hunk.
+function! s:GotoConflictOrDiff(reverse) abort
+  let l:flags = 'W'
+  if a:reverse | let l:flags .= 'b' | endif
+  call search('^\(@@ .* @@\|[<=>]\{7\}\)', l:flags)
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -241,6 +248,8 @@ noremap <silent> ]<space>
       \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
 noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
+noremap <silent> [n :call <SID>GotoConflictOrDiff(1)<cr>
+noremap <silent> ]n :call <SID>GotoConflictOrDiff(0)<cr>
 
 " *********************************************************
 " * Menus
