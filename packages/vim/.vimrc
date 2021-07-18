@@ -52,6 +52,13 @@ function! s:Terminal()
   startinsert
 endfunction
 
+" Enter insert mode if the current buffer is a terminal buffer.
+function! s:InsertModeIfTerminal() abort
+  if &buftype ==# 'terminal' && mode() ==# 'n'
+    normal! i
+  endif
+endfunction
+
 " Return the left key sequence.
 function! s:Left() abort
   return "\<left>"
@@ -110,6 +117,16 @@ try | set display+=msgsep | catch | endtry
 command! Tags !ctags -R .
 " Open a terminal.
 command! Terminal call s:Terminal()
+
+" *********************************************************
+" * Autocommands
+" *********************************************************
+
+augroup autocommands
+  autocmd!
+  " Always enter insert mode when entering a terminal window.
+  autocmd WinEnter * call s:InsertModeIfTerminal()
+augroup END
 
 " *********************************************************
 " * Mappings
