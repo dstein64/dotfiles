@@ -97,6 +97,7 @@ function! s:EditSiblingFile(offset) abort
     return
   endif
   let l:idx = min([len(l:files) - 1, max([0, l:idx])])
+  if l:files[l:idx] ==# l:file | return | endif
   execute 'edit ' . l:files[l:idx]
 endfunction
 
