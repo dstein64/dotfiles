@@ -71,6 +71,35 @@ function! s:GotoConflictOrDiff(reverse) abort
   call search('^\(@@ .* @@\|[<=>]\{7\}\)', l:flags)
 endfunction
 
+" :edit the sibling file at the specified offset to the current file. '^' and
+" '$' can be used to edit the first and last sibling, respectively.
+function! s:EditSiblingFile(offset) abort
+  let l:file = expand('%:p')
+  if empty(l:file) | return | endif
+  if isdirectory(l:file) | return | endif
+  let l:parent = fnamemodify(l:file, ':h')
+  let l:files = split(globpath(l:parent, '*'), '\n')
+  " Add hidden files.
+  call extend(l:files, split(globpath(l:parent, '.*'), '\n'))
+  call map(l:files, 'fnamemodify(v:val, ":p")')
+  call filter(l:files, '!isdirectory(v:val)')
+  call sort(l:files)
+  " TODO: binary search
+  let l:idx = index(l:files, l:file)
+  if l:idx ==# -1 | return | endif
+  if type(a:offset) ==# v:t_number
+    let l:idx += a:offset
+  elseif a:offset ==# '^'
+    let l:idx = 0
+  elseif a:offset ==# '$'
+    let l:idx = len(l:files) - 1
+  else
+    return
+  endif
+  let l:idx = min([len(l:files) - 1, max([0, l:idx])])
+  execute 'edit ' . l:files[l:idx]
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -250,6 +279,10 @@ noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
 noremap <silent> [n :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
 noremap <silent> ]n :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
+noremap <silent> [f :<c-u>call <SID>EditSiblingFile(-v:count1)<cr>
+noremap <silent> ]f :<c-u>call <SID>EditSiblingFile(v:count1)<cr>
+noremap <silent> [F :<c-u>call <SID>EditSiblingFile('^')<cr>
+noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 
 " *********************************************************
 " * Menus
@@ -264,6 +297,10 @@ noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
       \ :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
+noremenu <silent> &Tools.Next\ File<tab>]f
+      \ :<c-u>call <SID>EditSiblingFile(1)<cr>
+noremenu <silent> &Tools.Previous\ File<tab>[f
+      \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
 
 " *********************************************************
 " * Plugins
