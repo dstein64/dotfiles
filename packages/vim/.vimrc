@@ -74,8 +74,10 @@ endfunction
 " :edit the sibling file at the specified offset to the current file. '^' and
 " '$' can be used to edit the first and last sibling, respectively.
 function! s:EditSiblingFile(offset) abort
+  " Only apply on normal buffers. The functionality may work on other buffer
+  " types, like 'nowrite', but is not currently supported.
+  if !empty(&buftype) | return | endif
   let l:file = expand('%:p')
-  if empty(l:file) | return | endif
   if isdirectory(l:file) | return | endif
   let l:parent = fnamemodify(l:file, ':h')
   let l:files = split(globpath(l:parent, '*'), '\n')
@@ -83,11 +85,11 @@ function! s:EditSiblingFile(offset) abort
   call extend(l:files, split(globpath(l:parent, '.*'), '\n'))
   call map(l:files, 'fnamemodify(v:val, ":p")')
   call filter(l:files, '!isdirectory(v:val)')
+  if empty(l:files) | return | endif
   call sort(l:files)
-  " TODO: binary search
-  let l:idx = index(l:files, l:file)
-  if l:idx ==# -1 | return | endif
   if type(a:offset) ==# v:t_number
+    " TODO: binary search
+    let l:idx = empty(l:file) ? -1 : index(l:files, l:file)
     let l:idx += a:offset
   elseif a:offset ==# '^'
     let l:idx = 0
