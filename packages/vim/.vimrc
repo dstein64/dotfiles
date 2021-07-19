@@ -147,6 +147,17 @@ if has('gui_running')
 endif
 " Don't scroll the entire screen for messages (Neovim only as of 2021/1/1)
 try | set display+=msgsep | catch | endtry
+" Save swap files in ~/.vim/swap instead of using the same directory as the
+" edited files. Only do this on Vim, since the defaults on Neovim already use
+" a separate directory. One reason for doing this is so that the ]f mapping,
+" defined below, doesn't infinitely cycle through swap files on Vim.
+if !has('nvim')
+  set directory-=.
+  " TODO: set s:directory appropriately on Windows (and handle Cygwin).
+  let s:directory = '~/.vim/swap//'
+  call mkdir(expand(s:directory), 'p')
+  execute 'set directory^=' . s:directory
+endif
 
 " *********************************************************
 " * Commands
