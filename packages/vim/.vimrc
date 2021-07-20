@@ -153,8 +153,8 @@ try | set display+=msgsep | catch | endtry
 " defined below, doesn't infinitely cycle through swap files on Vim.
 if !has('nvim')
   set directory-=.
-  " TODO: set s:directory appropriately on Windows (and handle Cygwin).
-  let s:directory = '~/.vim/swap//'
+  " Set directory to ~/.vim/swap// on Unix and ~/vimfiles/swap// on Windows.
+  let s:directory = printf('~/%s/swap//', has('win32') ? 'vimfiles' : '.vim')
   call mkdir(expand(s:directory), 'p')
   execute 'set directory^=' . s:directory
 endif
