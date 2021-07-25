@@ -242,6 +242,8 @@ inoremap <c-s> <c-o>:write<cr>
 noremap <silent> <leader>t :Terminal<cr>
 " Enable alt+k to delete the text until the end of line in insert mode.
 inoremap <silent> <m-k> <c-o>D
+" Insert and editing a line above.
+inoremap <c-space> <c-o>O
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
