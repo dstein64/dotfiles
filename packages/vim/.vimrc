@@ -263,7 +263,7 @@ else
   noremap <Plug>(NoHls) :<c-u>nohlsearch<cr>
   inoremap <expr> <Plug>(NoHls) execute('nohlsearch')
 endif
-" Use jk to exit insert/visual/command-line modes.
+" Use jk to exit insert mode.
 inoremap jk <esc>
 
 " === Neovim terminal mappings ===
