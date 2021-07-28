@@ -269,6 +269,10 @@ vnoremap <c-x> "+d
 inoremap <c-v> <c-r>+
 " Use jk to exit insert mode.
 inoremap jk <esc>
+" Open/close quickfix window.
+noremap <leader>c :<c-u>cwindow<cr>
+" Open/close location list window.
+noremap <leader>l :<c-u>lwindow<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
