@@ -265,10 +265,6 @@ else
 endif
 " Use jk to exit insert/visual/command-line modes.
 inoremap jk <esc>
-vnoremap jk <esc>
-" <c-c> is used instead of <esc>, since the latter results in command
-" execution.
-cnoremap jk <c-c>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
