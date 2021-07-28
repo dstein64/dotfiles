@@ -252,8 +252,14 @@ inoremap <silent> <m-k> <c-o>D
 " Insert and editing a line above.
 inoremap <c-space> <c-o>O
 " Turn off search highlighting.
-noremap <Plug>(NoHls) <cmd>nohlsearch<cr>
-inoremap <Plug>(NoHls) <cmd>nohlsearch<cr>
+if has('nvim') || has('patch-8.2.1978')
+  " This approach, with no <expr> mapping, is compatible with nvim-scrollview.
+  noremap <Plug>(NoHls) <cmd>nohlsearch<cr>
+  inoremap <Plug>(NoHls) <cmd>nohlsearch<cr>
+else
+  noremap <Plug>(NoHls) :<c-u>nohlsearch<cr>
+  inoremap <expr> <Plug>(NoHls) execute('nohlsearch')
+endif
 " Use jk to exit insert/visual/command-line modes.
 inoremap jk <esc>
 vnoremap jk <esc>
