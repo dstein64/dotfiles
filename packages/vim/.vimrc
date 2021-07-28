@@ -263,6 +263,10 @@ else
   noremap <Plug>(NoHls) :<c-u>nohlsearch<cr>
   inoremap <expr> <Plug>(NoHls) execute('nohlsearch')
 endif
+" Mappings for copy, cut, and paste.
+vnoremap <c-c> "+y
+vnoremap <c-x> "+d
+inoremap <c-v> <c-r>+
 " Use jk to exit insert mode.
 inoremap jk <esc>
 
