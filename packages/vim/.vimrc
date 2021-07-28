@@ -330,8 +330,8 @@ noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 " *********************************************************
 
 noremenu <silent> &Tools.-sep- <nop>
-noremenu <silent> &Tools.&Grep<tab>:grep\ TEXT\ -R\ \.
-      \ :<c-u>call feedkeys(":grep  -R ." . repeat(<SID>Left(), 5))<cr>
+noremenu <silent> &Tools.&Grep<tab>:grep\ -R\ TEXT\ \.
+      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2))<cr>
 noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ TEXT\ **/*
       \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5))<cr>
 noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
