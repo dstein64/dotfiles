@@ -286,7 +286,7 @@ inoremap <c-v> <c-r>+
 " Use jk to exit insert mode.
 inoremap jk <esc>
 " Toggle quickfix window.
-noremap <leader>c :<c-u>call <SID>ToggleQuickfix()<cr>
+noremap <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
 " Open/close location list window.
 noremap <leader>l :<c-u>call <SID>ToggleLocList()<cr>
 
