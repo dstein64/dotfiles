@@ -252,7 +252,7 @@ inoremap <c-s> <c-o>:write<cr>
 noremap <silent> <leader>t :Terminal<cr>
 " Enable alt+k to delete the text until the end of line in insert mode.
 inoremap <silent> <m-k> <c-o>D
-" Insert and editing a line above.
+" Insert and edit a line above.
 inoremap <c-space> <c-o>O
 " Turn off search highlighting.
 if has('nvim') || has('patch-8.2.1978')
