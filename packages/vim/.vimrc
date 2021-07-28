@@ -198,7 +198,7 @@ augroup END
 " Turn off highlight.
 noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
 " Change working directory to directory of current file.
-noremap <silent> <leader>cd :cd %:h<bar>:pwd<cr>
+noremap <silent> <leader>. :cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
 " Open current buffer in new tab.
