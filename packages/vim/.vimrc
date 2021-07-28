@@ -107,17 +107,17 @@ endfunction
 " * Settings
 " *********************************************************
 
-let mapleader='\'       " set <leader>
-set number              " show line numbers
-set relativenumber      " show relative line numbers
-set expandtab           " convert tabs to spaces
-set autoindent          " indent newlines using prededing line indent
-set tabstop=2           " 2 spaces for tab (and expandtab)
-set shiftwidth=2        " 2 spaces for shifting indentation
-set formatoptions-=t    " don't autowrap text
-set formatoptions-=c    " don't autowrap comments
-set formatoptions+=j    " remove comment leader when joining lines
-" Ignore case when pattern is only lowercase. Disable with \C.
+let mapleader="\<space>" " set <leader>
+set number               " show line numbers
+set relativenumber       " show relative line numbers
+set expandtab            " convert tabs to spaces
+set autoindent           " indent newlines using prededing line indent
+set tabstop=2            " 2 spaces for tab (and expandtab)
+set shiftwidth=2         " 2 spaces for shifting indentation
+set formatoptions-=t     " don't autowrap text
+set formatoptions-=c     " don't autowrap comments
+set formatoptions+=j     " remove comment leader when joining lines
+" Ignore case when patte rn is only lowercase. Disable with \C.
 set ignorecase
 set smartcase
 " Highlight search (turn off with :noh[lsearch]
