@@ -176,6 +176,8 @@ augroup autocommands
   autocmd!
   " Always enter insert mode when entering a terminal window.
   autocmd WinEnter * call s:InsertModeIfTerminal()
+  " Turn off search highlighting when the cursor moves.
+  autocmd CursorMoved * if v:hlsearch | call feedkeys("\<Plug>(NoHls)") | endif
 augroup END
 
 " *********************************************************
@@ -244,6 +246,8 @@ noremap <silent> <leader>t :Terminal<cr>
 inoremap <silent> <m-k> <c-o>D
 " Insert and editing a line above.
 inoremap <c-space> <c-o>O
+" Turn off search highlighting.
+noremap <expr> <Plug>(NoHls) execute('nohlsearch')
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
