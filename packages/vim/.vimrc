@@ -115,7 +115,7 @@ function! s:ToggleLocList() abort
   if getloclist(winnr(), {'winid': 0}).winid
     lclose
   else
-    lopen
+    silent! lopen
   endif
 endfunction
 
