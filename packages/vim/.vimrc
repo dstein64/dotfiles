@@ -258,10 +258,10 @@ inoremap <c-space> <c-o>O
 if has('nvim') || has('patch-8.2.1978')
   " This approach, with no <expr> mapping, is compatible with nvim-scrollview.
   noremap <Plug>(NoHls) <cmd>nohlsearch<cr>
-  inoremap <Plug>(NoHls) <cmd>nohlsearch<cr>
+  noremap! <Plug>(NoHls) <cmd>nohlsearch<cr>
 else
   noremap <Plug>(NoHls) :<c-u>nohlsearch<cr>
-  inoremap <expr> <Plug>(NoHls) execute('nohlsearch')
+  noremap! <expr> <Plug>(NoHls) execute('nohlsearch')
 endif
 " Mappings for copy, cut, and paste.
 vnoremap <c-c> "+y
