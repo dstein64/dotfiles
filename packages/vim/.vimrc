@@ -103,6 +103,22 @@ function! s:EditSiblingFile(offset) abort
   execute 'edit ' . fnamemodify(l:files[l:idx], ':.')
 endfunction
 
+function! s:ToggleQuickfix() abort
+  if getqflist({'winid': 0}).winid
+    cclose
+  else
+    copen
+  endif
+endfunction
+
+function! s:ToggleLocList() abort
+  if getloclist(winnr(), {'winid': 0}).winid
+    lclose
+  else
+    lopen
+  endif
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -269,10 +285,10 @@ vnoremap <c-x> "+d
 inoremap <c-v> <c-r>+
 " Use jk to exit insert mode.
 inoremap jk <esc>
-" Open/close quickfix window.
-noremap <leader>c :<c-u>cwindow<cr>
+" Toggle quickfix window.
+noremap <leader>c :<c-u>call <SID>ToggleQuickfix()<cr>
 " Open/close location list window.
-noremap <leader>l :<c-u>lwindow<cr>
+noremap <leader>l :<c-u>call <SID>ToggleLocList()<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
