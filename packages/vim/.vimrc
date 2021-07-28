@@ -177,7 +177,12 @@ augroup autocommands
   " Always enter insert mode when entering a terminal window.
   autocmd WinEnter * call s:InsertModeIfTerminal()
   " Turn off search highlighting when the cursor moves.
-  autocmd CursorMoved * if v:hlsearch | call feedkeys("\<Plug>(NoHls)") | endif
+  autocmd CursorMoved *
+        \   if v:hlsearch
+        \       && col('.') - 1 !=# match(getline('.'), @/, col('.') - 1)
+        \ |   call feedkeys("\<Plug>(NoHls)")
+        \ | endif
+  autocmd InsertEnter * call feedkeys("\<Plug>(NoHls)")
 augroup END
 
 " *********************************************************
@@ -247,7 +252,8 @@ inoremap <silent> <m-k> <c-o>D
 " Insert and editing a line above.
 inoremap <c-space> <c-o>O
 " Turn off search highlighting.
-noremap <expr> <Plug>(NoHls) execute('nohlsearch')
+noremap <Plug>(NoHls) <cmd>nohlsearch<cr>
+inoremap <Plug>(NoHls) <cmd>nohlsearch<cr>
 " Use jk to exit insert/visual/command-line modes.
 inoremap jk <esc>
 vnoremap jk <esc>
