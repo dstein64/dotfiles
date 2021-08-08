@@ -399,6 +399,31 @@ noremenu <silent> &Tools.Next\ File<tab>]f
 noremenu <silent> &Tools.Previous\ File<tab>[f
       \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
 
+let s:options = [
+      \   ['c', 'cursorline'],
+      \   ['d', 'diff'],
+      \   ['e', 'expandtab'],
+      \   ['h', 'hlsearch'],
+      \   ['i', 'ignorecase'],
+      \   ['l', 'list'],
+      \   ['n', 'number'],
+      \   ['p', 'paste'],
+      \   ['r', 'relativenumber'],
+      \   ['s', 'spell'],
+      \   ['u', 'cursorcolumn'],
+      \   ['v', 'virtualedit'],
+      \   ['w', 'wrap'],
+      \   ['x', 'cursorline/cursorcolumn'],
+      \ ]
+for [s:key, s:option] in s:options
+  execute 'noremenu <silent> &Options.Turn\ &On.' . s:option
+        \ . '<tab>[o' . s:key . ' :normal [o' . s:key . '<cr>'
+  execute 'noremenu <silent> &Options.Turn\ O&ff.' . s:option
+        \ . '<tab>]o' . s:key . ' :normal ]o' . s:key . '<cr>'
+  execute 'noremenu <silent> &Options.&Toggle.' . s:option
+        \ . '<tab>yo' . s:key . ' :normal yo' . s:key . '<cr>'
+endfor
+
 " *********************************************************
 " * Plugins
 " *********************************************************
