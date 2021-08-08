@@ -377,7 +377,6 @@ nnoremap <silent> <expr> yov ':<c-u>set virtualedit='
 call s:CreateToggleMaps('w', 'wrap')
 nnoremap <silent> [ox :<c-u>set cursorline cursorcolumn<cr>
 nnoremap <silent> ]ox :<c-u>set nocursorline nocursorcolumn<cr>
-nnoremap <silent> yox :<c-u>set cursorline! cursorcolumn!<cr>
 nnoremap <silent> <expr> yox &cursorline \|\| &cursorcolumn
       \ ? ':<c-u>set nocursorline nocursorcolumn<cr>'
       \ : ':<c-u>set cursorline cursorcolumn<cr>'
