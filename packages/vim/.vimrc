@@ -119,6 +119,12 @@ function! s:ToggleLocList() abort
   endif
 endfunction
 
+function! s:CreateToggleMaps(char, option) abort
+  execute 'nnoremap <silent> [o' . a:char . ' :<c-u>set ' . a:option . '<cr>'
+  execute 'nnoremap <silent> ]o' . a:char . ' :<c-u>set no' . a:option . '<cr>'
+  execute 'nnoremap <silent> yo' . a:char . ' :<c-u>set ' . a:option . '!<cr>'
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -343,6 +349,38 @@ noremap <silent> [f :<c-u>call <SID>EditSiblingFile(-v:count1)<cr>
 noremap <silent> ]f :<c-u>call <SID>EditSiblingFile(v:count1)<cr>
 noremap <silent> [F :<c-u>call <SID>EditSiblingFile('^')<cr>
 noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
+
+" === Option toggling ===
+" (inspired by vim-unimpaired)
+nnoremap <silent> [ob :<c-u>set background=light<cr>
+nnoremap <silent> ]ob :<c-u>set background=dark<cr>
+nnoremap <silent> <expr> yob ':<c-u>set background='
+      \ . (&background ==# 'dark' ? 'light' : 'dark') . '<cr>'
+call s:CreateToggleMaps('c', 'cursorline')
+nnoremap <silent> [od :<c-u>diffthis<cr>
+nnoremap <silent> ]od :<c-u>diffoff<cr>
+nnoremap <silent> <expr> yod
+      \ ':<c-u>' . (&diff ? 'diffoff' : 'diffthis') . '<cr>'
+call s:CreateToggleMaps('e', 'expandtab')
+call s:CreateToggleMaps('h', 'hlsearch')
+call s:CreateToggleMaps('i', 'ignorecase')
+call s:CreateToggleMaps('l', 'list')
+call s:CreateToggleMaps('n', 'number')
+call s:CreateToggleMaps('p', 'paste')
+call s:CreateToggleMaps('r', 'relativenumber')
+call s:CreateToggleMaps('s', 'spell')
+call s:CreateToggleMaps('u', 'cursorcolumn')
+nnoremap <silent> [ov :<c-u>set virtualedit=all<cr>
+nnoremap <silent> ]ov :<c-u>set virtualedit=<cr>
+nnoremap <silent> <expr> yov ':<c-u>set virtualedit='
+      \ . (empty(&virtualedit) ? 'all' : '') . '<cr>'
+call s:CreateToggleMaps('w', 'wrap')
+nnoremap <silent> [ox :<c-u>set cursorline cursorcolumn<cr>
+nnoremap <silent> ]ox :<c-u>set nocursorline nocursorcolumn<cr>
+nnoremap <silent> yox :<c-u>set cursorline! cursorcolumn!<cr>
+nnoremap <silent> <expr> yox &cursorline \|\| &cursorcolumn
+      \ ? ':<c-u>set nocursorline nocursorcolumn<cr>'
+      \ : ':<c-u>set cursorline cursorcolumn<cr>'
 
 " *********************************************************
 " * Menus
