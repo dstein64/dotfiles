@@ -522,6 +522,8 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.definition()<cr>
   noremenu <silent> &LSP.&Jump.Type\ Definition<tab>1gD
         \ <cmd>lua vim.lsp.buf.type_definition()<cr>
+  noremenu <silent> &LSP.&Jump.Switch\ Source/Header<tab>:ClangdSwitchSourceHeader
+        \ <cmd>ClangdSwitchSourceHeader<cr>
 
   " Other
   noremenu <silent> &LSP.&Format\ Document<tab>:LspFormatDocument
