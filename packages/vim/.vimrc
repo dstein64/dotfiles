@@ -217,6 +217,7 @@ augroup END
 " WARN: The usage of <m-...> mappings may not function properly outside of
 " Neovim.
 
+" === Leader mappings ===
 " Turn off highlight.
 noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
 " Change working directory to directory of current file.
@@ -229,6 +230,13 @@ noremap <silent> <leader>b :tab split<cr>
 noremap <silent> <leader>n :tabnew<cr>
 " Source the current file.
 noremap <leader>s :source %<cr>
+" Open a terminal.
+noremap <silent> <leader>t :Terminal<cr>
+" Toggle quickfix window.
+noremap <silent> <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
+" Open/close location list window.
+noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
+
 " Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
 inoremap <expr> <tab> pumvisible() ? "\<c-e>\<c-n>" : "\<tab>"
@@ -270,8 +278,6 @@ cnoremap <m-l>
 " unfreeze.
 noremap <c-s> :<c-u>write<cr>
 inoremap <c-s> <c-o>:write<cr>
-" Open a terminal.
-noremap <silent> <leader>t :Terminal<cr>
 " Enable alt+k to delete the text until the end of line in insert mode.
 inoremap <silent> <m-k> <c-o>D
 " Insert and edit a line above.
@@ -290,10 +296,6 @@ vnoremap <c-c> "+y
 vnoremap <c-x> "+d
 " Use jk to exit insert mode.
 inoremap jk <esc>
-" Toggle quickfix window.
-noremap <silent> <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
-" Open/close location list window.
-noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
