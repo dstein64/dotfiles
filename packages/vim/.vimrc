@@ -125,6 +125,23 @@ function! s:CreateToggleMaps(char, option) abort
   execute 'nnoremap <silent> yo' . a:char . ' :<c-u>set ' . a:option . '!<cr>'
 endfunction
 
+" Deletes the current buffer, without changing window layout.
+function! s:Bdelete(force) abort
+  let l:bufnr = bufnr()
+  if !a:force && getbufinfo(l:bufnr)[0].changed
+    return
+  endif
+  bnext
+  if bufnr() ==# l:bufnr
+    enew
+  endif
+  let l:bufnr2 = bufnr()
+  for l:win in win_findbuf(l:bufnr)
+    call win_execute(l:win, l:bufnr2 . 'buffer!')
+  endfor
+  execute l:bufnr . 'bdelete!'
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -236,6 +253,10 @@ noremap <silent> <leader>t :Terminal<cr>
 noremap <silent> <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
 " Open/close location list window.
 noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
+" Delete current buffer if there are no changes.
+noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
+" Delete current buffer even if there are changes.
+noremap <silent> <leader>X :<c-u>call <SID>Bdelete(1)<cr>
 
 " Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
