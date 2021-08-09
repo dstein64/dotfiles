@@ -296,6 +296,8 @@ vnoremap <c-c> "+y
 vnoremap <c-x> "+d
 " Use jk to exit insert mode.
 inoremap jk <esc>
+" Map <c-space> to omnifunc completion.
+inoremap <c-space> <c-x><c-o>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
