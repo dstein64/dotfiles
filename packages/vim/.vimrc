@@ -301,8 +301,11 @@ noremap <c-s> :<c-u>write<cr>
 inoremap <c-s> <c-o>:write<cr>
 " Enable alt+k to delete the text until the end of line in insert mode.
 inoremap <silent> <m-k> <c-o>D
-" Insert and edit a line above.
-inoremap <c-\> <c-o>O
+" Insert and edit a line above (can use 7 or / in place of _, confirmed with
+" ctrl-v).
+inoremap <c-_> <c-o>O
+" Also create an alt-mapping for inserting and editing a line above.
+inoremap <m-cr> <c-o>O
 " Turn off search highlighting.
 if has('nvim') || has('patch-8.2.1978')
   " This approach, with no <expr> mapping, is compatible with nvim-scrollview.
