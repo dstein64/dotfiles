@@ -324,6 +324,8 @@ vnoremap <c-x> "+d
 inoremap jk <esc>
 " Map <c-space> to omnifunc completion.
 inoremap <c-space> <c-x><c-o>
+" On Vim, <c-space> inserts <c-@> (<NUL>), confirmed with ctrl-v.
+inoremap <c-@> <c-x><c-o>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
