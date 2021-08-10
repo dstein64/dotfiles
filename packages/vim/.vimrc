@@ -508,6 +508,8 @@ function _G.lsp_sync_omnifunc(findstart, base)
           val['result'], base)
         vim.list_extend(result, items)
       end
+    else
+      error('Completion error (possibly timed out)')
     end
   end
   return result
