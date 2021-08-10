@@ -198,6 +198,8 @@ if !has('nvim')
   call mkdir(expand(s:directory), 'p')
   execute 'set directory^=' . s:directory
 endif
+" Temporarily highlight search matches (custom setting).
+let g:tmphls = 1
 
 " *********************************************************
 " * Commands
@@ -216,9 +218,9 @@ augroup autocommands
   autocmd!
   " Always enter insert mode when entering a terminal window.
   autocmd WinEnter * call s:InsertModeIfTerminal()
-  " Turn off search highlighting when the cursor moves.
+  " Turn off search highlighting when the cursor moves (tmphls).
   autocmd CursorMoved *
-        \   if v:hlsearch
+        \   if v:hlsearch && get(g:, 'tmphls', 1)
         \       && col('.') - 1 !=# match(getline('.'), @/, col('.') - 1)
         \ |   call feedkeys("\<Plug>(NoHls)")
         \ | endif
@@ -397,6 +399,9 @@ call s:CreateToggleMaps('n', 'number')
 call s:CreateToggleMaps('p', 'paste')
 call s:CreateToggleMaps('r', 'relativenumber')
 call s:CreateToggleMaps('s', 'spell')
+nnoremap <silent> [ot :<c-u>let g:tmphls = 1<cr>
+nnoremap <silent> ]ot :<c-u>let g:tmphls = 0<cr>
+nnoremap <silent> yot :<c-u>let g:tmphls = !get(g:, 'tmphls', 1)<cr>
 call s:CreateToggleMaps('u', 'cursorcolumn')
 nnoremap <silent> [ov :<c-u>set virtualedit=all<cr>
 nnoremap <silent> ]ov :<c-u>set virtualedit=<cr>
@@ -438,6 +443,7 @@ let s:options = [
       \   ['p', 'paste'],
       \   ['r', 'relativenumber'],
       \   ['s', 'spell'],
+      \   ['t', 'g:tmphls'],
       \   ['u', 'cursorcolumn'],
       \   ['v', 'virtualedit'],
       \   ['w', 'wrap'],
