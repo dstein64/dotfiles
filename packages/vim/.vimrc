@@ -475,6 +475,42 @@ noremap <silent> <c-n> :<c-u>NERDTreeToggle<cr>
 " * LSP
 " *********************************************************
 
+" Define a custom synchronous omnifunc, instead of using the asynchronous
+" built-in, v:lua.lsp.omnifunc. This version supports completeopt=longest,
+" unlike the built-in (Neovim Issue #15314).
+if has('nvim-0.5')
+lua << EOF
+function _G.lsp_sync_omnifunc(findstart, base)
+  local bufnr = vim.fn.bufnr()
+  if findstart == 1 then
+    local pos = vim.api.nvim_win_get_cursor(0)
+    local line = vim.api.nvim_get_current_line()
+    local line_to_cursor = line:sub(1, pos[2])
+    local match = vim.fn.match(line_to_cursor, '\\k*$')
+    return match
+  end
+  local result = {}
+  local has_clients = not vim.tbl_isempty(vim.lsp.buf_get_clients(bufnr))
+  if has_clients then
+    local lsp = require('vim.lsp')
+    local util = require('vim.lsp.util')
+    local params = util.make_position_params()
+    local timeout = 1000
+    local completions = lsp.buf_request_sync(
+      bufnr, 'textDocument/completion', params, timeout)
+    if completions ~= nil then
+      for _, val in pairs(completions) do
+        items = util.text_document_completion_list_to_complete_items(
+          val['result'], base)
+        vim.list_extend(result, items)
+      end
+    end
+  end
+  return result
+end
+EOF
+endif
+
 " A function for 'formatexpr' that uses the LSP's range formatting.
 function! LspFormatExpr()
   if mode() !=# 'n' | return 1 | endif
@@ -508,7 +544,7 @@ function! s:LspConfigBuffer() abort
   command! -bar -buffer LspListDiagnostics :lua vim.lsp.diagnostic.set_loclist()
 
   " Options
-  setlocal omnifunc=v:lua.vim.lsp.omnifunc
+  setlocal omnifunc=v:lua.lsp_sync_omnifunc
   setlocal signcolumn=yes
   setlocal formatexpr=LspFormatExpr()
 endfunction
