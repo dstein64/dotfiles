@@ -268,8 +268,8 @@ cnoremap <expr> <c-k> wildmenumode() ? "\<up>" : "\<c-k>"
 cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
 " Move to first non-blank character of the line, in insert mode (override).
 inoremap <silent> <c-a> <c-o>^
-" Move to the end of line in insert mode (override).
-inoremap <silent> <c-e> <end>
+" Move to the end of line in (non-complete) insert mode (override).
+inoremap <silent> <expr> <c-e> pumvisible() ? "\<c-e>" : "\<end>"
 " Move to the beginning of the command-line (override).
 cnoremap <c-a> <home>
 " Enable hjkl movements for insert mode.
