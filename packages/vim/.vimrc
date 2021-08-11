@@ -326,9 +326,9 @@ inoremap <c-@> <c-x><c-o>
 " Make Y work similarly to C and D.
 noremap Y y$
 " Delete the word after the cursor in insert mode (reverse of ctrl-w).
-inoremap <c-b> <c-o>dw
+inoremap <c-b> <c-o>de
 " Delete the WORD after the cursor in insert mode.
-inoremap <m-b> <c-o>dW
+inoremap <m-b> <c-o>dE
 " Delete the WORD before the cursor in insert mode.
 inoremap <m-w> <c-o>dvB
 
