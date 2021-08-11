@@ -173,9 +173,6 @@ set nojoinspaces
 set completeopt=longest,menu
 " Only insert longest common text of matches for command-line completion.
 set wildmode=longest:full,full
-" Set a binding to toggle paste mode (for literal pastes). Don't use <leader>,
-" to avoid '<20>' showcmd messages on Vim in insert mode.
-set pastetoggle=<F10>
 set keywordprg=:Man
 " Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
 " warning before closing the window. There's no warning for :qall!.
