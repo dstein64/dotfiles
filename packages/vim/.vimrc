@@ -328,7 +328,7 @@ noremap Y y$
 " Delete the word after the cursor in insert mode (reverse of ctrl-w).
 inoremap <expr> <c-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>ce"
 " delete the word after the cursor in insert mode.
-inoremap <expr> <m-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>ce"
+inoremap <expr> <m-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>cE"
 " delete the word before the cursor in insert mode.
 inoremap <expr> <m-w> col('.') ==# 1 ? "\<bs>" : "\<space>\<esc>cvb"
 
