@@ -505,6 +505,12 @@ function _G.lsp_sync_omnifunc(findstart, base)
       items = vim.lsp.util.text_document_completion_list_to_complete_items(
         val['result'], base)
       for _, item in ipairs(items) do
+        -- The language server may return completions that don't start with
+        -- base, but rather include base somewhere in the suggestion (e.g.,
+        -- "_stdio" could be a suggestion for "stdio" base). When this happens,
+        -- the longest matching substring across suggestions could be the empty
+        -- string, so using completeopt=longest would result in the base
+        -- deleted. To avoid this, only return suggestions starting with base.
         if vim.startswith(item.word, token) then
           table.insert(result, item)
         end
