@@ -498,15 +498,13 @@ function _G.lsp_sync_omnifunc(findstart, base)
   local line_to_cursor = line:sub(1, pos[2])
   local match = vim.fn.match(line_to_cursor, '\\k*$')
   local token = line:sub(match + 1)
-  local lsp = require('vim.lsp')
-  local util = require('vim.lsp.util')
-  local params = util.make_position_params()
+  local params = vim.lsp.util.make_position_params()
   local timeout = 1000
-  local completions = lsp.buf_request_sync(
+  local completions = vim.lsp.buf_request_sync(
     bufnr, 'textDocument/completion', params, timeout)
   if completions ~= nil then
     for _, val in pairs(completions) do
-      items = util.text_document_completion_list_to_complete_items(
+      items = vim.lsp.util.text_document_completion_list_to_complete_items(
         val['result'], base)
       for _, item in ipairs(items) do
         if vim.startswith(item.word, token) then
