@@ -483,35 +483,39 @@ noremap <silent> <c-n> :<c-u>NERDTreeToggle<cr>
 " unlike the built-in (Neovim Issue #15314).
 if has('nvim-0.5')
 lua << EOF
+local result = {}
 function _G.lsp_sync_omnifunc(findstart, base)
+  if findstart == 0 then return result end
+  -- Get LSP completions on first call to the omnifunc (when findstart == 1),
+  -- instead of on the second call (when findstart == 0), since the buffer is
+  -- modified prior to the second call.
   local bufnr = vim.fn.bufnr()
-  if findstart == 1 then
-    local pos = vim.api.nvim_win_get_cursor(0)
-    local line = vim.api.nvim_get_current_line()
-    local line_to_cursor = line:sub(1, pos[2])
-    local match = vim.fn.match(line_to_cursor, '\\k*$')
-    return match
-  end
-  local result = {}
+  for k, _ in pairs(result) do result[k] = nil end
   local has_clients = not vim.tbl_isempty(vim.lsp.buf_get_clients(bufnr))
-  if has_clients then
-    local lsp = require('vim.lsp')
-    local util = require('vim.lsp.util')
-    local params = util.make_position_params()
-    local timeout = 1000
-    local completions = lsp.buf_request_sync(
-      bufnr, 'textDocument/completion', params, timeout)
-    if completions ~= nil then
-      for _, val in pairs(completions) do
-        items = util.text_document_completion_list_to_complete_items(
-          val['result'], base)
-        vim.list_extend(result, items)
+  if not has_clients then return -3 end
+  local pos = vim.api.nvim_win_get_cursor(0)
+  local line = vim.api.nvim_get_current_line()
+  local line_to_cursor = line:sub(1, pos[2])
+  local match = vim.fn.match(line_to_cursor, '\\k*$')
+  local token = line:sub(match + 1)
+  local lsp = require('vim.lsp')
+  local util = require('vim.lsp.util')
+  local params = util.make_position_params()
+  local timeout = 1000
+  local completions = lsp.buf_request_sync(
+    bufnr, 'textDocument/completion', params, timeout)
+  if completions ~= nil then
+    for _, val in pairs(completions) do
+      items = util.text_document_completion_list_to_complete_items(
+        val['result'], base)
+      for _, item in ipairs(items) do
+        if vim.startswith(item.word, token) then
+          table.insert(result, item)
+        end
       end
-    else
-      error('Completion error (possibly timed out)')
     end
   end
-  return result
+  return match
 end
 EOF
 endif
