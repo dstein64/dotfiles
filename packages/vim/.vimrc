@@ -331,6 +331,8 @@ inoremap <expr> <c-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>ce"
 inoremap <expr> <m-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>cE"
 " Delete the WORD before the cursor in insert mode.
 inoremap <expr> <m-w> col('.') ==# 1 ? "\<bs>" : "\<space>\<esc>cvb"
+noremap <m-bs> <del>
+noremap! <m-bs> <del>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
