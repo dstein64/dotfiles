@@ -326,11 +326,11 @@ inoremap <c-@> <c-x><c-o>
 " Make Y work similarly to C and D.
 noremap Y y$
 " Delete the word after the cursor in insert mode (reverse of ctrl-w).
-inoremap <c-b> <space><esc>ce
-" Delete the WORD after the cursor in insert mode.
-inoremap <m-b> <space><esc>cE
-" Delete the WORD before the cursor in insert mode.
-inoremap <m-w> <c-o>dvB
+inoremap <expr> <c-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>ce"
+" delete the word after the cursor in insert mode.
+inoremap <expr> <m-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>ce"
+" delete the word before the cursor in insert mode.
+inoremap <expr> <m-w> col('.') ==# 1 ? "\<bs>" : "\<space>\<esc>cvb"
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
