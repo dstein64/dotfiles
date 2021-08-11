@@ -490,7 +490,7 @@ function _G.lsp_sync_omnifunc(findstart, base)
   -- instead of on the second call (when findstart == 0), since the buffer is
   -- modified prior to the second call.
   local bufnr = vim.fn.bufnr()
-  for k, _ in pairs(result) do result[k] = nil end
+  result = {}
   local has_clients = not vim.tbl_isempty(vim.lsp.buf_get_clients(bufnr))
   if not has_clients then return -3 end
   local pos = vim.api.nvim_win_get_cursor(0)
