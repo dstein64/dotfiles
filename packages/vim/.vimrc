@@ -223,7 +223,8 @@ augroup autocommands
         \ | endif
   " For insert mode, only do so when not in paste mode, since mappings aren't
   " expanded in that mode.
-  autocmd InsertEnter * if !&paste | call feedkeys("\<Plug>(NoHls)") | endif
+  autocmd InsertEnter * if !&paste && v:hlsearch && get(g:, 'tmphls', 1)
+        \ | call feedkeys("\<Plug>(NoHls)") | endif
 augroup END
 
 " *********************************************************
