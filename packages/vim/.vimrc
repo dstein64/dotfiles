@@ -562,6 +562,7 @@ function! s:LspConfigBuffer() abort
         \ <cmd>lua vim.lsp.buf.code_action()<cr>
   nnoremap <buffer> <silent> [d    <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
   nnoremap <buffer> <silent> ]d    <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+  nnoremap <buffer> <silent> gx    <cmd>ClangdSwitchSourceHeader<cr>
 
   " Commands
   command! -bar -buffer LspFormatDocument :lua vim.lsp.buf.formatting()
@@ -618,7 +619,7 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.definition()<cr>
   noremenu <silent> &LSP.&Jump.Type\ Definition<tab>1gD
         \ <cmd>lua vim.lsp.buf.type_definition()<cr>
-  noremenu <silent> &LSP.&Jump.Switch\ Source/Header<tab>:ClangdSwitchSourceHeader
+  noremenu <silent> &LSP.&Jump.Switch\ Source/Header<tab>gx
         \ <cmd>ClangdSwitchSourceHeader<cr>
 
   " Other
