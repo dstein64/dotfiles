@@ -568,6 +568,12 @@ function! s:LspConfigBuffer() abort
   command! -bar -buffer LspFormatDocument :lua vim.lsp.buf.formatting()
   command! -bar -buffer LspRename :lua vim.lsp.buf.rename()
   command! -bar -buffer LspListDiagnostics :lua vim.lsp.diagnostic.set_loclist()
+  command! -bar -buffer LspAddWorkspaceDir
+        \ :lua vim.lsp.buf.add_workspace_folder()
+  command! -bar -buffer LspRemoveWorkspaceDir
+        \ :lua vim.lsp.buf.remove_workspace_folder()
+  command! -bar -buffer LspListWorkspaceDirs
+        \ :lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 
   " Options
   setlocal omnifunc=v:lua.lsp_sync_omnifunc
@@ -621,6 +627,14 @@ function! s:ConfigureLsp() abort
         \ <cmd>lua vim.lsp.buf.type_definition()<cr>
   noremenu <silent> &LSP.&Jump.Switch\ Source/Header<tab>gx
         \ <cmd>ClangdSwitchSourceHeader<cr>
+
+  " Workspace
+  noremenu <silent> &LSP.&Workspace.&Add<tab>:LspAddWorkspaceDir
+        \ <cmd>lua vim.lsp.buf.add_workspace_folder()<cr>
+  noremenu <silent> &LSP.&Workspace.&Remove<tab>:LspRemoveWorkspaceDir
+        \ <cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>
+  noremenu <silent> &LSP.&Workspace.&List<tab>:LspListWorkspaceDirs
+        \ <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>
 
   " Other
   noremenu <silent> &LSP.&Format\ Document<tab>:LspFormatDocument
