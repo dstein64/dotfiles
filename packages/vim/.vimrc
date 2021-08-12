@@ -484,7 +484,9 @@ runtime ftplugin/man.vim
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
-noremap <silent> <c-n> :<c-u>NERDTreeToggle<cr>
+noremap <silent> <c-n><c-n> :<c-u>NERDTreeToggle<cr>
+noremap <silent> <c-n><c-o> :<c-u>NERDTree<cr>
+noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
 
 " *********************************************************
 " * LSP
