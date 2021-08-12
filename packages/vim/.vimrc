@@ -496,7 +496,7 @@ noremap <silent> <c-n> :<c-u>NERDTreeToggle<cr>
 if has('nvim-0.5')
 lua << EOF
 local result = {}
-function _G.lsp_sync_omnifunc(findstart, base)
+function _G.lsp_omnifunc_sync(findstart, base)
   if findstart == 0 then return result end
   -- Get LSP completions on first call to the omnifunc (when findstart == 1),
   -- instead of on the second call (when findstart == 0), since the buffer is
@@ -544,43 +544,6 @@ function! LspFormatExpr()
   return 0
 endfunction
 
-" Configure LSP for the buffer, if there is an LSP client.
-function! s:LspConfigBuffer() abort
-  " Mappings
-  nnoremap <buffer> <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
-  nnoremap <buffer> <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-  nnoremap <buffer> <silent> K     <cmd>lua vim.lsp.buf.hover()<cr>
-  nnoremap <buffer> <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
-  nnoremap <buffer> <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
-  nnoremap <buffer> <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
-  nnoremap <buffer> <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
-  nnoremap <buffer> <silent> gO    <cmd>lua vim.lsp.buf.document_symbol()<cr>
-  nnoremap <buffer> <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
-  nnoremap <buffer> <silent> <leader>d
-        \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
-  nnoremap <buffer> <silent> <leader>f
-        \ <cmd>lua vim.lsp.buf.code_action()<cr>
-  nnoremap <buffer> <silent> [d    <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
-  nnoremap <buffer> <silent> ]d    <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
-  nnoremap <buffer> <silent> gx    <cmd>ClangdSwitchSourceHeader<cr>
-
-  " Commands
-  command! -bar -buffer LspFormatDocument :lua vim.lsp.buf.formatting()
-  command! -bar -buffer LspRename :lua vim.lsp.buf.rename()
-  command! -bar -buffer LspListDiagnostics :lua vim.lsp.diagnostic.set_loclist()
-  command! -bar -buffer LspAddWorkspaceDir
-        \ :lua vim.lsp.buf.add_workspace_folder()
-  command! -bar -buffer LspRemoveWorkspaceDir
-        \ :lua vim.lsp.buf.remove_workspace_folder()
-  command! -bar -buffer LspListWorkspaceDirs
-        \ :lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-
-  " Options
-  setlocal omnifunc=v:lua.lsp_sync_omnifunc
-  setlocal signcolumn=yes
-  setlocal formatexpr=LspFormatExpr()
-endfunction
-
 " nvim-lspconfig is from: https://github.com/neovim/nvim-lspconfig
 " Installation paths:
 "   Unix: ~/.local/share/nvim/site/pack/plugins/opt/nvim-lspconfig
@@ -589,19 +552,67 @@ function! s:ConfigureLsp() abort
   if !has('nvim-0.5') | return | endif
   silent! packadd nvim-lspconfig
   if !get(g:, 'lspconfig', 0) | return | endif
-  " Disable virtual text diagnostics
-  lua vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        \   vim.lsp.diagnostic.on_publish_diagnostics, {
-        \     virtual_text = false,
-        \   }
-        \ )
-  if executable('clangd')
-    lua require('lspconfig').clangd.setup{}
-    augroup lsp_clangd
-      autocmd!
-      autocmd FileType c,cpp,objc,objcpp call s:LspConfigBuffer()
-    augroup END
-  endif
+lua << EOF
+  -- Disable virtual text diagnostics
+  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = false
+    }
+  )
+  local on_attach = function(client, bufnr)
+    local set_keymap = function(mode, lhs, rhs)
+      local opts = { noremap=true, silent=true }
+      vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    end
+    local function set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+    -- Mappings
+    set_keymap('n', 'gd',    '<cmd>lua vim.lsp.buf.declaration()<cr>')
+    set_keymap('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    set_keymap('n', 'K',     '<cmd>lua vim.lsp.buf.hover()<cr>')
+    set_keymap('n', 'gD',    '<cmd>lua vim.lsp.buf.implementation()<cr>')
+    set_keymap('n', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+    set_keymap('n', '1gD',   '<cmd>lua vim.lsp.buf.type_definition()<cr>')
+    set_keymap('n', 'gr',    '<cmd>lua vim.lsp.buf.references()<cr>')
+    set_keymap('n', 'gO',    '<cmd>lua vim.lsp.buf.document_symbol()<cr>')
+    set_keymap('n', 'gW',    '<cmd>lua vim.lsp.buf.workspace_symbol()<cr>')
+    set_keymap('n', '<leader>d',
+      '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>')
+    set_keymap('n', '<leader>f',
+      '<cmd>lua vim.lsp.buf.code_action()<cr>')
+    set_keymap('n', '[d',    '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>')
+    set_keymap('n', ']d',    '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>')
+    set_keymap('n', 'gx',    '<cmd>ClangdSwitchSourceHeader<cr>')
+    -- Commands
+    local commands = {
+      LspFormatDocument = ':lua vim.lsp.buf.formatting()',
+      LspRename = ':lua vim.lsp.buf.rename()',
+      LspListDiagnostics = ':lua vim.lsp.diagnostic.set_loclist()',
+      LspAddWorkspaceDir = ':lua vim.lsp.buf.add_workspace_folder()',
+      LspRemoveWorkspaceDir = ':lua vim.lsp.buf.remove_workspace_folder()',
+      LspListWorkspaceDirs =
+        ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))'
+    }
+    for lhs, rhs in pairs(commands) do
+      vim.cmd('command! -bar -buffer ' .. lhs .. ' ' .. rhs)
+    end
+    -- Options
+    set_option('omnifunc', 'v:lua.lsp_omnifunc_sync')
+    if vim.fn.bufnr() == bufnr then
+      vim.cmd('setlocal signcolumn=yes')
+    end
+    set_option('formatexpr', 'LspFormatExpr()')
+  end
+  local servers = {}
+  if vim.fn.executable('clangd') then table.insert(servers, 'clangd') end
+  if vim.fn.executable('pyright-langserver') then
+    table.insert(servers, 'pyright')
+  end
+  for _, server in ipairs(servers) do
+    require('lspconfig')[server].setup {
+      on_attach = on_attach
+    }
+  end
+EOF
 
   " Add LSP menu items. The right-aligned text for some entries corresponds to
   " the mappings and commands defined in s:LspConfigBuffer.
