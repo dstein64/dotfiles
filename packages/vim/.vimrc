@@ -273,7 +273,7 @@ inoremap <silent> <expr> <c-e> pumvisible() ? "\<c-e>" : "\<end>"
 " Scroll down completion menu.
 inoremap <expr> <c-d> pumvisible() ? "\<pagedown>" : "\<c-d>"
 " Scroll up completion menu.
-inoremap <expr> <c-u> pumvisible() ? "\<pageup>" : "\<c-d>"
+inoremap <expr> <c-u> pumvisible() ? "\<pageup>" : "\<c-u>"
 " Move to the beginning of the command-line (override).
 cnoremap <c-a> <home>
 " Enable hjkl movements for insert mode.
