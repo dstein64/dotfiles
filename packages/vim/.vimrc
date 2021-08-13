@@ -270,6 +270,10 @@ cnoremap <expr> <c-j> wildmenumode() ? feedkeys("\<down>", 't')[-1] : "\<c-j>"
 inoremap <silent> <c-a> <c-o>^
 " Move to the end of line in (non-complete) insert mode (override).
 inoremap <silent> <expr> <c-e> pumvisible() ? "\<c-e>" : "\<end>"
+" Scroll down completion menu.
+inoremap <expr> <c-d> pumvisible() ? "\<pagedown>" : "\<c-d>"
+" Scroll up completion menu.
+inoremap <expr> <c-u> pumvisible() ? "\<pageup>" : "\<c-d>"
 " Move to the beginning of the command-line (override).
 cnoremap <c-a> <home>
 " Enable hjkl movements for insert mode.
