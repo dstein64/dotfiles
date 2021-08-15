@@ -489,7 +489,7 @@ runtime ftplugin/man.vim
 " by $VIMRUNTIME/autoload/netrw.vim.
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 noremap <silent> <c-n><c-n> :<c-u>NERDTreeToggle<cr>
-noremap <silent> <c-n><c-o> :<c-u>NERDTree<cr>
+noremap <silent> <c-n><c-o> :<c-u>NERDTreeFocus<cr>
 noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
 
 " *********************************************************
