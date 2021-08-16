@@ -272,6 +272,8 @@ noremap <silent> <leader>X :<c-u>call <SID>Bdelete(1)<cr>
 noremap <silent> <leader>y "+y
 noremap <silent> <leader>p "+p
 noremap <silent> <leader>P "+P
+" Edit the alternate file.
+noremap <silent> <leader>a <c-^>
 
 " Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
