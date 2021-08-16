@@ -327,6 +327,8 @@ inoremap jk <esc>
 inoremap <c-space> <c-x><c-o>
 " On Vim, <c-space> inserts <c-@> (<NUL>), confirmed with ctrl-v.
 inoremap <c-@> <c-x><c-o>
+" Start LSP
+noremap <c-space> <cmd>LspStart<cr>
 " Make Y work similarly to C and D.
 noremap Y y$
 " Delete the word after the cursor in insert mode (reverse of ctrl-w).
@@ -615,7 +617,8 @@ lua << EOF
   end
   for _, server in ipairs(servers) do
     require('lspconfig')[server].setup {
-      on_attach = on_attach
+      on_attach = on_attach,
+      autostart = false
     }
   end
 EOF
