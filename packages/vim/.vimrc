@@ -268,6 +268,10 @@ noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
 noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
 noremap <silent> <leader>X :<c-u>call <SID>Bdelete(1)<cr>
+" System clipboard mappings
+noremap <silent> <leader>y "+y
+noremap <silent> <leader>p "+p
+noremap <silent> <leader>P "+P
 
 " Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
@@ -329,9 +333,6 @@ else
   noremap <Plug>(NoHls) :<c-u>nohlsearch<cr>
   noremap! <expr> <Plug>(NoHls) execute('nohlsearch')
 endif
-" Mappings for copy and cut.
-vnoremap <c-c> "+y
-vnoremap <c-x> "+d
 " Use jk to exit insert mode.
 inoremap jk <esc>
 " Map <c-space> to omnifunc completion.
