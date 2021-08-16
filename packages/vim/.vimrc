@@ -225,6 +225,17 @@ augroup autocommands
   " expanded in that mode.
   autocmd InsertEnter * if !&paste && v:hlsearch && get(g:, 'tmphls', 1)
         \ | call feedkeys("\<Plug>(NoHls)") | endif
+
+  " === FileType ===
+  " FileType autocommands are used in preference to ftplugin/ and
+  " after/ftplugin, to 1) keep settings contained to .vimrc and avoid
+  " redundancy (a single autocmd can cover multiple filetypes).
+
+  autocmd FileType man,help set number relativenumber
+  " Don't highlight current line (quickfix has its own highlighting).
+  autocmd FileType qf set nocursorline
+  " Break on words for soft wrapping.
+  autocmd FileType text set linebreak
 augroup END
 
 " *********************************************************
