@@ -341,7 +341,7 @@ inoremap jk <esc>
 inoremap <c-space> <c-x><c-o>
 " On Vim, <c-space> inserts <c-@> (<NUL>), confirmed with ctrl-v.
 inoremap <c-@> <c-x><c-o>
-" Start LSP
+" Start LSP.
 noremap <c-space> <cmd>LspStart<cr>
 " Make Y work similarly to C and D.
 noremap Y y$
@@ -353,6 +353,11 @@ inoremap <expr> <m-b> col('.') ==# col('$') ? "\<del>" : "\<space>\<esc>cE"
 inoremap <expr> <m-w> col('.') ==# 1 ? "\<bs>" : "\<space>\<esc>cvb"
 noremap <m-bs> <del>
 noremap! <m-bs> <del>
+" Inner line motions
+noremap il :<c-u>normal! ^vg_<cr>
+nunmap il
+" Line motions (visual mode not defined; just use V)
+onoremap al :<c-u>normal! V<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
