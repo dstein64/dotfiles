@@ -354,10 +354,10 @@ inoremap <expr> <m-w> col('.') ==# 1 ? "\<bs>" : "\<space>\<esc>cvb"
 noremap <m-bs> <del>
 noremap! <m-bs> <del>
 " Inner line motions
-noremap il :<c-u>normal! ^vg_<cr>
+noremap <silent> il :<c-u>normal! ^vg_<cr>
 nunmap il
 " Line motions (visual mode not defined; just use V)
-onoremap al :<c-u>normal! V<cr>
+onoremap <silent> al :<c-u>normal! V<cr>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
