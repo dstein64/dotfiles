@@ -575,7 +575,8 @@ end
 EOF
 endif
 
-" Returns a string indicating attached LSP clients (e.g., '[*clang]').
+" Returns a string indicating attached LSP clients (e.g., '[*clang]'),
+" intended to be used as part of 'statusline'.
 function! LspStl() abort
   let l:result = ''
   if has('nvim-0.5')
