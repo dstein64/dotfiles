@@ -198,7 +198,7 @@ endif
 " Temporarily highlight search matches (custom setting).
 let g:tmphls = 1
 " Customize the status line (takes precedence over 'ruler').
-set statusline=%<%f\ %y%m%r%{LspStl()}%=%-14.(%l,%c%V%)\ %P
+set statusline=%<%f%(\ %y%m%r%{LspStl()}%)\ %=%-14.(%l,%c%V%)\ %P
 
 " *********************************************************
 " * Commands
