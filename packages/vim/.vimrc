@@ -512,16 +512,17 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 noremap <silent> <c-n><c-n> :<c-u>NERDTreeToggle<cr>
 noremap <silent> <c-n><c-o> :<c-u>NERDTreeFocus<cr>
 noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
+let g:ctrlp_clear_cache_on_exit = 0
 
 " *********************************************************
 " * LSP
 " *********************************************************
 
-" Define a custom synchronous omnifunc, instead of using the asynchronous
-" built-in, v:lua.lsp.omnifunc. This version supports completeopt=longest,
-" unlike the built-in (Neovim Issue #15314).
 if has('nvim-0.5')
 lua << EOF
+-- Define a custom synchronous omnifunc, instead of using the asynchronous
+-- built-in, v:lua.lsp.omnifunc. This version supports completeopt=longest,
+-- unlike the built-in (Neovim Issue #15314).
 local result = {}
 function _G.lsp_omnifunc_sync(findstart, base)
   if findstart == 0 then return result end
