@@ -197,6 +197,8 @@ if !has('nvim')
 endif
 " Temporarily highlight search matches (custom setting).
 let g:tmphls = 1
+" Customize the status line (takes precedence over 'ruler').
+set statusline=%<%f\ %y%m%r%{LspStl()}%=%-14.(%l,%c%V%)\ %P
 
 " *********************************************************
 " * Commands
@@ -561,8 +563,28 @@ function _G.lsp_omnifunc_sync(findstart, base)
   end
   return match
 end
+
+-- Returns a list of LSP clients attached to the current buffer.
+function _G.lsp_buf_clients()
+  local clients = {}
+  for _, client in pairs(vim.lsp.buf_get_clients()) do
+    table.insert(clients, client.name)
+  end
+  return clients
+end
 EOF
 endif
+
+" Returns a string indicating attached LSP clients (e.g., '[*clang]').
+function! LspStl() abort
+  let l:result = ''
+  if has('nvim-0.5')
+    for l:client in v:lua.lsp_buf_clients()
+      let l:result .= '[*' . l:client . ']'
+    endfor
+  endif
+  return l:result
+endfunction
 
 " A function for 'formatexpr' that uses the LSP's range formatting.
 function! LspFormatExpr()
