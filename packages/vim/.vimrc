@@ -395,6 +395,8 @@ if has('nvim')
   tnoremap <c-w>< <c-\><c-n><c-w><i
   tnoremap <c-w>> <c-\><c-n><c-w>>i
   tnoremap <c-w>\| <c-\><c-n><c-w>\|i
+  " Close the window.
+  tnoremap <c-w>c <c-\><c-n><c-w>c
 endif
 
 " === Paired bracket mappings ===
