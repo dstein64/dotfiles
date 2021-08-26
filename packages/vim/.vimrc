@@ -387,6 +387,14 @@ if has('nvim')
   tnoremap <expr> <c-w>" '<c-\><c-n>"' . nr2char(getchar()) . 'pi'
   " Send <ctrl-w> to the job in the terminal.
   tnoremap <c-w>. <c-w>
+  " Resize the window.
+  tnoremap <c-w>= <c-\><c-n><c-w>=i
+  tnoremap <c-w>+ <c-\><c-n><c-w>+i
+  tnoremap <c-w>- <c-\><c-n><c-w>-i
+  tnoremap <c-w>_ <c-\><c-n><c-w>_i
+  tnoremap <c-w>< <c-\><c-n><c-w><i
+  tnoremap <c-w>> <c-\><c-n><c-w>>i
+  tnoremap <c-w>\| <c-\><c-n><c-w>\|i
 endif
 
 " === Paired bracket mappings ===
