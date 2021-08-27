@@ -323,7 +323,7 @@ cnoremap <m-l>
 noremap <c-s> :<c-u>write<cr>
 inoremap <c-s> <c-o>:write<cr>
 " Enable alt+k to delete the text until the end of line in insert mode.
-inoremap <silent> <m-k> <c-o>D
+inoremap <expr> <silent> <m-k> col('.') == col('$') ? "\<del>" : "\<c-o>D"
 " Insert and edit a line above.
 inoremap <m-,> <c-o>O
 " Insert and edit a line below.
