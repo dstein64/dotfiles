@@ -367,6 +367,10 @@ onoremap <silent> al :<c-u>normal! V<cr>
 if has('nvim')
   " Move focus to the next window.
   tnoremap <c-w><c-w> <c-\><c-n><c-w><c-w>
+  tnoremap <c-w>w <c-\><c-n><c-w>w
+  " Move focus to the last accessed window.
+  tnoremap <c-w><c-p> <c-\><c-n><c-w><c-p>
+  tnoremap <c-w>p <c-\><c-n><c-w>p
   " Move focus to the specified window.
   tnoremap <c-w>h <c-\><c-n><c-w>h
   tnoremap <c-w>j <c-\><c-n><c-w>j
