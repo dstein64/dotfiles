@@ -266,8 +266,6 @@ noremap <silent> <leader>.. :<c-u>cd ..<bar>:pwd<cr>
 noremap <silent> <leader>a <c-^>
 " Open current buffer in new tab.
 noremap <silent> <leader>b :<c-u>tab split<cr>
-" Close window.
-noremap <silent> <leader>c :<c-u>close<cr>
 " Navigate to previous tab.
 noremap <silent> <leader>h :<c-u>tabprevious<cr>
 " Navigate to next tab.
@@ -276,8 +274,6 @@ noremap <silent> <leader>l :<c-u>tabnext<cr>
 noremap <silent> <leader>L :<c-u>call <SID>ToggleLocList()<cr>
 " Open a new tab.
 noremap <silent> <leader>n :<c-u>tabnew<cr>
-" Make current window the only window.
-noremap <silent> <leader>o :<c-u>only<cr>
 " Put after from system clipboard.
 noremap <silent> <leader>p "+p
 " Put before from system clipboard.
