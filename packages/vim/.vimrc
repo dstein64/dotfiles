@@ -255,7 +255,7 @@ augroup END
 " WARN: The usage of <m-...> mappings may not function properly outside of
 " Neovim.
 
-" === Leader mappings ===
+" === Leader mappings (alphabetical) ===
 " Turn off highlight.
 noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
 " Change working directory to directory of current file.
@@ -276,6 +276,8 @@ noremap <silent> <leader>l :<c-u>tabnext<cr>
 noremap <silent> <leader>L :<c-u>call <SID>ToggleLocList()<cr>
 " Open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
+" Make current window the only window.
+noremap <silent> <leader>o :<c-u>only<cr>
 " Put after from system clipboard.
 noremap <silent> <leader>p "+p
 " Put before from system clipboard.
