@@ -367,6 +367,9 @@ noremap <silent> il :<c-u>normal! ^vg_<cr>
 nunmap il
 " Line motions (visual mode not defined; just use V)
 onoremap <silent> al :<c-u>normal! V<cr>
+" Switch ; and :
+noremap ; :
+noremap : ;
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
