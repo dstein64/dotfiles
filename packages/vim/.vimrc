@@ -262,33 +262,36 @@ noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
 noremap <silent> <leader>. :cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
 noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
+" Edit the alternate file.
+noremap <silent> <leader>a <c-^>
 " Open current buffer in new tab.
 noremap <silent> <leader>b :tab split<cr>
+" Close window.
+noremap <silent> <leader>c :<c-u>close<cr>
+" Navigate to previous tab.
+noremap <silent> <leader>h :<c-u>tabprevious<cr>
+" Navigate to next tab.
+noremap <silent> <leader>l :<c-u>tabnext<cr>
+" Open/close location list window.
+noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
 " Open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
+" Put from system clipboard.
+noremap <silent> <leader>p "+p
+" Put from system clipboard.
+noremap <silent> <leader>P "+P
+" Toggle quickfix window.
+noremap <silent> <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
 noremap <silent> <leader>t :Terminal<cr>
-" Toggle quickfix window.
-noremap <silent> <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
-" Open/close location list window.
-noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
 " Delete current buffer if there are no changes.
 noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
 noremap <silent> <leader>X :<c-u>call <SID>Bdelete(1)<cr>
-" System clipboard mappings
+" Yank from system clipboard.
 noremap <silent> <leader>y "+y
-noremap <silent> <leader>p "+p
-noremap <silent> <leader>P "+P
-" Edit the alternate file.
-noremap <silent> <leader>a <c-^>
-" Tab navigation mappings
-noremap <silent> <leader>h :<c-u>tabprevious<cr>
-noremap <silent> <leader>l :<c-u>tabnext<cr>
-" Close window.
-noremap <silent> <leader>c :<c-u>close<cr>
 " Quit without checking for changes.
 noremap <silent> <leader>z :<c-u>quit!<cr>
 
