@@ -282,6 +282,8 @@ noremap <silent> <leader>o :<c-u>only<cr>
 noremap <silent> <leader>p "+p
 " Put before from system clipboard.
 noremap <silent> <leader>P "+P
+" Quit without checking for changes (like ZQ).
+noremap <silent> <leader>q :<c-u>quit!<cr>
 " Toggle quickfix window.
 noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
 " Source the current file.
@@ -294,8 +296,8 @@ noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
 noremap <silent> <leader>X :<c-u>call <SID>Bdelete(1)<cr>
 " Yank from system clipboard.
 noremap <silent> <leader>y "+y
-" Quit without checking for changes.
-noremap <silent> <leader>z :<c-u>quit!<cr>
+" Write file if modified, and close window (like ZZ).
+noremap <silent> <leader>z :<c-u>xit<cr>
 
 " Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
