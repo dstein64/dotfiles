@@ -276,6 +276,13 @@ noremap <silent> <leader>p "+p
 noremap <silent> <leader>P "+P
 " Edit the alternate file.
 noremap <silent> <leader>a <c-^>
+" Tab navigation mappings
+noremap <silent> <leader>h :<c-u>tabprevious<cr>
+noremap <silent> <leader>l :<c-u>tabnext<cr>
+" Close window.
+noremap <silent> <leader>c :<c-u>close<cr>
+" Quit without checking for changes.
+noremap <silent> <leader>z :<c-u>quit!<cr>
 
 " Insert longest common text when the completion menu is visible
 " (assumes 'completeopt' contains 'longest').
