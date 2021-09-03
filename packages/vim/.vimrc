@@ -273,7 +273,7 @@ noremap <silent> <leader>h :<c-u>tabprevious<cr>
 " Navigate to next tab.
 noremap <silent> <leader>l :<c-u>tabnext<cr>
 " Open/close location list window.
-noremap <silent> <leader>l :<c-u>call <SID>ToggleLocList()<cr>
+noremap <silent> <leader>L :<c-u>call <SID>ToggleLocList()<cr>
 " Open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
 " Put from system clipboard.
@@ -281,7 +281,7 @@ noremap <silent> <leader>p "+p
 " Put from system clipboard.
 noremap <silent> <leader>P "+P
 " Toggle quickfix window.
-noremap <silent> <leader>q :<c-u>call <SID>ToggleQuickfix()<cr>
+noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
