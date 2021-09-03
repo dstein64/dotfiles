@@ -184,16 +184,24 @@ if has('gui_running')
 endif
 " Don't scroll the entire screen for messages (Neovim only as of 2021/1/1)
 try | set display+=msgsep | catch | endtry
-" Save swap files in ~/.vim/swap instead of using the same directory as the
-" edited files. Only do this on Vim, since the defaults on Neovim already use
-" a separate directory. One reason for doing this is so that the ]f mapping,
-" defined below, doesn't infinitely cycle through swap files on Vim.
+" Save undo history.
+set undofile
 if !has('nvim')
+  " Save swap files in ~/.vim/swap instead of using the same directory as the
+  " edited files. Only do this on Vim, since the defaults on Neovim already
+  " use a separate directory. One reason for doing this is so that the ]f
+  " mapping, defined below, doesn't infinitely cycle through swap files on
+  " Vim.
+  let s:vimdir = expand(printf('~/%s', has('win32') ? 'vimfiles' : '.vim'))
   set directory-=.
-  " Set directory to ~/.vim/swap// on Unix and ~/vimfiles/swap// on Windows.
-  let s:directory = printf('~/%s/swap//', has('win32') ? 'vimfiles' : '.vim')
-  call mkdir(expand(s:directory), 'p')
+  let s:directory = s:vimdir . '/swap//'
+  call mkdir(s:directory, 'p')
   execute 'set directory^=' . s:directory
+  " Similarly, don't save undo files in the same directory as edited files.
+  set undodir-=.
+  let s:undodir = s:vimdir . '/undo/'
+  call mkdir(s:undodir, 'p')
+  execute 'set undodir^=' . s:undodir
 endif
 " Temporarily highlight search matches (custom setting).
 let g:tmphls = 1
