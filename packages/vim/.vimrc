@@ -276,9 +276,9 @@ noremap <silent> <leader>l :<c-u>tabnext<cr>
 noremap <silent> <leader>L :<c-u>call <SID>ToggleLocList()<cr>
 " Open a new tab.
 noremap <silent> <leader>n :tabnew<cr>
-" Put from system clipboard.
+" Put after from system clipboard.
 noremap <silent> <leader>p "+p
-" Put from system clipboard.
+" Put before from system clipboard.
 noremap <silent> <leader>P "+P
 " Toggle quickfix window.
 noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
