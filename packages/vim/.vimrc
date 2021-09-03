@@ -257,15 +257,15 @@ augroup END
 
 " === Leader mappings (alphabetical) ===
 " Turn off highlight.
-noremap <silent> <leader><space> :nohlsearch<bar>:echo<cr>
+noremap <silent> <leader><space> :<c-u>nohlsearch<bar>:echo<cr>
 " Change working directory to directory of current file.
-noremap <silent> <leader>. :cd %:h<bar>:pwd<cr>
+noremap <silent> <leader>. :<c-u>cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
-noremap <silent> <leader>.. :cd ..<bar>:pwd<cr>
+noremap <silent> <leader>.. :<c-u>cd ..<bar>:pwd<cr>
 " Edit the alternate file.
 noremap <silent> <leader>a <c-^>
 " Open current buffer in new tab.
-noremap <silent> <leader>b :tab split<cr>
+noremap <silent> <leader>b :<c-u>tab split<cr>
 " Close window.
 noremap <silent> <leader>c :<c-u>close<cr>
 " Navigate to previous tab.
@@ -275,7 +275,7 @@ noremap <silent> <leader>l :<c-u>tabnext<cr>
 " Open/close location list window.
 noremap <silent> <leader>L :<c-u>call <SID>ToggleLocList()<cr>
 " Open a new tab.
-noremap <silent> <leader>n :tabnew<cr>
+noremap <silent> <leader>n :<c-u>tabnew<cr>
 " Make current window the only window.
 noremap <silent> <leader>o :<c-u>only<cr>
 " Put after from system clipboard.
@@ -287,7 +287,7 @@ noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
-noremap <silent> <leader>t :Terminal<cr>
+noremap <silent> <leader>t :<c-u>Terminal<cr>
 " Delete current buffer if there are no changes.
 noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
