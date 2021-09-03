@@ -290,6 +290,10 @@ noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
 noremap <leader>s :source %<cr>
 " Open a terminal.
 noremap <silent> <leader>t :<c-u>Terminal<cr>
+" Start window command.
+noremap <silent> <leader>w <c-w>
+" Load vim-win.
+noremap <silent> <leader>W :<c-u>Win<cr>
 " Delete current buffer if there are no changes.
 noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
