@@ -262,10 +262,22 @@ noremap <silent> <leader><space> :<c-u>nohlsearch<bar>:echo<cr>
 noremap <silent> <leader>. :<c-u>cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
 noremap <silent> <leader>.. :<c-u>cd ..<bar>:pwd<cr>
+" Delete current buffer if there are no changes.
+noremap <silent> <leader><bs> :<c-u>call <SID>Bdelete(0)<cr>
+" Delete current buffer even if there are changes.
+noremap <silent> <leader><s-bs> :<c-u>call <SID>Bdelete(1)<cr>
 " Edit the alternate file.
 noremap <silent> <leader>a <c-^>
 " Open current buffer in new tab.
 noremap <silent> <leader>b :<c-u>tab split<cr>
+" Change text to system clipboard.
+noremap <silent> <leader>c "+c
+" Change remaining line to system clipboard.
+noremap <silent> <leader>C "+C
+" Delete text to system clipboard.
+noremap <silent> <leader>d "+d
+" Delete remaining line to system clipboard.
+noremap <silent> <leader>D "+D
 " Navigate to previous tab.
 noremap <silent> <leader>h :<c-u>tabprevious<cr>
 " Navigate to next tab.
@@ -290,12 +302,14 @@ noremap <silent> <leader>t :<c-u>Terminal<cr>
 noremap <silent> <leader>w <c-w>
 " Load vim-win.
 noremap <silent> <leader>W :<c-u>Win<cr>
-" Delete current buffer if there are no changes.
-noremap <silent> <leader>x :<c-u>call <SID>Bdelete(0)<cr>
-" Delete current buffer even if there are changes.
-noremap <silent> <leader>X :<c-u>call <SID>Bdelete(1)<cr>
+" Delete characters to system clipboard.
+noremap <silent> <leader>x "+x
+" Delete characters before cursor to system clipboard.
+noremap <silent> <leader>X "+X
 " Yank from system clipboard.
 noremap <silent> <leader>y "+y
+" Yank remaining line to system clipboard.
+noremap <silent> <leader>Y "+y$
 " Write file if modified, and close window (like ZZ).
 noremap <silent> <leader>z :<c-u>xit<cr>
 
