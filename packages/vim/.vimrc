@@ -471,6 +471,10 @@ noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 
 " === Option toggling ===
 " (inspired by vim-unimpaired)
+nnoremap <silent> [o. :<c-u>let g:ctrlp_show_hidden = 1<cr>
+nnoremap <silent> ]o. :<c-u>let g:ctrlp_show_hidden = 0<cr>
+nnoremap <silent> yo. :<c-u>let g:ctrlp_show_hidden
+      \ = !get(g:, 'ctrlp_show_hidden', 0)<cr>
 nnoremap <silent> [o# :<c-u>set number relativenumber<cr>
 nnoremap <silent> ]o# :<c-u>set nonumber norelativenumber<cr>
 nnoremap <silent> <expr> yo# &number \|\| &relativenumber
@@ -527,6 +531,7 @@ noremenu <silent> &Tools.Previous\ File<tab>[f
       \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
 
 let s:options = [
+      \   ['\.', 'g:ctrlp_show_hidden'],
       \   ['#', 'number/relativenumber'],
       \   ['c', 'cursorline'],
       \   ['d', 'diff'],
