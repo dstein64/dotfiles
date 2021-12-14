@@ -529,6 +529,8 @@ noremenu <silent> &Tools.Next\ File<tab>]f
       \ :<c-u>call <SID>EditSiblingFile(1)<cr>
 noremenu <silent> &Tools.Previous\ File<tab>[f
       \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
+noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
+noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 let s:options = [
       \   ['\.', 'g:ctrlp_show_hidden'],
