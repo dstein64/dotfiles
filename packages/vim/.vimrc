@@ -208,6 +208,7 @@ let g:tmphls = 1
 " Customize the status line (takes precedence over 'ruler').
 set statusline=%<%f%(\ %y%m%r%{LspStl()}%)\ %=%-14.(%l,%c%V%)\ %P
 " Add a dictionary file for use with <c-x><c-k> in insert mode.
+" ('apt install spell' to get dictionary file)
 if filereadable('/usr/share/dict/words')
   set dictionary+=/usr/share/dict/words
 endif
