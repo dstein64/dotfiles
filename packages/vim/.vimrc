@@ -144,7 +144,14 @@ function! s:DefaultOptionValue(option) abort
   let l:tmp = eval('&' . a:option)
   execute 'set ' . a:option . '&'
   let l:result = eval('&' . a:option)
-  execute 'let &' . a:option . '=' . l:tmp
+  if type(l:tmp) ==# v:t_number
+    " Numeric options and boolean options are handled here (in both cases, the
+    " type would be v:t_number).
+    execute 'let &' . a:option . '=' . l:tmp
+  else
+    " String options are handled here.
+    execute 'set ' . a:option . '=' . l:tmp
+  endif
   return l:result
 endfunction
 
@@ -534,6 +541,9 @@ noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 " === Option toggling ===
 " (inspired by vim-unimpaired)
 call s:CreateNumericToggleMaps('<tab>', 'softtabstop')
+nnoremap <silent> [o* :<c-u>let g:tmphls = 1<cr>
+nnoremap <silent> ]o* :<c-u>let g:tmphls = 0<cr>
+nnoremap <silent> yo* :<c-u>let g:tmphls = !get(g:, 'tmphls', 1)<cr>
 nnoremap <silent> [o. :<c-u>let g:ctrlp_show_hidden = 1<cr>
 nnoremap <silent> ]o. :<c-u>let g:ctrlp_show_hidden = 0<cr>
 nnoremap <silent> yo. :<c-u>let g:ctrlp_show_hidden
@@ -563,9 +573,7 @@ call s:CreateToggleMaps('n', 'number')
 call s:CreateToggleMaps('p', 'paste')
 call s:CreateToggleMaps('r', 'relativenumber')
 call s:CreateToggleMaps('s', 'spell')
-nnoremap <silent> [ot :<c-u>let g:tmphls = 1<cr>
-nnoremap <silent> ]ot :<c-u>let g:tmphls = 0<cr>
-nnoremap <silent> yot :<c-u>let g:tmphls = !get(g:, 'tmphls', 1)<cr>
+call s:CreateNumericToggleMaps('t', 'textwidth')
 call s:CreateToggleMaps('u', 'cursorcolumn')
 nnoremap <silent> [ov :<c-u>set virtualedit=all<cr>
 nnoremap <silent> ]ov :<c-u>set virtualedit=<cr>
@@ -577,7 +585,7 @@ nnoremap <silent> ]ox :<c-u>set nocursorline nocursorcolumn<cr>
 nnoremap <silent> <expr> yox &cursorline \|\| &cursorcolumn
       \ ? ':<c-u>set nocursorline nocursorcolumn<cr>'
       \ : ':<c-u>set cursorline cursorcolumn<cr>'
-call s:CreateNumericToggleMaps('<bar>', 'textwidth')
+call s:CreateNumericToggleMaps('<bar>', 'colorcolumn')
 
 " *********************************************************
 " * Menus
@@ -601,6 +609,7 @@ noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 let s:options = [
       \   ['<tab>', 'softtabstop'],
+      \   ['*', 'g:tmphls'],
       \   ['\.', 'g:ctrlp_show_hidden'],
       \   ['#', 'number/relativenumber'],
       \   ['c', 'cursorline'],
@@ -616,12 +625,12 @@ let s:options = [
       \   ['p', 'paste'],
       \   ['r', 'relativenumber'],
       \   ['s', 'spell'],
-      \   ['t', 'g:tmphls'],
+      \   ['t', 'textwidth'],
       \   ['u', 'cursorcolumn'],
       \   ['v', 'virtualedit'],
       \   ['w', 'wrap'],
       \   ['x', 'cursorline/cursorcolumn'],
-      \   ['\|', 'textwidth'],
+      \   ['\|', 'colorcolumn'],
       \ ]
 " feedkeys() is used instead of :normal to avoid the issue described in Vim
 " #9356. The latter requires a complete command, which e.g., is not satisfied
