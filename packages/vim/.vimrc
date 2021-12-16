@@ -414,9 +414,12 @@ noremap <silent> il :<c-u>normal! ^vg_<cr>
 nunmap il
 " Line motions (visual mode not defined; just use V)
 onoremap <silent> al :<c-u>normal! V<cr>
-" Switch ; and :
+" Switch ; and : (makes the higher frequency key press more accessible)
 noremap ; :
 noremap : ;
+" Switch ` and ' (makes the higher frequency key press more accessible)
+noremap ` '
+noremap ' `
 " Replace ^ with <c-h> since the former is harder to press.
 noremap <c-h> ^
 
