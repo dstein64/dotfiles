@@ -593,9 +593,9 @@ call s:CreateNumericToggleMaps('<bar>', 'colorcolumn')
 
 noremenu <silent> &Tools.-sep- <nop>
 noremenu <silent> &Tools.&Grep<tab>:grep\ -R\ TEXT\ \.
-      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2))<cr>
+      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
 noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ TEXT\ **/*
-      \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5))<cr>
+      \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5), 'n')<cr>
 noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
