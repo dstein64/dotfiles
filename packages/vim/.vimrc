@@ -142,6 +142,19 @@ function! s:Bdelete(force) abort
   execute l:bufnr . 'bdelete!'
 endfunction
 
+" Gets a character to add/remove from 'formatoptions'. If mode is -1, the
+" value is removed. If mode is 1, the value is added. If mode is 0, the value
+" is toggled.
+function! s:SetFormatOption(mode) abort
+  let l:c = nr2char(getchar())
+  let l:lookup = {
+        \   -1: '-=',
+        \    1: '+=',
+        \    0: stridx(&formatoptions, l:c) ==# -1 ? '+=' : '-='
+        \ }
+  execute 'set formatoptions' . l:lookup[a:mode] . l:c
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -497,6 +510,9 @@ nnoremap <silent> ]od :<c-u>diffoff<cr>
 nnoremap <silent> <expr> yod
       \ ':<c-u>' . (&diff ? 'diffoff' : 'diffthis') . '<cr>'
 call s:CreateToggleMaps('e', 'expandtab')
+nnoremap <silent> [of :<c-u>call <SID>SetFormatOption(1)<cr>
+nnoremap <silent> ]of :<c-u>call <SID>SetFormatOption(-1)<cr>
+nnoremap <silent> yof :<c-u>call <SID>SetFormatOption(0)<cr>
 call s:CreateToggleMaps('h', 'hlsearch')
 call s:CreateToggleMaps('i', 'ignorecase')
 call s:CreateToggleMaps('l', 'list')
@@ -539,12 +555,16 @@ noremenu <silent> &Tools.Previous\ File<tab>[f
 noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
+" WARN: The 'f' option, when used from the menu, does not work (Vim #9356).
 let s:options = [
       \   ['\.', 'g:ctrlp_show_hidden'],
       \   ['#', 'number/relativenumber'],
       \   ['c', 'cursorline'],
       \   ['d', 'diff'],
       \   ['e', 'expandtab'],
+      \   ['f', 'formatoptions'],
+      \   ['fc', 'formatoptions\ (comment\ autowrap)'],
+      \   ['ft', 'formatoptions\ (text\ autowrap)'],
       \   ['h', 'hlsearch'],
       \   ['i', 'ignorecase'],
       \   ['l', 'list'],
