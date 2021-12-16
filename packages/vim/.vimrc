@@ -119,10 +119,60 @@ function! s:ToggleLocList() abort
   endif
 endfunction
 
+" Gets a character to add/remove from 'formatoptions'. If mode is -1, the
+" value is removed. If mode is 1, the value is added. If mode is 0, the value
+" is toggled.
+function! s:SetFormatOption(mode) abort
+  let l:c = nr2char(getchar())
+  let l:lookup = {
+        \   -1: '-=',
+        \    1: '+=',
+        \    0: stridx(&formatoptions, l:c) ==# -1 ? '+=' : '-='
+        \ }
+  execute 'set formatoptions' . l:lookup[a:mode] . l:c
+endfunction
+
 function! s:CreateToggleMaps(char, option) abort
   execute 'nnoremap <silent> [o' . a:char . ' :<c-u>set ' . a:option . '<cr>'
   execute 'nnoremap <silent> ]o' . a:char . ' :<c-u>set no' . a:option . '<cr>'
   execute 'nnoremap <silent> yo' . a:char . ' :<c-u>set ' . a:option . '!<cr>'
+endfunction
+
+function! s:DefaultOptionValue(option) abort
+  " WARN: this could have side effects (e.g., search highlighting may show
+  " after checking for the default value of hlsearch).
+  let l:tmp = eval('&' . a:option)
+  execute 'set ' . a:option . '&'
+  let l:result = eval('&' . a:option)
+  execute 'let &' . a:option . '=' . l:tmp
+  return l:result
+endfunction
+
+" If mode is -1, the specified option is restored to its default. If mode is
+" 1, the specified option is set from user input. If mode is 0, the option is
+" restored if it has been changed from its default, or set from user input
+" otherwise.
+function! s:SetNumericOptionValue(option, mode)
+  if index([-1, 0, 1], a:mode) ==# -1 | throw 'unknown mode' | endif
+  let l:mode = a:mode
+  if l:mode ==# 0
+    let l:is_default = s:DefaultOptionValue(a:option) ==# eval('&' . a:option)
+    let l:mode = l:is_default ? 1 : -1
+  endif
+  if l:mode ==# -1
+    execute 'set ' . a:option . '&'
+  elseif l:mode ==# 1
+    execute 'set ' . a:option . '=' . input('')
+  endif
+endfunction
+
+function! s:CreateNumericToggleMaps(char, option) abort
+  execute 'nnoremap <silent> [o' . a:char
+        \ . ' :<c-u>call <SID>SetNumericOptionValue("' . a:option . '", 1)<cr>'
+  execute 'nnoremap <silent> ]o' . a:char
+        \ . ' :<c-u>call <SID>SetNumericOptionValue("' . a:option . '", -1)<cr>'
+  execute 'nnoremap <silent> yo' . a:char
+        \ . ' :<c-u>call <SID>SetNumericOptionValue("' . a:option . '", 0)<cr>'
 endfunction
 
 " Deletes the current buffer, without changing window layout.
@@ -140,19 +190,6 @@ function! s:Bdelete(force) abort
     call win_execute(l:win, l:bufnr2 . 'buffer!')
   endfor
   execute l:bufnr . 'bdelete!'
-endfunction
-
-" Gets a character to add/remove from 'formatoptions'. If mode is -1, the
-" value is removed. If mode is 1, the value is added. If mode is 0, the value
-" is toggled.
-function! s:SetFormatOption(mode) abort
-  let l:c = nr2char(getchar())
-  let l:lookup = {
-        \   -1: '-=',
-        \    1: '+=',
-        \    0: stridx(&formatoptions, l:c) ==# -1 ? '+=' : '-='
-        \ }
-  execute 'set formatoptions' . l:lookup[a:mode] . l:c
 endfunction
 
 " *********************************************************
@@ -496,6 +533,7 @@ noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 
 " === Option toggling ===
 " (inspired by vim-unimpaired)
+call s:CreateNumericToggleMaps('<tab>', 'softtabstop')
 nnoremap <silent> [o. :<c-u>let g:ctrlp_show_hidden = 1<cr>
 nnoremap <silent> ]o. :<c-u>let g:ctrlp_show_hidden = 0<cr>
 nnoremap <silent> yo. :<c-u>let g:ctrlp_show_hidden
@@ -539,6 +577,7 @@ nnoremap <silent> ]ox :<c-u>set nocursorline nocursorcolumn<cr>
 nnoremap <silent> <expr> yox &cursorline \|\| &cursorcolumn
       \ ? ':<c-u>set nocursorline nocursorcolumn<cr>'
       \ : ':<c-u>set cursorline cursorcolumn<cr>'
+call s:CreateNumericToggleMaps('<bar>', 'textwidth')
 
 " *********************************************************
 " * Menus
@@ -561,6 +600,7 @@ noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 let s:options = [
+      \   ['<tab>', 'softtabstop'],
       \   ['\.', 'g:ctrlp_show_hidden'],
       \   ['#', 'number/relativenumber'],
       \   ['c', 'cursorline'],
@@ -581,6 +621,7 @@ let s:options = [
       \   ['v', 'virtualedit'],
       \   ['w', 'wrap'],
       \   ['x', 'cursorline/cursorcolumn'],
+      \   ['\|', 'textwidth'],
       \ ]
 " feedkeys() is used instead of :normal to avoid the issue described in Vim
 " #9356. The latter requires a complete command, which e.g., is not satisfied
