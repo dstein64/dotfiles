@@ -225,6 +225,8 @@ set statusline=%<%f%(\ %y%m%r%{LspStl()}%)\ %=%-14.(%l,%c%V%)\ %P
 if filereadable('/usr/share/dict/words')
   set dictionary+=/usr/share/dict/words
 endif
+" Disable smarttab (enabled on Neovim) so that softtabstop works as expected.
+set nosmarttab
 
 " *********************************************************
 " * Commands
