@@ -608,34 +608,44 @@ noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 let s:options = [
-      \   ['<tab>', 'softtabstop'],
-      \   ['*', 'g:tmphls'],
-      \   ['\.', 'g:ctrlp_show_hidden'],
-      \   ['#', 'number/relativenumber'],
+      \   ['\|', 'colorcolumn'],
+      \   ['u', 'cursorcolumn'],
       \   ['c', 'cursorline'],
+      \   ['x', 'cursorline/cursorcolumn'],
       \   ['d', 'diff'],
       \   ['e', 'expandtab'],
       \   ['f', 'formatoptions'],
       \   ['fc', 'formatoptions\ (comment\ autowrap)'],
       \   ['ft', 'formatoptions\ (text\ autowrap)'],
+      \   ['\.', 'g:ctrlp_show_hidden'],
+      \   ['*', 'g:tmphls'],
       \   ['h', 'hlsearch'],
       \   ['i', 'ignorecase'],
       \   ['l', 'list'],
       \   ['n', 'number'],
+      \   ['#', 'number/relativenumber'],
       \   ['p', 'paste'],
       \   ['r', 'relativenumber'],
+      \   ['<tab>', 'softtabstop'],
       \   ['s', 'spell'],
       \   ['t', 'textwidth'],
-      \   ['u', 'cursorcolumn'],
       \   ['v', 'virtualedit'],
       \   ['w', 'wrap'],
-      \   ['x', 'cursorline/cursorcolumn'],
-      \   ['\|', 'colorcolumn'],
       \ ]
-" feedkeys() is used instead of :normal to avoid the issue described in Vim
-" #9356. The latter requires a complete command, which e.g., is not satisfied
-" when getchar() is used by s:SetFormatOption.
+let s:seen_keys = {}  " For confirming no duplicates.
+let s:last_option = ''  " For confirming alphabetical order.
 for [s:key, s:option] in s:options
+  if has_key(s:seen_keys, s:key)
+    throw 'duplicate keys in s:options'
+  endif
+  let s:seen_keys[s:key] = 1
+  if s:option <# s:last_option
+    throw 'alphabetical ordering not maintained'
+  endif
+  let s:last_option = s:option
+  " feedkeys() is used instead of :normal to avoid the issue described in Vim
+  " #9356. The latter requires a complete command, which e.g., is not
+  " satisfied when getchar() is used by s:SetFormatOption.
   execute 'noremenu <silent> &Options.Turn\ &On.' . s:option
         \ . '<tab>[o' . s:key . ' :call feedkeys("[o' . s:key . '")<cr>'
   execute 'noremenu <silent> &Options.Turn\ O&ff.' . s:option
