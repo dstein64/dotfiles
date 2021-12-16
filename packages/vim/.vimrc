@@ -555,7 +555,6 @@ noremenu <silent> &Tools.Previous\ File<tab>[f
 noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
-" WARN: The 'f' option, when used from the menu, does not work (Vim #9356).
 let s:options = [
       \   ['\.', 'g:ctrlp_show_hidden'],
       \   ['#', 'number/relativenumber'],
@@ -578,13 +577,16 @@ let s:options = [
       \   ['w', 'wrap'],
       \   ['x', 'cursorline/cursorcolumn'],
       \ ]
+" feedkeys() is used instead of :normal to avoid the issue described in Vim
+" #9356. The latter requires a complete command, which e.g., is not satisfied
+" when getchar() is used by s:SetFormatOption.
 for [s:key, s:option] in s:options
   execute 'noremenu <silent> &Options.Turn\ &On.' . s:option
-        \ . '<tab>[o' . s:key . ' :normal [o' . s:key . '<cr>'
+        \ . '<tab>[o' . s:key . ' :call feedkeys("[o' . s:key . '")<cr>'
   execute 'noremenu <silent> &Options.Turn\ O&ff.' . s:option
-        \ . '<tab>]o' . s:key . ' :normal ]o' . s:key . '<cr>'
+        \ . '<tab>[o' . s:key . ' :call feedkeys("]o' . s:key . '")<cr>'
   execute 'noremenu <silent> &Options.&Toggle.' . s:option
-        \ . '<tab>yo' . s:key . ' :normal yo' . s:key . '<cr>'
+        \ . '<tab>[o' . s:key . ' :call feedkeys("yo' . s:key . '")<cr>'
 endfor
 
 " *********************************************************
