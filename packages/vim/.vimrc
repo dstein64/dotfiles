@@ -587,9 +587,9 @@ for [s:key, s:option] in s:options
   execute 'noremenu <silent> &Options.Turn\ &On.' . s:option
         \ . '<tab>[o' . s:key . ' :call feedkeys("[o' . s:key . '")<cr>'
   execute 'noremenu <silent> &Options.Turn\ O&ff.' . s:option
-        \ . '<tab>[o' . s:key . ' :call feedkeys("]o' . s:key . '")<cr>'
+        \ . '<tab>]o' . s:key . ' :call feedkeys("]o' . s:key . '")<cr>'
   execute 'noremenu <silent> &Options.&Toggle.' . s:option
-        \ . '<tab>[o' . s:key . ' :call feedkeys("yo' . s:key . '")<cr>'
+        \ . '<tab>yo' . s:key . ' :call feedkeys("yo' . s:key . '")<cr>'
 endfor
 
 " *********************************************************
