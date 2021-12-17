@@ -289,12 +289,17 @@ augroup autocommands
   autocmd!
   " Always enter insert mode when entering a terminal window.
   autocmd WinEnter * call s:InsertModeIfTerminal()
-  " Turn off search highlighting when the cursor moves (tmphls).
+  " Turn off search highlighting when the cursor moves (tmphls). Use a
+  " try/catch block since match() throws an exception (E383, E866) when the
+  " pattern is invalid (e.g., "\@a").
   autocmd CursorMoved *
-        \   if v:hlsearch && get(g:, 'tmphls', 1)
-        \       && col('.') - 1 !=# match(getline('.'), @/, col('.') - 1)
-        \ |   call feedkeys("\<Plug>(NoHls)")
-        \ | endif
+        \   try
+        \ |   if v:hlsearch && get(g:, 'tmphls', 1)
+        \         && col('.') - 1 !=# match(getline('.'), @/, col('.') - 1)
+        \ |     call feedkeys("\<Plug>(NoHls)")
+        \ |   endif
+        \ | catch
+        \ | endtry
   " For insert mode, only do so when not in paste mode, since mappings aren't
   " expanded in that mode.
   autocmd InsertEnter * if !&paste && v:hlsearch && get(g:, 'tmphls', 1)
