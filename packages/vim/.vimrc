@@ -479,6 +479,8 @@ else
 endif
 " Use jk to exit insert mode.
 inoremap jk <esc>
+" Use jk to exit command-line mode.
+cnoremap jk <c-c>
 " Map <c-space> to omnifunc completion.
 inoremap <c-space> <c-x><c-o>
 " On Vim, <c-space> inserts <c-@> (<NUL>), confirmed with ctrl-v.
