@@ -199,6 +199,41 @@ function! s:Bdelete(force) abort
   execute l:bufnr . 'bdelete!'
 endfunction
 
+" Returns a string indicating option settings (e.g., '[tw=80,sts=8]'),
+" intended to be used as part of 'statusline'.
+function! OptsStl() abort
+  let l:options = []
+  if &expandtab
+    call add(l:options, 'et')
+  endif
+  let l:fo = ''
+  " Only some format options are considered for statusline display.
+  for l:c in ['c', 't']
+    if stridx(&formatoptions, l:c) !=# -1
+      let l:fo .= l:c
+    endif
+  endfor
+  if !empty(l:fo)
+    " Use ':' instead of '=', since the full value of 'formatoptions' is not
+    " shown (only a selection of letters).
+    call add(l:options, 'fo:' . l:fo)
+  endif
+  if &softtabstop !=# 0
+    call add(l:options, 'sts=' . &softtabstop)
+  endif
+  if &textwidth !=# 0
+    call add(l:options, 'tw=' . &textwidth)
+  endif
+  if !empty(&virtualedit)
+    call add(l:options, 've=' . &virtualedit)
+  endif
+  let l:result = ''
+  if !empty(l:options)
+    let l:result = '[' . join(l:options, ',') . ']'
+  endif
+  return l:result
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -263,7 +298,7 @@ endif
 " Temporarily highlight search matches (custom setting).
 let g:tmphls = 1
 " Customize the status line (takes precedence over 'ruler').
-set statusline=%<%f%(\ %y%m%r%{LspStl()}%)\ %=%-14.(%l,%c%V%)\ %P
+set statusline=%<%f%(\ %y%m%r%{OptsStl()}%{LspStl()}%)\ %=%-14.(%l,%c%V%)\ %P
 " Add a dictionary file for use with <c-x><c-k> in insert mode.
 " ('apt install spell' to get dictionary file)
 if filereadable('/usr/share/dict/words')
