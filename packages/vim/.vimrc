@@ -795,6 +795,27 @@ function _G.lsp_buf_clients()
   return clients
 end
 
+-- Attach the most recently launched compatible client to the current buffer.
+-- (a workaround for lspconfig Issue #1586)
+function _G.lsp_attach()
+  local clients = vim.lsp.get_active_clients()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local filetype = vim.fn.getbufvar(bufnr, '&filetype')
+  -- Loop backwards to loop over clients most recent first. Even when a low ID
+  -- becomes available after stopping a client, the subsequent clients do not
+  -- take those IDs.
+  for idx = #clients, 1, -1 do
+    local client = clients[idx]
+    for _, ft in ipairs(client.config.filetypes) do
+      if filetype == ft then
+        vim.lsp.buf_attach_client(bufnr, client.id)
+        goto finish
+      end
+    end
+  end
+  ::finish::
+end
+
 -- Disable virtual text diagnostics
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -859,9 +880,14 @@ for _, server in ipairs(servers) do
 end
 EOF
 
+" Add LSP global commands.
+command! LspAttach lua lsp_attach()
+
 " Add global LSP mappings.
 " Start LSP.
 noremap <c-space> <cmd>LspStart<cr>
+" <c-cr> enter <c-m>
+noremap <c-m> <cmd>LspAttach<cr>
 
 " Add LSP menu items. The right-aligned text for some entries corresponds to
 " the mappings and commands defined in s:LspConfigBuffer.
