@@ -859,7 +859,7 @@ for _, server in ipairs(servers) do
 end
 EOF
 
-" Add global LSP menu items.
+" Add global LSP mappings.
 " Start LSP.
 noremap <c-space> <cmd>LspStart<cr>
 
