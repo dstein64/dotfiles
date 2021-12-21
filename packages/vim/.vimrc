@@ -886,8 +886,8 @@ command! LspAttach lua lsp_attach()
 " Add global LSP mappings.
 " Start LSP.
 noremap <c-space> <cmd>LspStart<cr>
-" <c-cr> enter <c-m>
-noremap <c-m> <cmd>LspAttach<cr>
+" Attach buffer to LSP.
+noremap <m-space> <cmd>LspAttach<cr>
 
 " Add LSP menu items. The right-aligned text for some entries corresponds to
 " the mappings and commands defined in s:LspConfigBuffer.
