@@ -631,6 +631,13 @@ call s:CreateNumericToggleMaps('<bar>', 'colorcolumn')
 " * Menus
 " *********************************************************
 
+" Can't use the existing 'Buffers' menu, since it is deleted/recreated from
+" code in menu.vim.
+noremenu <silent> B&uffer.&Delete\ (keep\ window)<tab><leader><bs>
+      \ :<c-u>call <SID>Bdelete(0)<cr>
+noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
+      \ :<c-u>call <SID>Bdelete(1)<cr>
+
 noremenu <silent> &Tools.-sep- <nop>
 noremenu <silent> &Tools.&Grep<tab>:grep\ -R\ TEXT\ \.
       \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
