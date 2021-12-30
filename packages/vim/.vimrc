@@ -274,7 +274,8 @@ set autoread            " automatically read files changed outside Vim
 set listchars=tab:>\ ,trail:-,nbsp:+
 set sidescroll=1        " scroll horizontally by 1 column with nowrap
 set nostartofline       " keep cursor position for various movements commands
-set switchbuf=uselast   " jump to previously used window for quickfix jumps
+" Jump to the previously used window for quickfix jumps.
+try | set switchbuf+=uselast | catch | endtry
 set tabpagemax=50       " max tab pages for -p command line arg or ':tab all'
 
 if has('gui_running')
