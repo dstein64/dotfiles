@@ -268,8 +268,7 @@ set keywordprg=:Man
 " Allow unwritten buffers to lose visibility. For ZQ and :q!, vim will issue a
 " warning before closing the window. There's no warning for :qall!.
 set hidden
-" Always show the status line.
-set laststatus=2
+set laststatus=2        " always show the status line
 set autoread            " automatically read files changed outside Vim
 " Show tabs as ">", trailing spaces as "-", and non-breaking spaces as "+".
 set listchars=tab:>\ ,trail:-,nbsp:+
