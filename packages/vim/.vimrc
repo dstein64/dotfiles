@@ -217,6 +217,9 @@ function! OptsStl() abort
     " shown (only a selection of letters).
     call add(l:options, 'fo:' . l:fo)
   endif
+  if &paste
+    call add(l:options, 'paste')
+  endif
   if &softtabstop !=# 0
     call add(l:options, 'sts=' . &softtabstop)
   endif
