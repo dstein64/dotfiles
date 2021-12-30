@@ -16,14 +16,13 @@ set ttimeout            " time out for key codes
 set ttimeoutlen=100     " wait up to 100ms after Esc for special key
 " Show @@@ in the last line if it is truncated.
 set display=truncate
-" Show a few lines of context around the cursor. Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
+" Show a few lines of context around the cursor. Note that this makes the text
+" scroll if you mouse-click near the start or end of the window.
 set scrolloff=5
 set incsearch           " incremental search
 set nrformats-=octal    " no <c-a> or <c-x> for octal numbers
-" <c-u> in insert mode deletes a lot.  Use <c-g>u to first break undo,
-" so that you can undo <c-u> after inserting a line break.
-" Revert with ":iunmap <c-u>.
+" <c-u> in insert mode deletes a lot. Use <c-g>u to first break undo, so that
+" you can undo <c-u> after inserting a line break. Revert with ":iunmap <c-u>.
 inoremap <c-u> <c-g>u<c-u>
 set mouse=a             " mouse works fine in many terminal emulators
 syntax on               " syntax highlighting
@@ -271,6 +270,14 @@ set keywordprg=:Man
 set hidden
 " Always show the status line.
 set laststatus=2
+set autoread            " automatically read files changed outside Vim
+" Show tabs as ">", trailing spaces as "-", and non-breaking spaces as "+".
+set listchars=tab:>\ ,trail:-,nbsp:+
+set sidescroll=1        " scroll horizontally by 1 column with nowrap
+set nostartofline       " keep cursor position for various movements commands
+set switchbuf=uselast   " jump to previously used window for quickfix jumps
+set tabpagemax=50       " max tab pages for -p command line arg or ':tab all'
+
 if has('gui_running')
   set cursorline        " highlight current line
 endif
