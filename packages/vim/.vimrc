@@ -217,6 +217,9 @@ function! OptsStl() abort
     " shown (only a selection of letters).
     call add(l:options, 'fo:' . l:fo)
   endif
+  if &list
+    call add(l:options, 'list')
+  endif
   if &paste
     call add(l:options, 'paste')
   endif
