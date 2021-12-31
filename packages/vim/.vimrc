@@ -283,7 +283,6 @@ set nostartofline       " keep cursor position for various movements commands
 " Jump to the previously used window for quickfix jumps.
 try | set switchbuf+=uselast | catch | endtry
 set tabpagemax=50       " max tab pages for -p command line arg or ':tab all'
-
 if has('gui_running')
   set cursorline        " highlight current line
 endif
@@ -326,6 +325,8 @@ if !has('nvim')
   let &t_SR = "\e[4 q"  " Replace mode
   let &t_EI = "\e[2 q"  " Normal mode
 endif
+" Disable cursor blinking in GUI.
+set guicursor+=a:blinkon0
 
 " *********************************************************
 " * Commands
