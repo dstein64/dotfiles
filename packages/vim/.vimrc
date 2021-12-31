@@ -319,6 +319,13 @@ if filereadable('/usr/share/dict/words')
 endif
 " Disable smarttab (enabled on Neovim) so that softtabstop works as expected.
 set nosmarttab
+if !has('nvim')
+  " Show a bar cursor in insert mode, an underscore in replace mode, and a
+  " block in normal mode. This matches the default behaviour in Neovim.
+  let &t_SI = "\e[6 q"  " Insert mode
+  let &t_SR = "\e[4 q"  " Replace mode
+  let &t_EI = "\e[2 q"  " Normal mode
+endif
 
 " *********************************************************
 " * Commands
