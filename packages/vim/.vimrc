@@ -736,7 +736,10 @@ let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 noremap <silent> <c-n><c-n> :<c-u>NERDTreeToggle<cr>
 noremap <silent> <c-n><c-o> :<c-u>NERDTreeFocus<cr>
 noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
+" Enable CtrlP cross-session caching.
 let g:ctrlp_clear_cache_on_exit = 0
+" Always use Vim's working directory for CtrlP's working path.
+let g:ctrlp_working_path_mode = 0
 
 " *********************************************************
 " * LSP
