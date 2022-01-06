@@ -876,8 +876,8 @@ local on_attach = function(client, bufnr)
     '<cmd>lua vim.diagnostic.open_float()<cr>')
   set_keymap('n', '<leader>f',
     '<cmd>lua vim.lsp.buf.code_action()<cr>')
-  set_keymap('n', '[d',    '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>')
-  set_keymap('n', ']d',    '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>')
+  set_keymap('n', '[d',    '<cmd>lua vim.diagnostic.goto_prev()<cr>')
+  set_keymap('n', ']d',    '<cmd>lua vim.diagnostic.goto_next()<cr>')
   set_keymap('n', 'gx',    '<cmd>ClangdSwitchSourceHeader<cr>')
   -- Commands
   local commands = {
@@ -933,9 +933,9 @@ noremenu <silent> &LSP.&Diagnostics.Code\ Action\ (apply\ fix)<tab><leader>f
 noremenu <silent> &LSP.&Diagnostics.List\ Diagnostics<tab>:LspListDiagnostics
       \ <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
 noremenu <silent> &LSP.&Diagnostics.Next\ Diagnostic<tab>]d
-      \ <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+      \ <cmd>lua vim.diagnostic.goto_next()<cr>
 noremenu <silent> &LSP.&Diagnostics.Previous\ Diagnostic<tab>]d
-      \ <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+      \ <cmd>lua vim.diagnostic.goto_prev()<cr>
 
 " Jumps
 noremenu <silent> &LSP.&Jump.Declaration<tab>gd
