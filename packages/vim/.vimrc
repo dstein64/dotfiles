@@ -873,7 +873,7 @@ local on_attach = function(client, bufnr)
   set_keymap('n', 'gO',    '<cmd>lua vim.lsp.buf.document_symbol()<cr>')
   set_keymap('n', 'gW',    '<cmd>lua vim.lsp.buf.workspace_symbol()<cr>')
   set_keymap('n', '<leader>d',
-    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>')
+    '<cmd>lua vim.diagnostic.open_float()<cr>')
   set_keymap('n', '<leader>f',
     '<cmd>lua vim.lsp.buf.code_action()<cr>')
   set_keymap('n', '[d',    '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>')
@@ -927,7 +927,7 @@ noremap <m-space> <cmd>LspAttach<cr>
 
 " Diagnostics
 noremenu <silent> &LSP.&Diagnostics.Show\ Line\ Diagnostics<tab><leader>d
-      \ <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+      \ <cmd>lua vim.diagnostic.open_float()<cr>
 noremenu <silent> &LSP.&Diagnostics.Code\ Action\ (apply\ fix)<tab><leader>f
       \ <cmd>lua vim.lsp.buf.code_action()<cr>
 noremenu <silent> &LSP.&Diagnostics.List\ Diagnostics<tab>:LspListDiagnostics
