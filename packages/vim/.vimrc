@@ -529,6 +529,8 @@ noremap ` '
 noremap ' `
 " Replace ^ with <c-h> since the former is harder to press.
 noremap <c-h> ^
+" Open command-line window.
+noremap q; q:
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
