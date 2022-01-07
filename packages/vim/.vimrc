@@ -531,6 +531,9 @@ noremap ' `
 noremap <c-h> ^
 " Open command-line window.
 noremap q; q:
+" Reselect visual selection after shifting
+vnoremap < <gv
+vnoremap > >gv
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
