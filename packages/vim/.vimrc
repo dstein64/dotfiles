@@ -311,7 +311,7 @@ if !has('nvim')
   endtry
   " Similarly, don't save undo files in the same directory as edited files.
   " Unlike above for swap files, if it's not possible to call mkdir, undo
-  " functionality will essentially be disabled.
+  " file functionality will essentially be disabled.
   let s:undodir = s:vimdir . '/undo/'
   execute 'set undodir=' . s:undodir
   try
