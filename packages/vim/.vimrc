@@ -297,15 +297,29 @@ if !has('nvim')
   " mapping, defined below, doesn't infinitely cycle through swap files on
   " Vim.
   let s:vimdir = expand(printf('~/%s', has('win32') ? 'vimfiles' : '.vim'))
-  set directory-=.
   let s:directory = s:vimdir . '/swap//'
-  call mkdir(s:directory, 'p')
-  execute 'set directory^=' . s:directory
+  " The try block is used since it may not be possible to call mkdir (e.g.,
+  " restricted mode). In that case, the default 'directory', which may include
+  " '.', will be used.
+  try
+    if !isdirectory(s:directory)
+      call mkdir(s:directory, 'p')
+    endif
+    set directory-=.
+    execute 'set directory^=' . s:directory
+  catch
+  endtry
   " Similarly, don't save undo files in the same directory as edited files.
-  set undodir-=.
+  " Unlike above for swap files, if it's not possible to call mkdir, undo
+  " functionality will essentially be disabled.
   let s:undodir = s:vimdir . '/undo/'
-  call mkdir(s:undodir, 'p')
-  execute 'set undodir^=' . s:undodir
+  execute 'set undodir=' . s:undodir
+  try
+    if !isdirectory(s:undodir)
+      call mkdir(s:undodir, 'p')
+    endif
+  catch
+  endtry
 endif
 " Temporarily highlight search matches (custom setting).
 let g:tmphls = 1
