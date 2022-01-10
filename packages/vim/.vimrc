@@ -768,12 +768,17 @@ let g:ctrlp_working_path_mode = 0
 " Installation paths:
 "   Unix: ~/.local/share/nvim/site/pack/plugins/opt/nvim-lspconfig
 "   Windows: ~/AppData/Local/nvim-data/site/pack/plugins/opt/nvim-lspconfig
+let s:lsp = 0
+if has('nvim-0.5')
+  silent! packadd nvim-lspconfig
+  let s:lsp = get(g:, 'lspconfig', 0)
+endif
 
 " Returns a string indicating attached LSP clients (e.g., '[*clang]'),
 " intended to be used as part of 'statusline'.
 function! LspStl() abort
   let l:result = ''
-  if has('nvim-0.5')
+  if s:lsp
     for l:client in v:lua.lsp_buf_clients()
       let l:result .= '[*' . l:client . ']'
     endfor
@@ -781,9 +786,7 @@ function! LspStl() abort
   return l:result
 endfunction
 
-if has('nvim-0.5')
-silent! packadd nvim-lspconfig
-if get(g:, 'lspconfig', 0)
+if s:lsp
 
 " A function for 'formatexpr' that uses the LSP's range formatting.
 function! LspFormatExpr()
@@ -991,5 +994,4 @@ noremenu <silent> &LSP.&Rename<tab>:LspRename
 noremenu <silent> &LSP.&Signature\ Information<tab>^k
       \ <cmd>lua vim.lsp.buf.signature_help()<cr>
 
-endif  " lspconfig
-endif  " nvim-0.5
+endif  " s:lsp
