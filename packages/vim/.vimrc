@@ -338,6 +338,12 @@ if !has('nvim')
   let &t_SI = "\e[6 q"  " Insert mode
   let &t_SR = "\e[4 q"  " Replace mode
   let &t_EI = "\e[2 q"  " Normal mode
+  " Wrap these with "\eP" and "\e\\" to work in screen.
+  if &term ==# 'screen' || &term =~# '^screen[.-]'
+    let &t_SI = "\eP" . &t_SI . "\e\\"
+    let &t_SR = "\eP" . &t_SR . "\e\\"
+    let &t_EI = "\eP" . &t_EI . "\e\\"
+  endif
 endif
 " Disable cursor blinking in GUI.
 set guicursor+=a:blinkon0
