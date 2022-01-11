@@ -782,6 +782,9 @@ endif
 
 " Returns a string indicating attached LSP clients (e.g., '[*clang]'),
 " intended to be used as part of 'statusline'.
+" WARN: This is incorporated into 'statusline' above, and called even without
+" LSP functionality (e.g., on Vim), so it needs to be outside the 'if s:lsp'
+" block below.
 function! LspStl() abort
   let l:result = ''
   if s:lsp
