@@ -202,6 +202,9 @@ endfunction
 " intended to be used as part of 'statusline'.
 function! OptsStl() abort
   let l:options = []
+  if &binary
+    call add(l:options, 'bin')
+  endif
   if &expandtab
     call add(l:options, 'et')
   endif
@@ -643,6 +646,7 @@ nnoremap <silent> [ob :<c-u>set background=light<cr>
 nnoremap <silent> ]ob :<c-u>set background=dark<cr>
 nnoremap <silent> <expr> yob ':<c-u>set background='
       \ . (&background ==# 'dark' ? 'light' : 'dark') . '<cr>'
+call s:CreateToggleMaps('1', 'binary')
 call s:CreateToggleMaps('c', 'cursorline')
 nnoremap <silent> [od :<c-u>diffthis<cr>
 nnoremap <silent> ]od :<c-u>diffoff<cr>
@@ -702,6 +706,7 @@ noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 let s:options = [
       \   ['b', 'background'],
+      \   ['1', 'binary'],
       \   ['\|', 'colorcolumn'],
       \   ['u', 'cursorcolumn'],
       \   ['c', 'cursorline'],
