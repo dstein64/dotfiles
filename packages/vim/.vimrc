@@ -701,6 +701,7 @@ noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 let s:options = [
+      \   ['b', 'background'],
       \   ['\|', 'colorcolumn'],
       \   ['u', 'cursorcolumn'],
       \   ['c', 'cursorline'],
