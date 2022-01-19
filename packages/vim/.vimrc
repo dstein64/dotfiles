@@ -36,7 +36,7 @@ filetype indent on      " enable loading filetype indent files
 
 " Opens a terminal, with consistent handling for Neovim and Vim, and handling
 " for macOS.
-function! s:Terminal()
+function! s:Terminal() abort
   if has('nvim')
     topleft split
   endif
@@ -158,27 +158,33 @@ endfunction
 " 1, the specified option is set from user input. If mode is 0, the option is
 " restored if it has been changed from its default, or set from user input
 " otherwise.
-function! s:SetNumericOptionValue(option, mode)
+function! s:SetNumericOptionValue(option, mode, default) abort
   if index([-1, 0, 1], a:mode) ==# -1 | throw 'unknown mode' | endif
   let l:mode = a:mode
   if l:mode ==# 0
-    let l:is_default = s:DefaultOptionValue(a:option) ==# eval('&' . a:option)
+    let l:is_default = a:default ==# eval('&' . a:option)
     let l:mode = l:is_default ? 1 : -1
   endif
   if l:mode ==# -1
-    execute 'set ' . a:option . '&'
+    execute 'set ' . a:option . '=' . a:default
   elseif l:mode ==# 1
     execute 'set ' . a:option . '=' . input('')
   endif
 endfunction
 
-function! s:CreateNumericToggleMaps(char, option) abort
-  execute 'nnoremap <silent> [o' . a:char
-        \ . ' :<c-u>call <SID>SetNumericOptionValue("' . a:option . '", 1)<cr>'
-  execute 'nnoremap <silent> ]o' . a:char
-        \ . ' :<c-u>call <SID>SetNumericOptionValue("' . a:option . '", -1)<cr>'
-  execute 'nnoremap <silent> yo' . a:char
-        \ . ' :<c-u>call <SID>SetNumericOptionValue("' . a:option . '", 0)<cr>'
+function! s:CreateNumericToggleMaps(char, option, ...) abort
+  let l:default = a:0 ># 0 ? a:1 : s:DefaultOptionValue(a:option)
+  if type(l:default) ==# v:t_string
+    let l:default = printf('"%s"', l:default)
+  endif
+  let l:fn = '<SID>SetNumericOptionValue'
+  let l:opt = printf('"%s"', a:option)
+  execute 'nnoremap <silent> [o' . a:char .
+        \ printf(' :<c-u>call %s(%s, %s, %s)<cr>', l:fn, l:opt, 1, l:default)
+  execute 'nnoremap <silent> ]o' . a:char .
+        \ printf(' :<c-u>call %s(%s, %s, %s)<cr>', l:fn, l:opt, -1, l:default)
+  execute 'nnoremap <silent> yo' . a:char .
+        \ printf(' :<c-u>call %s(%s, %s, %s)<cr>', l:fn, l:opt, 0, l:default)
 endfunction
 
 " Deletes the current buffer, without changing window layout.
@@ -229,6 +235,10 @@ function! OptsStl() abort
   if &softtabstop !=# 0
     call add(l:options, 'sts=' . &softtabstop)
   endif
+  if &shiftwidth !=# 0
+    call add(l:options, 'sw=' . &shiftwidth)
+  endif
+  call add(l:options, 'ts=' . &tabstop)
   if &textwidth !=# 0
     call add(l:options, 'tw=' . &textwidth)
   endif
@@ -252,7 +262,7 @@ set relativenumber       " show relative line numbers
 set expandtab            " convert tabs to spaces
 set autoindent           " indent newlines using prededing line indent
 set tabstop=2            " 2 spaces for tab (and expandtab)
-set shiftwidth=2         " 2 spaces for shifting indentation
+set shiftwidth=0         " use tabstop value for shiftwidth
 set formatoptions-=t     " don't autowrap text
 set formatoptions-=c     " don't autowrap comments
 set formatoptions+=j     " remove comment leader when joining lines
@@ -629,7 +639,9 @@ noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 
 " === Option toggling ===
 " (inspired by vim-unimpaired)
-call s:CreateNumericToggleMaps('<tab>', 'softtabstop')
+call s:CreateNumericToggleMaps('<tab>', 'tabstop', &tabstop)
+call s:CreateNumericToggleMaps('<s-tab>', 'softtabstop', 0)
+call s:CreateNumericToggleMaps('>', 'shiftwidth', 0)
 nnoremap <silent> [o* :<c-u>let g:tmphls = 1<cr>
 nnoremap <silent> ]o* :<c-u>let g:tmphls = 0<cr>
 nnoremap <silent> yo* :<c-u>let g:tmphls = !get(g:, 'tmphls', 1)<cr>
@@ -725,8 +737,10 @@ let s:options = [
       \   ['#', 'number/relativenumber'],
       \   ['p', 'paste'],
       \   ['r', 'relativenumber'],
-      \   ['<tab>', 'softtabstop'],
+      \   ['>', 'shiftwidth'],
+      \   ['<s-tab>', 'softtabstop'],
       \   ['s', 'spell'],
+      \   ['<tab>', 'tabstop'],
       \   ['t', 'textwidth'],
       \   ['v', 'virtualedit'],
       \   ['w', 'wrap'],
@@ -841,10 +855,11 @@ function _G.lsp_omnifunc_sync(findstart, base)
       for _, item in ipairs(items) do
         -- The language server may return completions that don't start with
         -- base, but rather include base somewhere in the suggestion (e.g.,
-        -- "_stdio" could be a suggestion for "stdio" base). When this happens,
-        -- the longest matching substring across suggestions could be the empty
-        -- string, so using completeopt=longest would result in the base
-        -- deleted. To avoid this, only return suggestions starting with base.
+        -- "_stdio" could be a suggestion for "stdio" base). When this
+        -- happens, the longest matching substring across suggestions could be
+        -- the empty string, so using completeopt=longest would result in the
+        -- base deleted. To avoid this, only return suggestions starting with
+        -- base.
         if vim.startswith(item.word, token) then
           table.insert(result, item)
         end
