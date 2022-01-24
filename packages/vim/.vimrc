@@ -800,6 +800,8 @@ let g:ctrlp_working_path_mode = 0
 
 noremenu <silent> &Plugins.-sep2- <nop>
 noremenu <silent> &Plugins.:CtrlP<tab><c-p> :<c-u>CtrlP<cr>
+noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
+noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-b> :<c-u>CtrlPMRU<cr>
 
 " === Fugitive ===
 noremap <silent> <leader>gb :<c-u>Git blame<cr>
