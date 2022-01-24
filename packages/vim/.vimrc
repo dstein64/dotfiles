@@ -806,10 +806,12 @@ noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-b> :<c-u>CtrlPMRU<cr>
 " === Fugitive ===
 noremap <silent> <leader>gb :<c-u>Git blame<cr>
 " Show git diff for current file.
-noremap <silent> <leader>gd :<c-u>Git diff <c-r>%<cr>
+noremap <silent> <expr> <leader>gd
+      \ ':<c-u>Git diff ' . fnameescape(expand('%:p')) . '<cr>'
 noremap <silent> <leader>gD :<c-u>Git diff<cr>
 " Show git log for current file.
-noremap <silent> <leader>gl :<c-u>Git log <c-r>%<cr>
+noremap <silent> <expr> <leader>gl
+      \ ':<c-u>Git log ' . fnameescape(expand('%:p')) . '<cr>'
 noremap <silent> <leader>gL :<c-u>Git log<cr>
 
 noremenu <silent> &Plugins.-sep3- <nop>
