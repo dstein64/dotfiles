@@ -778,13 +778,46 @@ runtime ftplugin/man.vim
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
+
+" === NERDTree ===
 noremap <silent> <c-n><c-n> :<c-u>NERDTreeToggle<cr>
 noremap <silent> <c-n><c-o> :<c-u>NERDTreeFocus<cr>
 noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
+
+noremenu <silent> &Plugins.-sep1- <nop>
+noremenu <silent> &Plugins.NERDTree\ Toggle<tab><c-n><c-n>
+      \ :<c-u>NERDTreeToggle<cr>
+noremenu <silent> &Plugins.NERDTree\ Focus<tab><c-n><c-o>
+      \ :<c-u>NERDTreeFocus<cr>
+noremenu <silent> &Plugins.NERDTree\ Find<tab><c-n><c-space>
+      \ :<c-u>NERDTreeFind<cr>
+
+" === CtrlP ===
 " Enable CtrlP cross-session caching.
 let g:ctrlp_clear_cache_on_exit = 0
 " Always use Vim's working directory for CtrlP's working path.
 let g:ctrlp_working_path_mode = 0
+
+noremenu <silent> &Plugins.-sep2- <nop>
+noremenu <silent> &Plugins.CtrlP<tab><c-p> :<c-u>CtrlP<cr>
+
+" === Fugitive ===
+noremap <silent> <leader>gb :<c-u>Git blame<cr>
+" Show git diff for current file.
+noremap <silent> <leader>gd :<c-u>Git diff <c-r>%<cr>
+noremap <silent> <leader>gD :<c-u>Git diff<cr>
+" Show git log for current file.
+noremap <silent> <leader>gl :<c-u>Git log <c-r>%<cr>
+noremap <silent> <leader>gL :<c-u>Git log<cr>
+
+noremenu <silent> &Plugins.-sep3- <nop>
+noremenu <silent> &Plugins.Git\ Blame<tab><leader>gb :<c-u>Git blame<cr>
+noremenu <silent> &Plugins.Git\ Diff\ File<tab><leader>gd
+      \ :<c-u>Git diff <c-r>%<cr>
+noremenu <silent> &Plugins.Git\ Diff<tab><leader>gD :<c-u>Git diff<cr>
+noremenu <silent> &Plugins.Git\ Log\ File<tab><leader>gl
+      \ :<c-u>Git log <c-r>%<cr>
+noremenu <silent> &Plugins.Git\ Log<tab><leader>gL :<c-u>Git log<cr>
 
 " *********************************************************
 " * LSP
