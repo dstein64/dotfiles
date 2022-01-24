@@ -701,9 +701,9 @@ noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
       \ :<c-u>call <SID>Bdelete(1)<cr>
 
 noremenu <silent> &Tools.-sep- <nop>
-noremenu <silent> &Tools.&Grep<tab>:grep\ -R\ TEXT\ \.
+noremenu <silent> &Tools.&Grep<tab>:grep\ -R\ <text>\ \.
       \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
-noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ TEXT\ **/*
+noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ <text>\ **/*
       \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5), 'n')<cr>
 noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
@@ -785,11 +785,11 @@ noremap <silent> <c-n><c-o> :<c-u>NERDTreeFocus<cr>
 noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
 
 noremenu <silent> &Plugins.-sep1- <nop>
-noremenu <silent> &Plugins.NERDTree\ Toggle<tab><c-n><c-n>
+noremenu <silent> &Plugins.:NERDTreeToggle<tab><c-n><c-n>
       \ :<c-u>NERDTreeToggle<cr>
-noremenu <silent> &Plugins.NERDTree\ Focus<tab><c-n><c-o>
+noremenu <silent> &Plugins.:NERDTreeFocus<tab><c-n><c-o>
       \ :<c-u>NERDTreeFocus<cr>
-noremenu <silent> &Plugins.NERDTree\ Find<tab><c-n><c-space>
+noremenu <silent> &Plugins.:NERDTreeFind<tab><c-n><c-space>
       \ :<c-u>NERDTreeFind<cr>
 
 " === CtrlP ===
@@ -799,7 +799,7 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_working_path_mode = 0
 
 noremenu <silent> &Plugins.-sep2- <nop>
-noremenu <silent> &Plugins.CtrlP<tab><c-p> :<c-u>CtrlP<cr>
+noremenu <silent> &Plugins.:CtrlP<tab><c-p> :<c-u>CtrlP<cr>
 
 " === Fugitive ===
 noremap <silent> <leader>gb :<c-u>Git blame<cr>
@@ -811,13 +811,13 @@ noremap <silent> <leader>gl :<c-u>Git log <c-r>%<cr>
 noremap <silent> <leader>gL :<c-u>Git log<cr>
 
 noremenu <silent> &Plugins.-sep3- <nop>
-noremenu <silent> &Plugins.Git\ Blame<tab><leader>gb :<c-u>Git blame<cr>
-noremenu <silent> &Plugins.Git\ Diff\ File<tab><leader>gd
+noremenu <silent> &Plugins.:Git\ blame<tab><leader>gb :<c-u>Git blame<cr>
+noremenu <silent> &Plugins.:Git\ diff\ <curfile><tab><leader>gd
       \ :<c-u>Git diff <c-r>%<cr>
-noremenu <silent> &Plugins.Git\ Diff<tab><leader>gD :<c-u>Git diff<cr>
-noremenu <silent> &Plugins.Git\ Log\ File<tab><leader>gl
+noremenu <silent> &Plugins.:Git\ diff<tab><leader>gD :<c-u>Git diff<cr>
+noremenu <silent> &Plugins.:Git\ log\ <curfile><tab><leader>gl
       \ :<c-u>Git log <c-r>%<cr>
-noremenu <silent> &Plugins.Git\ Log<tab><leader>gL :<c-u>Git log<cr>
+noremenu <silent> &Plugins.:Git\ log<tab><leader>gL :<c-u>Git log<cr>
 
 " *********************************************************
 " * LSP
