@@ -420,6 +420,8 @@ noremap <silent> <leader><space> :<c-u>nohlsearch<bar>:echo<cr>
 noremap <silent> <leader>. :<c-u>cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
 noremap <silent> <leader>.. :<c-u>cd ..<bar>:pwd<cr>
+noremap <silent> <leader>/
+      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
 " Delete current buffer if there are no changes.
 noremap <silent> <leader><bs> :<c-u>call <SID>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
@@ -701,7 +703,7 @@ noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
       \ :<c-u>call <SID>Bdelete(1)<cr>
 
 noremenu <silent> &Tools.-sep- <nop>
-noremenu <silent> &Tools.&Grep<tab>:grep\ -R\ <text>\ \.
+noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
       \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
 noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ <text>\ **/*
       \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5), 'n')<cr>
