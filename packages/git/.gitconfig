@@ -1,2 +1,7 @@
+[alias]
+  c = commit
+  d = diff
+  l = log
+  s = status
 [core]
 	excludesfile = ~/.gitignore
