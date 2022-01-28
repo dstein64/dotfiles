@@ -3,7 +3,6 @@
   c = commit
   d = diff
   l = log
-  p = push
   s = status
 [core]
 	excludesfile = ~/.gitignore
