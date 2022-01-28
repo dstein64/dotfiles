@@ -1,4 +1,5 @@
 [alias]
+  a = add
   c = commit
   d = diff
   l = log
