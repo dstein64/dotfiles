@@ -806,25 +806,28 @@ noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
 noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
 
 " === Fugitive ===
+function! s:GitCmdFile(cmd) abort
+  let l:fname = fnameescape(expand('%:p'))
+  if !empty(l:fname)
+    execute 'Git ' . a:cmd . ' ' . l:fname
+  endif
+endfunction
+
 noremap <silent> <leader>gb :<c-u>Git blame<cr>
 " Show git diff for current file.
-noremap <silent> <expr> <leader>gd
-      \ empty(expand('%'))
-      \   ? '' : ':<c-u>Git diff ' . fnameescape(expand('%:p')) . '<cr>'
+noremap <silent> <leader>gd :<c-u>call <SID>GitCmdFile('diff')<cr>
 noremap <silent> <leader>gD :<c-u>Git diff<cr>
 " Show git log for current file.
-noremap <silent> <expr> <leader>gl
-      \ empty(expand('%'))
-      \   ? '' : ':<c-u>Git log ' . fnameescape(expand('%:p')) . '<cr>'
+noremap <silent> <leader>gl :<c-u>call <SID>GitCmdFile('log')<cr>
 noremap <silent> <leader>gL :<c-u>Git log<cr>
 
 noremenu <silent> &Plugins.-sep3- <nop>
 noremenu <silent> &Plugins.:Git\ blame<tab><leader>gb :<c-u>Git blame<cr>
 noremenu <silent> &Plugins.:Git\ diff\ <curfile><tab><leader>gd
-      \ :<c-u>Git diff <c-r>%<cr>
+      \ :<c-u>call <SID>GitCmdFile('diff')<cr>
 noremenu <silent> &Plugins.:Git\ diff<tab><leader>gD :<c-u>Git diff<cr>
 noremenu <silent> &Plugins.:Git\ log\ <curfile><tab><leader>gl
-      \ :<c-u>Git log <c-r>%<cr>
+      \ :<c-u>call <SID>GitCmdFile('log')<cr>
 noremenu <silent> &Plugins.:Git\ log<tab><leader>gL :<c-u>Git log<cr>
 
 " *********************************************************
