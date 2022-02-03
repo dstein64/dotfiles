@@ -5,4 +5,4 @@
   l = log
   s = status
 [core]
-	excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore
