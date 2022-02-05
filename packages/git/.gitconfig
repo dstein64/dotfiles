@@ -1,6 +1,6 @@
 [alias]
   a = add
-  c = commit
+  c = commit --verbose
   d = diff
   l = log
   s = status
