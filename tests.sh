@@ -15,18 +15,20 @@ cp -r "${scriptdir}/packages" .
 
 mkdir home
 HOME=home ./install.sh
-tree -a home | tee tree
+tree --charset=ascii -a home | tee tree
 
-read -r -d '' expected << END || :
+expected=$(cat << 'END'
 home
-├── .config
-│   └── nvim -> ../../packages/nvim/.config/nvim
-├── .gitconfig -> ../packages/git/.gitconfig
-├── .gitignore -> ../packages/git/.gitignore
-├── .screenrc -> ../packages/screen/.screenrc
-└── .vimrc -> ../packages/vim/.vimrc
+FAIL
+|-- .config
+|   `-- nvim -> ../../packages/nvim/.config/nvim
+|-- .gitconfig -> ../packages/git/.gitconfig
+|-- .gitignore -> ../packages/git/.gitignore
+|-- .screenrc -> ../packages/screen/.screenrc
+`-- .vimrc -> ../packages/vim/.vimrc
 
 2 directories, 4 files
 END
+)
 
 cmp tree <(echo "${expected}")
