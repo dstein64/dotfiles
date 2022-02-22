@@ -34,20 +34,22 @@ fi
 function stow {
   trap "$(shopt -p extglob)" RETURN
   shopt -s dotglob
-  source_dir="$(realpath "$1")"
-  target_dir="$(realpath "$2")"
-  target_dir_init="${3:-${target_dir}}"
+  local source_dir="$(realpath "$1")"
+  local target_dir="$(realpath "$2")"
+  local target_dir_init="${3:-${target_dir}}"
+  local source_child
   for source_child in "${source_dir}"/*; do
-    name="$(basename "${source_child}")"
+    local name="$(basename "${source_child}")"
+    local ignored
     for ignored in .DS_Store; do
       if [ "${name}" = "${ignored}" ]; then
         continue 2
       fi
     done
-    link_source="$(realpath --no-symlinks --relative-to "${target_dir}" \
+    local link_source="$(realpath --no-symlinks --relative-to "${target_dir}" \
       "${source_child}")"
-    link_path="${target_dir}/${name}"
-    link_path_relative="$(realpath --relative-to "${target_dir_init}" \
+    local link_path="${target_dir}/${name}"
+    local link_path_relative="$(realpath --relative-to "${target_dir_init}" \
       "${link_path}")"
     if [ ! -e "${link_path}" ]; then
       # No file nor directory exists. Create symbolic link.
