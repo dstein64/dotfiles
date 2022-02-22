@@ -86,10 +86,14 @@ function stow {
   done
 }
 
-target="${HOME}"
-for package in "${packages[@]}"; do
-  echo "installing '${package}'"
-  source="${scriptdir}/packages/${package}"
-  prepare "${source}" "${target}"
-  stow "${source}" "${target}"
-done
+if [ -d "${HOME}" ]; then
+  for package in "${packages[@]}"; do
+    echo "installing '${package}'"
+    source="${scriptdir}/packages/${package}"
+    prepare "${source}" "${HOME}"
+    stow "${source}" "${HOME}"
+  done
+else
+  echo "ERROR: \$HOME=${HOME}"
+  exit 1
+fi
