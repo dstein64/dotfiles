@@ -2,10 +2,9 @@
 
 set -o errexit
 
-TARGET="${HOME}"
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd "${SCRIPTDIR}/packages"
+cd "${scriptdir}/packages"
 
 for arg in "$@"; do
   if [ "$arg" == '--help' ]; then
@@ -26,9 +25,9 @@ for prog in [ basename ln readlink realpath; do
   fi
 done
 
-PACKAGES=( "$@" )
-if [ ${#PACKAGES[@]} == 0 ]; then
-  PACKAGES=( * )
+packages=( "$@" )
+if [ ${#packages[@]} == 0 ]; then
+  packages=( * )
 fi
 
 function stow {
@@ -73,8 +72,8 @@ function stow {
   done
 }
 
-for package in "${PACKAGES[@]}"; do
+for package in "${packages[@]}"; do
   echo "installing '${package}'"
-  source="${SCRIPTDIR}/packages/${package}"
+  source="${scriptdir}/packages/${package}"
   stow "${source}" "${HOME}"
 done
