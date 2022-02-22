@@ -26,4 +26,4 @@ jobs:
 
     - name: Tests
       run: |
-        ./install.sh
+        ./tests.sh
