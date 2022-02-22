@@ -31,12 +31,17 @@ if [ ${#packages[@]} == 0 ]; then
   packages=( * )
 fi
 
+# TODO: Devise a config file protocol such that the functionality here could be
+# achieved by the stow function below. For example, in nvim/.config, there could
+# be some file specifying that a symlink should not be created to .config, but
+# rather that .config should be a directory. The info in that config file would
+# be utilized, but the actual file would be skipped for stowing.
 function prepare {
   local source_dir="$(realpath "$1")"
   local target_dir="$(realpath "$2")"
   # If there is a e.g., .config directory in $source_dir, make sure this gets
   # created as a directory in $target_dir, so that it's not created as a link
-  # when stow'ing.
+  # when stowing.
   for name in .config; do
     if [ -d "${source_dir}/${name}" ] && [ ! -d "${target_dir}/${name}" ]; then
       mkdir "${target_dir}/${name}"
