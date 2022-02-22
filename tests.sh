@@ -19,7 +19,6 @@ tree --charset=ascii -a home | tee tree
 
 expected=$(cat << 'END'
 home
-FAIL
 |-- .config
 |   `-- nvim -> ../../packages/nvim/.config/nvim
 |-- .gitconfig -> ../packages/git/.gitconfig
