@@ -18,7 +18,7 @@ for arg in "$@"; do
   fi
 done
 
-for prog in [ basename ln readlink realpath; do
+for prog in [ basename ln mkdir readlink realpath; do
   if ! which "${prog}" &>/dev/null; then
     echo "missing dependency: ${prog}" >&2
     exit 1
@@ -29,6 +29,20 @@ packages=( "$@" )
 if [ ${#packages[@]} == 0 ]; then
   packages=( * )
 fi
+
+function prepare {
+  local source_dir="$(realpath "$1")"
+  local target_dir="$(realpath "$2")"
+  # If there is a e.g., .config directory in $source_dir, make sure this gets
+  # created as a directory in $target_dir, so that it's not created as a link
+  # when stow'ing.
+  for name in .config; do
+    if [ -d "${source_dir}/${name}" ] && [ ! -d "${target_dir}/${name}" ]; then
+      mkdir "${target_dir}/${name}"
+      echo "MKDIR: ${name}"
+    fi
+  done
+}
 
 function stow {
   trap "$(shopt -p extglob)" RETURN
@@ -72,8 +86,10 @@ function stow {
   done
 }
 
+target="${HOME}"
 for package in "${packages[@]}"; do
   echo "installing '${package}'"
   source="${scriptdir}/packages/${package}"
-  stow "${source}" "${HOME}"
+  prepare "${source}" "${target}"
+  stow "${source}" "${target}"
 done
