@@ -22,7 +22,7 @@ jobs:
 
     - name: Dependencies (macos)
       if: startsWith(matrix.os, 'macos-')
-      run: brew install coreutils
+      run: brew install coreutils tree
 
     - name: Tests
       run: ./tests.sh
