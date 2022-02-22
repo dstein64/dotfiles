@@ -2,6 +2,7 @@
 
 set -o errexit
 
+curdir="${PWD}"
 scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "${scriptdir}/packages"
@@ -86,6 +87,7 @@ function stow {
   done
 }
 
+cd "${curdir}"
 if [ -d "${HOME}" ]; then
   for package in "${packages[@]}"; do
     echo "installing '${package}'"
