@@ -19,7 +19,7 @@ for arg in "$@"; do
   fi
 done
 
-for prog in [ basename realpath; do
+for prog in [ basename ln readlink realpath; do
   if ! which "${prog}" &>/dev/null; then
     echo "missing dependency: ${prog}" >&2
     exit 1
