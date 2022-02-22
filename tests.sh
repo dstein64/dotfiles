@@ -18,7 +18,6 @@ HOME=home ./install.sh
 tree -a home | tee tree
 
 read -r -d '' expected << END || :
-FAIL
 home
 ├── .config
 │   └── nvim -> ../../packages/nvim/.config/nvim
