@@ -1,0 +1,25 @@
+name: build
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    # Run daily (* is a special character in YAML, so quote the string)
+    - cron:  '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Tests
+      run: |
+        ./install.sh

@@ -1,3 +1,5 @@
+[![build][badge_thumbnail]][badge_link]
+
 dotfiles
 ========
 
@@ -52,3 +54,6 @@ License
 The source code has an [MIT License](https://en.wikipedia.org/wiki/MIT_License).
 
 See [LICENSE](https://github.com/dstein64/dotfiles/blob/master/LICENSE).
+
+[badge_link]: https://github.com/dstein64/dotfiles/actions/workflows/build.yml
+[badge_thumbnail]: https://github.com/dstein64/dotfiles/actions/workflows/build.yml/badge.svg
