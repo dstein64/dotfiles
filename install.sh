@@ -39,7 +39,7 @@ function prepare {
   for name in .config; do
     if [ -d "${source_dir}/${name}" ] && [ ! -d "${target_dir}/${name}" ]; then
       mkdir "${target_dir}/${name}"
-      echo "MKDIR: ${name}"
+      echo "  MKDIR: ${name}"
     fi
   done
 }
@@ -67,7 +67,7 @@ function stow {
     if [ ! -e "${link_path}" ]; then
       # No file nor directory exists. Create symbolic link.
       ln -s "${link_source}" "${link_path}"
-      echo "LINK: ${link_path_relative} => ${link_source}"
+      echo "  LINK: ${link_path_relative} => ${link_source}"
     elif [ -L "${link_path}" ] \
         && [ "${link_source}" = "$(readlink "${link_path}")" ]; then
       # Symbolic link already exists.
@@ -81,7 +81,7 @@ function stow {
       # 2) the link path already belonging to a link pointing to some other
       # location, or 3) one of the link path or link source is a directory and
       # the other is not.
-      echo "CONFLICT: ${link_path_relative}"
+      echo "  CONFLICT: ${link_path_relative}"
     fi
   done
 }
