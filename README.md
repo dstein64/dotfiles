@@ -6,10 +6,6 @@ My personal dotfiles.
 Installation
 ------------
 
-#### Requirements
-
-- `stow`
-
 #### Install
 
 ```sh
