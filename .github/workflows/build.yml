@@ -20,6 +20,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Dependencies (macos)
+      if: startsWith(matrix.os, 'macos-')
+      run: brew install coreutils
+
     - name: Tests
       run: |
         ./install.sh
