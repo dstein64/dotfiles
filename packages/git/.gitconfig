@@ -6,3 +6,5 @@
   s = status
 [core]
   excludesfile = ~/.gitignore
+[pull]
+  ff = only
