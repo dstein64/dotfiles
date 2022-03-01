@@ -572,6 +572,10 @@ noremap q; q:
 " Reselect visual selection after shifting
 vnoremap < <gv
 vnoremap > >gv
+" Substitute the word under the cursor.
+" WARN: The visual mode mapping clobbers the 'z' named register.
+nnoremap <leader>% :%s/\<<c-r>=expand('<cword>')<cr>\>//g<left><left>
+vnoremap <leader>% "zy:%s/<c-r>z//g<left><left>
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
@@ -707,9 +711,9 @@ noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
 
 noremenu <silent> &Tools.-sep- <nop>
 noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
-      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
+      \ :<c-u>call feedkeys(':grep -R  .' . repeat(<SID>Left(), 2), 'n')<cr>
 noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ <text>\ **/*
-      \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<SID>Left(), 5), 'n')<cr>
+      \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<SID>Left(), 5), 'n')<cr>
 noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
@@ -720,6 +724,8 @@ noremenu <silent> &Tools.Previous\ File<tab>[f
       \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
 noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
+noremenu <silent> &Tools.Substitute\ Word<tab><leader>%
+      \ :<c-u>call feedkeys('<leader>%', 'm')<cr>
 
 let s:options = [
       \   ['b', 'background'],
