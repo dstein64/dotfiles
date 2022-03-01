@@ -576,6 +576,12 @@ vnoremap > >gv
 " WARN: The visual mode mapping clobbers the 'z' named register.
 nnoremap <leader>% :%s/\<<c-r>=expand('<cword>')<cr>\>//g<left><left>
 vnoremap <leader>% "zy:%s/<c-r>z//g<left><left>
+" Move visual selection.
+vnoremap <c-j> :move '>+1<cr>gv
+vnoremap <c-k> :move '<-2<cr>gv
+" Move visual selection, with re-formatting.
+vnoremap <m-j> :move '>+1<cr>gv=gv
+vnoremap <m-k> :move '<-2<cr>gv=gv
 
 " === Neovim terminal mappings ===
 " Configure some of Vim's special terminal mappings in Neovim. Unlike Vim,
@@ -709,11 +715,15 @@ noremenu <silent> B&uffer.&Delete\ (keep\ window)<tab><leader><bs>
 noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
       \ :<c-u>call <SID>Bdelete(1)<cr>
 
-noremenu <silent> &Tools.-sep- <nop>
+" === External Searching ===
+noremenu <silent> &Tools.-sep1- <nop>
 noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
       \ :<c-u>call feedkeys(':grep -R  .' . repeat(<SID>Left(), 2), 'n')<cr>
 noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ <text>\ **/*
       \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<SID>Left(), 5), 'n')<cr>
+
+" === Navigation ===
+noremenu <silent> &Tools.-sep2- <nop>
 noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
@@ -724,8 +734,17 @@ noremenu <silent> &Tools.Previous\ File<tab>[f
       \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
 noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
+
+" === Buffer Modification Functionality ===
+noremenu <silent> &Tools.-sep3- <nop>
 noremenu <silent> &Tools.Substitute\ Word<tab><leader>%
       \ :<c-u>call feedkeys('<leader>%', 'm')<cr>
+" WARN: The selection movement menu entries are not functional, but rather
+" serve as reminders.
+noremenu <silent> &Tools.Move\ Selection\ Down<tab><c-j> <nop>
+noremenu <silent> &Tools.Move\ Selection\ Up<tab><c-k> <nop>
+noremenu <silent> &Tools.Move\ Selection\ Down\ (format)<tab><m-j> <nop>
+noremenu <silent> &Tools.Move\ Selection\ Up\ (format)<tab><m-k> <nop>
 
 let s:options = [
       \   ['b', 'background'],
