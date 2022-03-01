@@ -394,6 +394,9 @@ augroup autocommands
   autocmd InsertEnter * if !&paste && v:hlsearch && get(g:, 'tmphls', 1)
         \ | call feedkeys("\<Plug>(NoHls)") | endif
 
+  " Create non-existent directories when saving files.
+  autocmd BufWritePre * call mkdir(expand('<afile>:p:h'), 'p')
+
   " === FileType ===
   " FileType autocommands are used in preference to ftplugin/ and
   " after/ftplugin, to 1) keep settings contained to .vimrc and avoid
