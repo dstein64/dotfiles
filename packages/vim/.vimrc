@@ -77,6 +77,14 @@ function! s:GotoComment(reverse) abort
   call search(l:pattern, l:flags)
 endfunction
 
+function! s:GotoLongLine(reverse) abort
+  if &textwidth ==# 0 | return | endif
+  let l:flags = 'W'
+  if a:reverse | let l:flags .= 'b' | endif
+  let l:pattern = printf('^.\{%d\}', &textwidth + 1)
+  call search(l:pattern, l:flags)
+endfunction
+
 " :edit the sibling file at the specified offset to the current file. '^' and
 " '$' can be used to edit the first and last sibling, respectively.
 function! s:EditSiblingFile(offset) abort
@@ -656,6 +664,8 @@ noremap <silent> [n :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
 noremap <silent> ]n :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremap <silent> [, :<c-u>call <SID>GotoComment(1)<cr>
 noremap <silent> ], :<c-u>call <SID>GotoComment(0)<cr>
+noremap <silent> [t :<c-u>call <SID>GotoLongLine(1)<cr>
+noremap <silent> ]t :<c-u>call <SID>GotoLongLine(0)<cr>
 noremap <silent> [f :<c-u>call <SID>EditSiblingFile(-v:count1)<cr>
 noremap <silent> ]f :<c-u>call <SID>EditSiblingFile(v:count1)<cr>
 noremap <silent> [F :<c-u>call <SID>EditSiblingFile('^')<cr>
@@ -741,6 +751,10 @@ noremenu <silent> &Tools.Next\ Comment<tab>]n
       \ :<c-u>call <SID>GotoComment(0)<cr>
 noremenu <silent> &Tools.Previous\ Comment<tab>[n
       \ :<c-u>call <SID>GotoComment(1)<cr>
+noremenu <silent> &Tools.Next\ Long\ Line<tab>]t
+      \ :<c-u>call <SID>GotoLongLine(0)<cr>
+noremenu <silent> &Tools.Previous\ Long\ Line<tab>[t
+      \ :<c-u>call <SID>GotoLongLine(1)<cr>
 noremenu <silent> &Tools.Next\ File<tab>]f
       \ :<c-u>call <SID>EditSiblingFile(1)<cr>
 noremenu <silent> &Tools.Previous\ File<tab>[f
