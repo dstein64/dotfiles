@@ -747,9 +747,9 @@ noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
       \ :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
-noremenu <silent> &Tools.Next\ Comment<tab>]n
+noremenu <silent> &Tools.Next\ Comment<tab>],
       \ :<c-u>call <SID>GotoComment(0)<cr>
-noremenu <silent> &Tools.Previous\ Comment<tab>[n
+noremenu <silent> &Tools.Previous\ Comment<tab>[,
       \ :<c-u>call <SID>GotoComment(1)<cr>
 noremenu <silent> &Tools.Next\ Long\ Line<tab>]t
       \ :<c-u>call <SID>GotoLongLine(0)<cr>
