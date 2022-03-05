@@ -70,6 +70,13 @@ function! s:GotoConflictOrDiff(reverse) abort
   call search('^\(@@ .* @@\|[<=>]\{7\}\)', l:flags)
 endfunction
 
+function! s:GotoComment(reverse) abort
+  let l:flags = 'W'
+  if a:reverse | let l:flags .= 'b' | endif
+  let l:pattern = '\V' . substitute(&commentstring, '%s', '\\.\\*', '')
+  call search(l:pattern, l:flags)
+endfunction
+
 " :edit the sibling file at the specified offset to the current file. '^' and
 " '$' can be used to edit the first and last sibling, respectively.
 function! s:EditSiblingFile(offset) abort
@@ -647,6 +654,8 @@ noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
 noremap <silent> [n :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
 noremap <silent> ]n :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
+noremap <silent> [, :<c-u>call <SID>GotoComment(1)<cr>
+noremap <silent> ], :<c-u>call <SID>GotoComment(0)<cr>
 noremap <silent> [f :<c-u>call <SID>EditSiblingFile(-v:count1)<cr>
 noremap <silent> ]f :<c-u>call <SID>EditSiblingFile(v:count1)<cr>
 noremap <silent> [F :<c-u>call <SID>EditSiblingFile('^')<cr>
@@ -728,6 +737,10 @@ noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
       \ :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
+noremenu <silent> &Tools.Next\ Comment<tab>]n
+      \ :<c-u>call <SID>GotoComment(0)<cr>
+noremenu <silent> &Tools.Previous\ Comment<tab>[n
+      \ :<c-u>call <SID>GotoComment(1)<cr>
 noremenu <silent> &Tools.Next\ File<tab>]f
       \ :<c-u>call <SID>EditSiblingFile(1)<cr>
 noremenu <silent> &Tools.Previous\ File<tab>[f
