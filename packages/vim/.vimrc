@@ -279,7 +279,8 @@ function! s:GitCmd(args, ...) abort
     split
   endif
   enew
-  execute 'read! git ' . a:args
+  " 'silent' is used to suppress 'X more lines'.
+  silent execute 'read! git ' . a:args
   keepjumps normal! ggdd0
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
   nnoremap <buffer> <silent> <cr>
