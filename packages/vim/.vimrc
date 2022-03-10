@@ -267,6 +267,25 @@ function! OptsStl() abort
   return l:result
 endfunction
 
+" === Git ===
+
+" Signature:
+"   GitCmd(args, [split])
+function! s:GitCmd(args, ...) abort
+  if !executable('git')
+    throw 'git unavailable'
+  endif
+  if get(a:, 1, 1)
+    split
+  endif
+  enew
+  execute 'read! git ' . a:args
+  keepjumps normal! ggdd0
+  setlocal ft=git nomodifiable buftype=nofile nobuflisted
+  nnoremap <buffer> <silent> <cr>
+        \ :<c-u>call <SID>GitCmd('show ' . expand('<cword>'), 0)<cr>
+endfunction
+
 " *********************************************************
 " * Settings
 " *********************************************************
@@ -384,6 +403,8 @@ set guicursor+=a:blinkon0
 command! Tags !ctags -R .
 " Open a terminal.
 command! Terminal call s:Terminal()
+command! -nargs=* GitDiff call s:GitCmd('diff <args>')
+command! -nargs=* GitLog call s:GitCmd('log <args>')
 
 " *********************************************************
 " * Autocommands
@@ -456,6 +477,16 @@ noremap <silent> <leader>C "+C
 noremap <silent> <leader>d "+d
 " Delete remaining line to system clipboard.
 noremap <silent> <leader>D "+D
+" Show git diff for current file.
+nnoremap <silent> <leader>gd
+      \ :<c-u>call <SID>GitCmd('diff ' . fnameescape(expand('%:p')))<cr>
+" Show git diff for workspace.
+nnoremap <silent> <leader>gD :<c-u>call <SID>GitCmd('diff')<cr>
+" Show git log for current file.
+nnoremap <silent> <leader>gl
+      \ :<c-u>call <SID>GitCmd('log ' . fnameescape(expand('%:p')))<cr>
+" Show git log for workspace.
+nnoremap <silent> <leader>gL :<c-u>call <SID>GitCmd('log')<cr>
 " Navigate to previous tab.
 noremap <silent> <leader>h :<c-u>tabprevious<cr>
 " Navigate to next tab.
@@ -773,6 +804,15 @@ noremenu <silent> &Tools.Move\ Selection\ Up<tab><c-k> <nop>
 noremenu <silent> &Tools.Move\ Selection\ Down\ (format)<tab><m-j> <nop>
 noremenu <silent> &Tools.Move\ Selection\ Up\ (format)<tab><m-k> <nop>
 
+" === Git ===
+noremenu <silent> &Tools.-sep4- <nop>
+noremenu <silent> &Tools.Git\ diff\ <curfile><tab><leader>gd
+      \ :<c-u>call <SID>GitCmdFile('diff')<cr>
+noremenu <silent> &Tools.Git\ diff<tab><leader>gD :<c-u>Git diff<cr>
+noremenu <silent> &Tools.Git\ log\ <curfile><tab><leader>gl
+      \ :<c-u>call <SID>GitCmdFile('log')<cr>
+noremenu <silent> &Tools.Git\ log<tab><leader>gL :<c-u>Git log<cr>
+
 let s:options = [
       \   ['b', 'background'],
       \   ['1', 'binary'],
@@ -861,29 +901,10 @@ noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
 noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
 
 " === Fugitive ===
-function! s:GitCmdFile(cmd) abort
-  let l:fname = fnameescape(expand('%:p'))
-  if !empty(l:fname)
-    execute 'Git ' . a:cmd . ' ' . l:fname
-  endif
-endfunction
-
 noremap <silent> <leader>gb :<c-u>Git blame<cr>
-" Show git diff for current file.
-noremap <silent> <leader>gd :<c-u>call <SID>GitCmdFile('diff')<cr>
-noremap <silent> <leader>gD :<c-u>Git diff<cr>
-" Show git log for current file.
-noremap <silent> <leader>gl :<c-u>call <SID>GitCmdFile('log')<cr>
-noremap <silent> <leader>gL :<c-u>Git log<cr>
 
 noremenu <silent> &Plugins.-sep3- <nop>
 noremenu <silent> &Plugins.:Git\ blame<tab><leader>gb :<c-u>Git blame<cr>
-noremenu <silent> &Plugins.:Git\ diff\ <curfile><tab><leader>gd
-      \ :<c-u>call <SID>GitCmdFile('diff')<cr>
-noremenu <silent> &Plugins.:Git\ diff<tab><leader>gD :<c-u>Git diff<cr>
-noremenu <silent> &Plugins.:Git\ log\ <curfile><tab><leader>gl
-      \ :<c-u>call <SID>GitCmdFile('log')<cr>
-noremenu <silent> &Plugins.:Git\ log<tab><leader>gL :<c-u>Git log<cr>
 
 " *********************************************************
 " * LSP
