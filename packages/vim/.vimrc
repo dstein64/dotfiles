@@ -286,6 +286,8 @@ function! s:GitCmd(args, ...) abort
         \ :<c-u>call system(['git', 'show', expand('<cword>')])
         \ <bar> if v:shell_error ==# 0
         \ <bar>   call <SID>GitCmd('show ' . expand('<cword>'), 0)
+        \ <bar> else
+        \ <bar>   execute 'normal! +'
         \ <bar> endif<cr>
 endfunction
 
