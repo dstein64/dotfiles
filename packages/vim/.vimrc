@@ -283,7 +283,10 @@ function! s:GitCmd(args, ...) abort
   keepjumps normal! ggdd0
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
   nnoremap <buffer> <silent> <cr>
-        \ :<c-u>call <SID>GitCmd('show ' . expand('<cword>'), 0)<cr>
+        \ :<c-u>call system(['git', 'show', expand('<cword>')])
+        \ <bar> if v:shell_error ==# 0
+        \ <bar>   call <SID>GitCmd('show ' . expand('<cword>'), 0)
+        \ <bar> endif<cr>
 endfunction
 
 " *********************************************************
