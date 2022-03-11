@@ -283,6 +283,10 @@ function! s:GitCmd(args, ...) abort
   silent execute 'read! git ' . a:args
   keepjumps normal! ggdd0
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
+  " When navigating away and then back to a buffer (e.g., <c-^><c-^> to edit
+  " alternate file consecutively), buflisted is enabled. Create an autocommand
+  " to re-disable.
+  autocmd BufEnter <buffer> set nobuflisted
   nnoremap <buffer> <silent> <cr>
         \ :<c-u>call system(['git', 'show', expand('<cword>')])
         \ <bar> if v:shell_error ==# 0
