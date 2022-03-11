@@ -489,12 +489,16 @@ noremap <silent> <leader>d "+d
 noremap <silent> <leader>D "+D
 " Show git diff for current file.
 nnoremap <silent> <leader>gd
-      \ :<c-u>call <SID>GitCmd('diff ' . fnameescape(expand('%:p')))<cr>
+      \ :<c-u>if !empty(expand('%'))
+      \ <bar>   call <SID>GitCmd('diff ' . fnameescape(expand('%:p')))
+      \ <bar> endif<cr>
 " Show git diff for workspace.
 nnoremap <silent> <leader>gD :<c-u>call <SID>GitCmd('diff')<cr>
 " Show git log for current file.
 nnoremap <silent> <leader>gl
-      \ :<c-u>call <SID>GitCmd('log ' . fnameescape(expand('%:p')))<cr>
+      \ :<c-u>if !empty(expand('%'))
+      \ <bar>   call <SID>GitCmd('log ' . fnameescape(expand('%:p')))
+      \ <bar> endif<cr>
 " Show git log for workspace.
 nnoremap <silent> <leader>gL :<c-u>call <SID>GitCmd('log')<cr>
 " Navigate to previous tab.
