@@ -276,7 +276,7 @@ function! s:GitCmd(args, ...) abort
     throw 'git unavailable'
   endif
   if get(a:, 1, 1)
-    split
+    topleft split
   endif
   enew
   " 'silent' is used to suppress 'X more lines'.
