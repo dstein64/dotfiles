@@ -285,7 +285,7 @@ function! s:GitCmd(args, ...) abort
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
   " Hiding the buffer leaks memory, but allows navigating away and back.
   " TODO: Rather, create temporary files with bufhidden=delete and a
-  " BufWipeout autocmd that deletes the file. Also do this for :GitBlame.
+  " BufWipeout autocmd that deletes the file.
   setlocal bufhidden=hide
   " When navigating away and then back to a buffer (e.g., <c-^><c-^> to edit
   " alternate file consecutively), buflisted is enabled. Create an autocommand
@@ -322,7 +322,7 @@ function! s:GitBlame() abort
   setlocal cursorbind scrollbind nowrap nofoldenable
   let l:view = winsaveview()
   let l:file = fnameescape(expand('%:p'))
-  let l:blame = systemlist(['git', 'blame', '--porcelain', l:file])
+  let l:blame = systemlist('git blame --porcelain ' . l:file)
   let l:curline = line('.')
   call reverse(l:blame)
   " Maps each commit to a dictionary of associated information.
@@ -368,8 +368,34 @@ function! s:GitBlame() abort
   enew
   let l:width = 0
   let b:commits = []
-  for l:item in l:items
+  let b:match_ids = []
+  let l:groups = [
+        \   'Comment',
+        \   'Constant',
+        \   'Identifier',
+        \   'Statement',
+        \   'Type',
+        \ ]
+  " WARN: The same commit doesn't always get the same color. It's changed when
+  " keeping the color would cause the same color for two adjacent different
+  " commits.
+  let l:groupidx = 0
+  let l:groupidx_lookup = {}
+  for l:idx in range(len(l:items))
+    let l:item = l:items[l:idx]
     let l:commit = l:item.commit
+    if l:idx ># 0
+      let l:prior_commit = l:items[l:idx - 1].commit
+      if l:commit !=# l:prior_commit
+        if has_key(l:groupidx_lookup, l:commit)
+              \ && l:groupidx_lookup[l:commit] !=# l:groupidx_lookup[l:prior_commit]
+          let l:groupidx = l:groupidx_lookup[l:commit]
+        else
+          let l:groupidx = (l:groupidx + 1) % len(l:groups)
+        endif
+      endif
+    endif
+    let l:groupidx_lookup[l:commit] = l:groupidx
     call add(b:commits, l:commit)
     let l:info = l:commits[l:commit]
     let l:date = strftime('%Y-%m-%d', l:info['author-time'])
@@ -377,9 +403,16 @@ function! s:GitBlame() abort
     if strchars(l:author) ># 20
       let l:author = strcharpart(l:author, 0, 19) . '>'
     endif
-    let l:line = l:item.commit[:7] . ' ' . l:date . ' ' . l:author
+    let l:line = l:commit[:7] . ' ' . l:date . ' ' . l:author
     let l:width = max([l:width, len(l:line)])
     call setline(l:item['final'], l:line)
+    let l:group = l:groups[l:groupidx]
+    call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
+    call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
+    if l:commit ==# '0000000000000000000000000000000000000000'
+      call add(b:match_ids,
+            \ matchaddpos('Ignore', [[l:item['final'], 1, len(l:line)]]))
+    endif
   endfor
   " Configure the blame window to have the same view as the source.
   call winrestview(l:view)
@@ -391,6 +424,10 @@ function! s:GitBlame() abort
         \ printf('call setwinvar(%d, "&cursorbind", %d)', win_getid(), 0))
   call add(l:restore,
         \ printf('call setwinvar(%d, "&scrollbind", %d)', win_getid(), 0))
+  " Delete the matches, since they are bound to the window, not the buffer.
+  call add(l:restore, printf(
+        \ 'call map(getbufvar(%d, "match_ids"), {_, val -> matchdelete(val, %d)})',
+        \ bufnr(), win_getid()))
   execute 'autocmd BufWinLeave <buffer> ' . join(l:restore, ' | ')
   " The commit hash doesn't have to be retrieved prior to splitting since the
   " window buffer after splitting still has b:commits.
