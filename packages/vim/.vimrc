@@ -289,12 +289,10 @@ function! s:GitCmd(args, ...) abort
   " alternate file consecutively), buflisted is enabled. Create an autocommand
   " to re-disable.
   autocmd BufEnter <buffer> set nobuflisted
-  nnoremap <buffer> <silent> <cr>
+  nnoremap <buffer> <silent> K
         \ :<c-u>call system(['git', 'show', expand('<cword>')])
         \ <bar> if v:shell_error ==# 0
         \ <bar>   call <SID>GitCmd('show ' . expand('<cword>'), 0)
-        \ <bar> else
-        \ <bar>   execute 'normal! +'
         \ <bar> endif<cr>
 endfunction
 
@@ -386,7 +384,6 @@ function! s:GitBlame() abort
   setlocal nowrap nomodifiable buftype=nofile nobuflisted bufhidden=wipe
   setlocal nonumber norelativenumber signcolumn=no
   setlocal cursorbind scrollbind nowrap nofoldenable
-  setlocal keywordprg=git\ show
   execute 'vertical resize ' . l:width
   call add(l:restore,
         \ printf('call setwinvar(%d, "&cursorbind", %d)', win_getid(), 0))
@@ -395,13 +392,11 @@ function! s:GitBlame() abort
   execute 'autocmd BufWinLeave <buffer> ' . join(l:restore, ' | ')
   " The commit hash doesn't have to be retrieved prior to splitting since the
   " window buffer after splitting still has b:commits.
-  nnoremap <buffer> <silent> <cr>
+  nnoremap <buffer> <silent> K
         \ :<c-u>if b:commits[line('.') - 1]
         \           !=# '0000000000000000000000000000000000000000'
         \ <bar>   topleft split
         \ <bar>   call <SID>GitCmd('show ' . b:commits[line('.') - 1], 0)
-        \ <bar> else
-        \ <bar>   execute 'normal! +'
         \ <bar> endif<cr>
 endfunction
 
