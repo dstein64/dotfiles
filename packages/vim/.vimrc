@@ -284,6 +284,8 @@ function! s:GitCmd(args, ...) abort
   keepjumps normal! ggdd0
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
   " Hiding the buffer leaks memory, but allows navigating away and back.
+  " TODO: Rather, create temporary files with bufhidden=delete and a
+  " BufWipeout autocmd that deletes the file. Also do this for :GitBlame.
   setlocal bufhidden=hide
   " When navigating away and then back to a buffer (e.g., <c-^><c-^> to edit
   " alternate file consecutively), buflisted is enabled. Create an autocommand
