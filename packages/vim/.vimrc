@@ -400,6 +400,8 @@ function! s:GitBlame() abort
         \           !=# '0000000000000000000000000000000000000000'
         \ <bar>   topleft split
         \ <bar>   call <SID>GitCmd('show ' . b:commits[line('.') - 1], 0)
+        \ <bar> else
+        \ <bar>   execute 'normal! +'
         \ <bar> endif<cr>
 endfunction
 
