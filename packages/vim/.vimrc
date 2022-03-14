@@ -283,6 +283,8 @@ function! s:GitCmd(args, ...) abort
   silent execute 'read! git ' . a:args
   keepjumps normal! ggdd0
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
+  " Hiding the buffer leaks memory, but allows navigating away and back.
+  setlocal bufhidden=hide
   " When navigating away and then back to a buffer (e.g., <c-^><c-^> to edit
   " alternate file consecutively), buflisted is enabled. Create an autocommand
   " to re-disable.
@@ -293,6 +295,111 @@ function! s:GitCmd(args, ...) abort
         \ <bar>   call <SID>GitCmd('show ' . expand('<cword>'), 0)
         \ <bar> else
         \ <bar>   execute 'normal! +'
+        \ <bar> endif<cr>
+endfunction
+
+" WARN: Existing scrollbind/cursorbind is turned off and not restored.
+function! s:GitBlame() abort
+  if empty(expand('%'))
+    return
+  endif
+  if !executable('git')
+    throw 'git unavailable'
+  endif
+  for l:winnr in range(winnr('$'))
+    call setwinvar(l:winnr, '&cursorbind', 0)
+    call setwinvar(l:winnr, '&scrollbind', 0)
+  endfor
+  let l:winid = win_getid()
+  let l:restore = [
+        \   printf('call setwinvar(%d, "&wrap", %d)', l:winid, &l:wrap),
+        \   printf(
+        \     'call setwinvar(%d, "&foldenable", %d)', l:winid, &l:foldenable),
+        \   printf('call setwinvar(%d, "&cursorbind", %d)', l:winid, 0),
+        \   printf('call setwinvar(%d, "&scrollbind", %d)', l:winid, 0),
+        \ ]
+  keepjumps normal! 0
+  setlocal cursorbind scrollbind nowrap nofoldenable
+  let l:view = winsaveview()
+  let l:file = fnameescape(expand('%:p'))
+  let l:blame = systemlist(['git', 'blame', '--porcelain', l:file])
+  let l:curline = line('.')
+  call reverse(l:blame)
+  " Maps each commit to a dictionary of associated information.
+  let l:commits = {}
+  let l:items = []
+  while len(l:blame) ># 0
+    let l:info = {}
+    let l:header = remove(l:blame, -1)
+    let l:split = split(l:header)
+    let l:commit = l:split[0]
+    let l:group_lines = str2nr(l:split[3])
+    while 1
+      let l:line = remove(l:blame, -1)
+      if l:line =~# '^\t'
+        call add(l:blame, l:line)
+        call add(l:blame, l:header)
+        if !empty(l:info)
+          let l:commits[l:commit] = l:info
+        endif
+        break
+      endif
+      let l:idx = stridx(l:line, ' ')
+      let l:key = l:line[:l:idx - 1]
+      let l:val = l:line[l:idx + 1:]
+      let l:info[l:key] = l:val
+    endwhile
+    for l:idx in range(l:group_lines)
+      let l:header = remove(l:blame, -1)
+      let l:split = split(l:header)
+      let l:line = remove(l:blame, -1)[1:]
+      " 'original': "the line number of the line in the original file"
+      " 'final': "the line number of the line in the final file"
+      let l:item = {
+            \   'commit': l:commit,
+            \   'original': str2nr(l:split[1]),
+            \   'final': str2nr(l:split[2]),
+            \   'line': l:line
+            \ }
+      call add(l:items, l:item)
+    endfor
+  endwhile
+  vsplit
+  enew
+  let l:width = 0
+  let b:commits = []
+  for l:item in l:items
+    let l:commit = l:item.commit
+    call add(b:commits, l:commit)
+    let l:info = l:commits[l:commit]
+    let l:date = strftime('%Y-%m-%d', l:info['author-time'])
+    let l:author = l:info.author
+    if strchars(l:author) ># 20
+      let l:author = strcharpart(l:author, 0, 19) . '>'
+    endif
+    let l:line = l:item.commit[:7] . ' ' . l:date . ' ' . l:author
+    let l:width = max([l:width, len(l:line)])
+    call setline(l:item['final'], l:line)
+  endfor
+  " Configure the blame window to have the same view as the source.
+  call winrestview(l:view)
+  setlocal nowrap nomodifiable buftype=nofile nobuflisted bufhidden=wipe
+  setlocal nonumber norelativenumber signcolumn=no
+  setlocal cursorbind scrollbind nowrap nofoldenable
+  setlocal keywordprg=git\ show
+  execute 'vertical resize ' . l:width
+  call add(l:restore,
+        \ printf('call setwinvar(%d, "&cursorbind", %d)', win_getid(), 0))
+  call add(l:restore,
+        \ printf('call setwinvar(%d, "&scrollbind", %d)', win_getid(), 0))
+  execute 'autocmd BufWinLeave <buffer> ' . join(l:restore, ' | ')
+  " The commit hash doesn't have to be retrieved prior to splitting since the
+  " window buffer after splitting still has b:commits.
+  nnoremap <buffer> <silent> <cr>
+        \ :<c-u>if b:commits[line('.') - 1]
+        \           !=# '0000000000000000000000000000000000000000'
+        \ <bar>   topleft split
+        \ <bar>   call <SID>GitCmd('show ' . b:commits[line('.') - 1], 0)
         \ <bar> endif<cr>
 endfunction
 
@@ -415,6 +522,7 @@ command! Tags !ctags -R .
 command! Terminal call s:Terminal()
 command! -nargs=* GitDiff call s:GitCmd('diff <args>')
 command! -nargs=* GitLog call s:GitCmd('log <args>')
+command! -nargs=* GitBlame call s:GitBlame()
 
 " *********************************************************
 " * Autocommands
@@ -487,6 +595,8 @@ noremap <silent> <leader>C "+C
 noremap <silent> <leader>d "+d
 " Delete remaining line to system clipboard.
 noremap <silent> <leader>D "+D
+" Show git blame for current file.
+nnoremap <silent> <leader>gb :<c-u>call <SID>GitBlame()<cr>
 " Show git diff for current file.
 nnoremap <silent> <leader>gd
       \ :<c-u>if !empty(expand('%'))
@@ -820,12 +930,13 @@ noremenu <silent> &Tools.Move\ Selection\ Up\ (format)<tab><m-k> <nop>
 
 " === Git ===
 noremenu <silent> &Tools.-sep4- <nop>
-noremenu <silent> &Tools.Git\ diff\ <curfile><tab><leader>gd
+noremenu <silent> &Tools.Git\ Blame<tab><leader>gb :<c-u>GitBlame<cr>
+noremenu <silent> &Tools.Git\ Diff\ <curfile><tab><leader>gd
       \ :<c-u>call <SID>GitCmdFile('diff')<cr>
-noremenu <silent> &Tools.Git\ diff<tab><leader>gD :<c-u>Git diff<cr>
-noremenu <silent> &Tools.Git\ log\ <curfile><tab><leader>gl
+noremenu <silent> &Tools.Git\ Diff<tab><leader>gD :<c-u>GitDiff<cr>
+noremenu <silent> &Tools.Git\ Log\ <curfile><tab><leader>gl
       \ :<c-u>call <SID>GitCmdFile('log')<cr>
-noremenu <silent> &Tools.Git\ log<tab><leader>gL :<c-u>Git log<cr>
+noremenu <silent> &Tools.Git\ Log<tab><leader>gL :<c-u>GitLog<cr>
 
 let s:options = [
       \   ['b', 'background'],
@@ -913,12 +1024,6 @@ noremenu <silent> &Plugins.-sep2- <nop>
 noremenu <silent> &Plugins.:CtrlP<tab><c-p> :<c-u>CtrlP<cr>
 noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
 noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
-
-" === Fugitive ===
-noremap <silent> <leader>gb :<c-u>Git blame<cr>
-
-noremenu <silent> &Plugins.-sep3- <nop>
-noremenu <silent> &Plugins.:Git\ blame<tab><leader>gb :<c-u>Git blame<cr>
 
 " *********************************************************
 " * LSP
