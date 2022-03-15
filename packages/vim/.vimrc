@@ -418,11 +418,13 @@ function! s:GitBlame(...) abort
       "           63967c60feb2034158bdbcf061c171e3bb4d8b99/
       "           autoload/startuptime.vim#L910-L926
       let l:group = l:groups[l:groupidx]
-      call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
-      call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
       if l:commit ==# '0000000000000000000000000000000000000000'
+        " Not committed yet.
         call add(b:match_ids,
               \ matchaddpos('Ignore', [[l:item['final'], 1, len(l:line)]]))
+      else
+        call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
+        call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
       endif
     endif
   endfor
