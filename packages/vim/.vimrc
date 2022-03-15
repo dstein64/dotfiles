@@ -411,6 +411,12 @@ function! s:GitBlame(...) abort
     let l:width = max([l:width, len(l:line)])
     call setline(l:item['final'], l:line)
     if l:color
+      " TODO: Experiment to see if prop_add/nvim_buf_add_highlight is faster
+      " (for user interaction e.g., scrolling buffer) than matchaddpos.
+      " See:
+      "   https://github.com/dstein64/vim-startuptime/blob/
+      "           63967c60feb2034158bdbcf061c171e3bb4d8b99/
+      "           autoload/startuptime.vim#L910-L926
       let l:group = l:groups[l:groupidx]
       call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
       call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
