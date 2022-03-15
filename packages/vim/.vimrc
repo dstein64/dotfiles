@@ -292,9 +292,9 @@ function! s:GitCmd(args, ...) abort
   " to re-disable.
   autocmd BufEnter <buffer> set nobuflisted
   nnoremap <buffer> <silent> K
-        \ :<c-u>call system('git show ' . fnameescape(expand('<cword>')))
+        \ :<c-u>call system('git show ' . expand('<cword>'))
         \ <bar> if v:shell_error ==# 0
-        \ <bar>   call <SID>GitCmd('show ' . fnameescape(expand('<cword>')), 0)
+        \ <bar>   call <SID>GitCmd('show ' . expand('<cword>'), 0)
         \ <bar> endif<cr>
 endfunction
 
