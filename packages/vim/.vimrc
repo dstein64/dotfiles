@@ -299,13 +299,17 @@ function! s:GitCmd(args, ...) abort
 endfunction
 
 " WARN: Existing scrollbind/cursorbind is turned off and not restored.
-function! s:GitBlame() abort
+" Color can be disabled, since it slows scrolling for large buffers.
+" Signature:
+"   GitBlame([color])
+function! s:GitBlame(...) abort
   if empty(expand('%'))
     return
   endif
   if !executable('git')
     throw 'git unavailable'
   endif
+  let l:color = get(a:, 1, 1)
   for l:winnr in range(winnr('$'))
     call setwinvar(l:winnr, '&cursorbind', 0)
     call setwinvar(l:winnr, '&scrollbind', 0)
@@ -406,12 +410,14 @@ function! s:GitBlame() abort
     let l:line = l:commit[:7] . ' ' . l:date . ' ' . l:author
     let l:width = max([l:width, len(l:line)])
     call setline(l:item['final'], l:line)
-    let l:group = l:groups[l:groupidx]
-    call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
-    call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
-    if l:commit ==# '0000000000000000000000000000000000000000'
-      call add(b:match_ids,
-            \ matchaddpos('Ignore', [[l:item['final'], 1, len(l:line)]]))
+    if l:color
+      let l:group = l:groups[l:groupidx]
+      call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
+      call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
+      if l:commit ==# '0000000000000000000000000000000000000000'
+        call add(b:match_ids,
+              \ matchaddpos('Ignore', [[l:item['final'], 1, len(l:line)]]))
+      endif
     endif
   endfor
   " Configure the blame window to have the same view as the source.
@@ -558,7 +564,7 @@ command! Tags !ctags -R .
 command! Terminal call s:Terminal()
 command! -nargs=* GitDiff call s:GitCmd('diff <args>')
 command! -nargs=* GitLog call s:GitCmd('log <args>')
-command! -nargs=* GitBlame call s:GitBlame()
+command! -bang GitBlame call s:GitBlame('<bang>' !=# '!')
 
 " *********************************************************
 " * Autocommands
@@ -633,6 +639,8 @@ noremap <silent> <leader>d "+d
 noremap <silent> <leader>D "+D
 " Show git blame for current file.
 nnoremap <silent> <leader>gb :<c-u>call <SID>GitBlame()<cr>
+" Show git blame for current file without color.
+nnoremap <silent> <leader>gB :<c-u>call <SID>GitBlame(0)<cr>
 " Show git diff for current file.
 nnoremap <silent> <leader>gd
       \ :<c-u>if !empty(expand('%'))
@@ -967,6 +975,8 @@ noremenu <silent> &Tools.Move\ Selection\ Up\ (format)<tab><m-k> <nop>
 " === Git ===
 noremenu <silent> &Tools.-sep4- <nop>
 noremenu <silent> &Tools.Git\ Blame<tab><leader>gb :<c-u>GitBlame<cr>
+noremenu <silent> &Tools.Git\ Blame\ (no\ color)<tab><leader>gB
+      \ :<c-u>GitBlame!<cr>
 noremenu <silent> &Tools.Git\ Diff\ <curfile><tab><leader>gd
       \ :<c-u>call <SID>GitCmdFile('diff')<cr>
 noremenu <silent> &Tools.Git\ Diff<tab><leader>gD :<c-u>GitDiff<cr>
