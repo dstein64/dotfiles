@@ -372,7 +372,6 @@ function! s:GitBlame(...) abort
   enew
   let l:width = 0
   let b:commits = []
-  let b:match_ids = []
   let l:groups = [
         \   'Comment',
         \   'Constant',
@@ -407,25 +406,52 @@ function! s:GitBlame(...) abort
     if strchars(l:author) ># 20
       let l:author = strcharpart(l:author, 0, 19) . '>'
     endif
-    let l:line = l:commit[:7] . ' ' . l:date . ' ' . l:author
+    let l:hash  = l:commit[:7]
+    let l:line = l:hash . ' ' . l:date . ' ' . l:author
     let l:width = max([l:width, len(l:line)])
     call setline(l:item['final'], l:line)
     if l:color
-      " TODO: Experiment to see if prop_add/nvim_buf_add_highlight is faster
-      " (for user interaction e.g., scrolling buffer) than matchaddpos.
-      " See:
-      "   https://github.com/dstein64/vim-startuptime/blob/
-      "           63967c60feb2034158bdbcf061c171e3bb4d8b99/
-      "           autoload/startuptime.vim#L910-L926
+      " prop_add/nvim_buf_add_highlight are used instead of matchaddpos since
+      " they attach to the buffer (as opposed to the window), and because
+      " using matchaddpos resulted in lag when scrolling large buffers.
+      " Each highlight is represented as a list of:
+      "   [linenr, start_col, length, group].
+      let l:highlights = []
       let l:group = l:groups[l:groupidx]
       if l:commit ==# '0000000000000000000000000000000000000000'
         " Not committed yet.
-        call add(b:match_ids,
-              \ matchaddpos('Ignore', [[l:item['final'], 1, len(l:line)]]))
+        call add(l:highlights, [l:item['final'], 1, len(l:line), 'Ignore'])
       else
-        call add(b:match_ids, matchaddpos(l:group, [[l:item['final'], 1, 8]]))
-        call add(b:match_ids, matchaddpos('Special', [[l:item['final'], 10, 10]]))
+        call add(l:highlights, [l:item['final'], 1, len(l:hash), l:group])
+        call add(l:highlights,
+              \ [l:item['final'], len(l:hash) + 2, len(l:date), 'Special'])
       endif
+      for [l:linenr, l:start_col, l:len, l:group] in l:highlights
+        let l:end_col = l:start_col + l:len
+        let l:bufnr = bufnr('%')
+        if has('textprop')
+          if empty(prop_type_get(l:group, {'bufnr': l:bufnr}))
+            let l:props = {
+                  \   'highlight': l:group,
+                  \   'bufnr': l:bufnr,
+                  \ }
+            call prop_type_add(l:group, l:props)
+          endif
+          let l:props = {
+                \   'type': l:group,
+                \   'end_col': l:end_col + 1,
+                \ }
+          call prop_add(l:linenr, l:start_col, l:props)
+        elseif exists('*nvim_buf_add_highlight')
+          call nvim_buf_add_highlight(
+                \ l:bufnr,
+                \ -1,
+                \ l:group,
+                \ l:linenr - 1,
+                \ l:start_col - 1,
+                \ l:end_col - 1)
+        endif
+      endfor
     endif
   endfor
   " Configure the blame window to have the same view as the source.
@@ -438,10 +464,6 @@ function! s:GitBlame(...) abort
         \ printf('call setwinvar(%d, "&cursorbind", %d)', win_getid(), 0))
   call add(l:restore,
         \ printf('call setwinvar(%d, "&scrollbind", %d)', win_getid(), 0))
-  " Delete the matches, since they are bound to the window, not the buffer.
-  call add(l:restore, printf(
-        \ 'call map(getbufvar(%d, "match_ids"), {_, val -> matchdelete(val, %d)})',
-        \ bufnr(), win_getid()))
   execute 'autocmd BufWinLeave <buffer> ' . join(l:restore, ' | ')
   " The commit hash doesn't have to be retrieved prior to splitting since the
   " window buffer after splitting still has b:commits.
