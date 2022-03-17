@@ -301,11 +301,17 @@ endfunction
 " WARN: Existing scrollbind/cursorbind is turned off and not restored.
 " Color can be disabled, since it slows scrolling for large buffers.
 function! s:GitBlame() abort
-  if empty(expand('%'))
+  let l:file = fnameescape(expand('%:p'))
+  if empty(l:file)
     return
   endif
   if !executable('git')
     throw 'git unavailable'
+  endif
+  let l:blame = systemlist('git blame --porcelain ' . l:file)
+  if v:shell_error
+    echoerr join(l:blame)
+    return
   endif
   for l:winnr in range(winnr('$'))
     call setwinvar(l:winnr, '&cursorbind', 0)
@@ -322,8 +328,6 @@ function! s:GitBlame() abort
   keepjumps normal! 0
   setlocal cursorbind scrollbind nowrap nofoldenable
   let l:view = winsaveview()
-  let l:file = fnameescape(expand('%:p'))
-  let l:blame = systemlist('git blame --porcelain ' . l:file)
   let l:curline = line('.')
   call reverse(l:blame)
   " Maps each commit to a dictionary of associated information.
