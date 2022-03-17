@@ -299,7 +299,6 @@ function! s:GitCmd(args, ...) abort
 endfunction
 
 " WARN: Existing scrollbind/cursorbind is turned off and not restored.
-" Color can be disabled, since it slows scrolling for large buffers.
 function! s:GitBlame() abort
   let l:file = fnameescape(expand('%:p'))
   if empty(l:file)
