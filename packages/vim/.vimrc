@@ -300,16 +300,13 @@ endfunction
 
 " WARN: Existing scrollbind/cursorbind is turned off and not restored.
 " Color can be disabled, since it slows scrolling for large buffers.
-" Signature:
-"   GitBlame([color])
-function! s:GitBlame(...) abort
+function! s:GitBlame() abort
   if empty(expand('%'))
     return
   endif
   if !executable('git')
     throw 'git unavailable'
   endif
-  let l:color = get(a:, 1, 1)
   for l:winnr in range(winnr('$'))
     call setwinvar(l:winnr, '&cursorbind', 0)
     call setwinvar(l:winnr, '&scrollbind', 0)
@@ -410,49 +407,47 @@ function! s:GitBlame(...) abort
     let l:line = l:hash . ' ' . l:date . ' ' . l:author
     let l:width = max([l:width, len(l:line)])
     call setline(l:item['final'], l:line)
-    if l:color
-      " prop_add/nvim_buf_add_highlight are used instead of matchaddpos since
-      " they attach to the buffer (as opposed to the window), and because
-      " using matchaddpos resulted in lag when scrolling large buffers.
-      " Each highlight is represented as a list of:
-      "   [linenr, start_col, length, group].
-      let l:highlights = []
-      let l:group = l:groups[l:groupidx]
-      if l:commit ==# '0000000000000000000000000000000000000000'
-        " Not committed yet.
-        call add(l:highlights, [l:item['final'], 1, len(l:line), 'Ignore'])
-      else
-        call add(l:highlights, [l:item['final'], 1, len(l:hash), l:group])
-        call add(l:highlights,
-              \ [l:item['final'], len(l:hash) + 2, len(l:date), 'Special'])
-      endif
-      for [l:linenr, l:start_col, l:len, l:group] in l:highlights
-        let l:end_col = l:start_col + l:len
-        let l:bufnr = bufnr('%')
-        if has('textprop')
-          if empty(prop_type_get(l:group, {'bufnr': l:bufnr}))
-            let l:props = {
-                  \   'highlight': l:group,
-                  \   'bufnr': l:bufnr,
-                  \ }
-            call prop_type_add(l:group, l:props)
-          endif
-          let l:props = {
-                \   'type': l:group,
-                \   'end_col': l:end_col + 1,
-                \ }
-          call prop_add(l:linenr, l:start_col, l:props)
-        elseif exists('*nvim_buf_add_highlight')
-          call nvim_buf_add_highlight(
-                \ l:bufnr,
-                \ -1,
-                \ l:group,
-                \ l:linenr - 1,
-                \ l:start_col - 1,
-                \ l:end_col - 1)
-        endif
-      endfor
+    " prop_add/nvim_buf_add_highlight are used instead of matchaddpos since
+    " they attach to the buffer (as opposed to the window), and because
+    " using matchaddpos resulted in lag when scrolling large buffers.
+    " Each highlight is represented as a list of:
+    "   [linenr, start_col, length, group].
+    let l:highlights = []
+    let l:group = l:groups[l:groupidx]
+    if l:commit ==# '0000000000000000000000000000000000000000'
+      " Not committed yet.
+      call add(l:highlights, [l:item['final'], 1, len(l:line), 'Ignore'])
+    else
+      call add(l:highlights, [l:item['final'], 1, len(l:hash), l:group])
+      call add(l:highlights,
+            \ [l:item['final'], len(l:hash) + 2, len(l:date), 'Special'])
     endif
+    for [l:linenr, l:start_col, l:len, l:group] in l:highlights
+      let l:end_col = l:start_col + l:len
+      let l:bufnr = bufnr('%')
+      if has('textprop')
+        if empty(prop_type_get(l:group, {'bufnr': l:bufnr}))
+          let l:props = {
+                \   'highlight': l:group,
+                \   'bufnr': l:bufnr,
+                \ }
+          call prop_type_add(l:group, l:props)
+        endif
+        let l:props = {
+              \   'type': l:group,
+              \   'end_col': l:end_col + 1,
+              \ }
+        call prop_add(l:linenr, l:start_col, l:props)
+      elseif exists('*nvim_buf_add_highlight')
+        call nvim_buf_add_highlight(
+              \ l:bufnr,
+              \ -1,
+              \ l:group,
+              \ l:linenr - 1,
+              \ l:start_col - 1,
+              \ l:end_col - 1)
+      endif
+    endfor
   endfor
   " Configure the blame window to have the same view as the source.
   call winrestview(l:view)
@@ -594,7 +589,7 @@ command! Tags !ctags -R .
 command! Terminal call s:Terminal()
 command! -nargs=* GitDiff call s:GitCmd('diff <args>')
 command! -nargs=* GitLog call s:GitCmd('log <args>')
-command! -bang GitBlame call s:GitBlame('<bang>' !=# '!')
+command! GitBlame call s:GitBlame()
 
 " *********************************************************
 " * Autocommands
@@ -669,8 +664,6 @@ noremap <silent> <leader>d "+d
 noremap <silent> <leader>D "+D
 " Show git blame for current file.
 nnoremap <silent> <leader>gb :<c-u>call <SID>GitBlame()<cr>
-" Show git blame for current file without color.
-nnoremap <silent> <leader>gB :<c-u>call <SID>GitBlame(0)<cr>
 " Show git diff for current file.
 nnoremap <silent> <leader>gd
       \ :<c-u>if !empty(expand('%'))
@@ -1005,8 +998,6 @@ noremenu <silent> &Tools.Move\ Selection\ Up\ (format)<tab><m-k> <nop>
 " === Git ===
 noremenu <silent> &Tools.-sep4- <nop>
 noremenu <silent> &Tools.Git\ Blame<tab><leader>gb :<c-u>GitBlame<cr>
-noremenu <silent> &Tools.Git\ Blame\ (no\ color)<tab><leader>gB
-      \ :<c-u>GitBlame!<cr>
 noremenu <silent> &Tools.Git\ Diff\ <curfile><tab><leader>gd
       \ :<c-u>call <SID>GitCmdFile('diff')<cr>
 noremenu <silent> &Tools.Git\ Diff<tab><leader>gD :<c-u>GitDiff<cr>
