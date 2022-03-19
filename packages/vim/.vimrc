@@ -1097,8 +1097,7 @@ noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
 noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
 
 " === nvim-scrollview ===
-let g:scrollview_excluded_filetypes =
-      \ add(get(g:, 'scrollview_excluded_filetypes', []), 'gitblame')
+let g:scrollview_excluded_filetypes = ['gitblame']
 
 " *********************************************************
 " * LSP
