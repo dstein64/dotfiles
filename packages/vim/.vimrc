@@ -457,6 +457,7 @@ function! s:GitBlame() abort
   setlocal nowrap nomodifiable buftype=nofile nobuflisted bufhidden=wipe
   setlocal nonumber norelativenumber signcolumn=no
   setlocal cursorbind scrollbind nowrap nofoldenable
+  setlocal filetype=gitblame
   execute 'vertical resize ' . l:width
   call add(l:restore,
         \ printf('call setwinvar(%d, "&cursorbind", %d)', win_getid(), 0))
@@ -1094,6 +1095,10 @@ noremenu <silent> &Plugins.-sep2- <nop>
 noremenu <silent> &Plugins.:CtrlP<tab><c-p> :<c-u>CtrlP<cr>
 noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
 noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
+
+" === nvim-scrollview ===
+let g:scrollview_excluded_filetypes =
+      \ add(get(g:, 'scrollview_excluded_filetypes', []), 'gitblame')
 
 " *********************************************************
 " * LSP
