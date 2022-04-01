@@ -620,7 +620,8 @@ augroup autocommands
         \ | call feedkeys("\<Plug>(NoHls)") | endif
 
   " Create non-existent directories when saving files.
-  autocmd BufWritePre * call mkdir(expand('<afile>:p:h'), 'p')
+  autocmd BufWritePre * if !isdirectory(expand('<afile>:p:h'))
+        \ | call mkdir(expand('<afile>:p:h', 'p')) | endif
 
   " === FileType ===
   " FileType autocommands are used in preference to ftplugin/ and
