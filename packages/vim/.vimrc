@@ -38,7 +38,7 @@ filetype indent on      " enable loading filetype indent files
 " for macOS.
 function! s:Terminal() abort
   if has('nvim')
-    topleft split
+    split
   endif
   " Use a bash login shell on macOS. Updating 'shell' to do this has unwanted
   " side effects (e.g., slowing down execute() calls).
