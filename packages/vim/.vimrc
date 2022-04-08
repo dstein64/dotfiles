@@ -1065,8 +1065,8 @@ endfor
 " * Plugins
 " *********************************************************
 
-packadd! termdebug        " source termdebug
-silent! packadd! matchit  " source matchit
+silent! packadd! termdebug  " source termdebug
+silent! packadd! matchit    " source matchit
 runtime ftplugin/man.vim
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
