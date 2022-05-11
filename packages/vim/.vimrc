@@ -804,6 +804,8 @@ onoremap <silent> al :<c-u>normal! V<cr>
 " Switch ; and : (makes the higher frequency key press more accessible)
 noremap ; :
 noremap : ;
+" Enter an Ex command with '<c-w>;'.
+tnoremap <c-w>; <c-w>:
 " Switch ` and ' (makes the higher frequency key press more accessible)
 noremap ` '
 noremap ' `
@@ -851,6 +853,7 @@ if has('nvim')
   tnoremap <c-w>gT <c-\><c-n>gT
   " Enter an Ex command.
   tnoremap <c-w>: <c-\><c-n>:
+  tnoremap <c-w>; <c-\><c-n>:
   " Paste the specified register.
   tnoremap <expr> <c-w>" '<c-\><c-n>"' . nr2char(getchar()) . 'pi'
   " Send <ctrl-w> to the job in the terminal.
