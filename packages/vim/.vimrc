@@ -54,7 +54,7 @@ endfunction
 " Enter insert mode if the current buffer is a terminal buffer.
 function! s:InsertModeIfTerminal() abort
   if &buftype ==# 'terminal' && mode() ==# 'n'
-    normal! i
+    silent! normal! i
   endif
 endfunction
 
