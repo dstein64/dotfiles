@@ -737,6 +737,11 @@ inoremap <expr> <c-u> pumvisible() ? "\<pageup>" : "\<c-u>"
 " Move to the beginning of the command-line (override).
 cnoremap <c-a> <home>
 " Enable hjkl movements for insert mode.
+" WARN: On some systems, the <c-h> mapping may be problematic since backspace
+" emits <c-h>. To resolve this on e.g., QTerminal, change the Emulation
+" setting to 'linux' and add mappings so backspace works properly:
+"   noremap <c-?> <bs>
+"   noremap! <c-?> <bs>
 inoremap <silent> <c-h> <left>
 inoremap <silent> <c-j> <down>
 inoremap <silent> <c-k> <up>
