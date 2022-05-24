@@ -267,6 +267,13 @@ function! OptsStl() abort
   return l:result
 endfunction
 
+" Initialize a no-op LspStl since it is incorporated into 'statusline' below
+" and is called even without LSP functionality (e.g., on Vim). This is
+" re-defined when applicable later.
+function! LspStl() abort
+  return ''
+endfunction
+
 " === Git ===
 
 " Signature:
@@ -1122,22 +1129,17 @@ if has('nvim-0.5')
   let s:lsp = get(g:, 'lspconfig', 0)
 endif
 
+if s:lsp
+
 " Returns a string indicating attached LSP clients (e.g., '[*clang]'),
 " intended to be used as part of 'statusline'.
-" WARN: This is incorporated into 'statusline' above, and called even without
-" LSP functionality (e.g., on Vim), so it needs to be outside the 'if s:lsp'
-" block below.
 function! LspStl() abort
   let l:result = ''
-  if s:lsp
-    for l:client in v:lua.lsp_buf_clients()
-      let l:result .= '[*' . l:client . ']'
-    endfor
-  endif
+  for l:client in v:lua.lsp_buf_clients()
+    let l:result .= '[*' . l:client . ']'
+  endfor
   return l:result
 endfunction
-
-if s:lsp
 
 " A function for 'formatexpr' that uses the LSP's range formatting.
 function! LspFormatExpr()
