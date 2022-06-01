@@ -817,7 +817,9 @@ onoremap <silent> al :<c-u>normal! V<cr>
 noremap ; :
 noremap : ;
 " Enter an Ex command with '<c-w>;'.
-tnoremap <c-w>; <c-w>:
+if exists(':tnoremap') ==# 2
+  tnoremap <c-w>; <c-w>:
+endif
 " Switch ` and ' (makes the higher frequency key press more accessible)
 noremap ` '
 noremap ' `
