@@ -311,6 +311,13 @@ function! s:GitCmd(args, ...) abort
         \ <bar> endif<cr>
 endfunction
 
+function! s:GitCmdFile(args, ...) abort
+  if !empty(expand('%'))
+    execute call(
+          \ 's:GitCmd', [a:args . ' ' . fnameescape(expand('%:p'))] + a:000)
+  endif
+endfunction
+
 " WARN: Existing scrollbind/cursorbind is turned off and not restored.
 function! s:GitBlame() abort
   let l:file = fnameescape(expand('%:p'))
@@ -692,17 +699,11 @@ noremap <silent> <leader>D "+D
 " Show git blame for current file.
 nnoremap <silent> <leader>gb :<c-u>call <SID>GitBlame()<cr>
 " Show git diff for current file.
-nnoremap <silent> <leader>gd
-      \ :<c-u>if !empty(expand('%'))
-      \ <bar>   call <SID>GitCmd('diff ' . fnameescape(expand('%:p')))
-      \ <bar> endif<cr>
+nnoremap <silent> <leader>gd :<c-u>call <SID>GitCmdFile('diff')<cr>
 " Show git diff for workspace.
 nnoremap <silent> <leader>gD :<c-u>call <SID>GitCmd('diff')<cr>
 " Show git log for current file.
-nnoremap <silent> <leader>gl
-      \ :<c-u>if !empty(expand('%'))
-      \ <bar>   call <SID>GitCmd('log ' . fnameescape(expand('%:p')))
-      \ <bar> endif<cr>
+nnoremap <silent> <leader>gl :<c-u>call <SID>GitCmdFile('log')<cr>
 " Show git log for workspace.
 nnoremap <silent> <leader>gL :<c-u>call <SID>GitCmd('log')<cr>
 " Navigate to previous tab.
