@@ -286,8 +286,14 @@ function! s:GitCmd(args, ...) abort
     topleft split
   endif
   enew
+  let l:args = a:args
+  if l:args == 'diff' || l:args =~# '^diff '
+    if g:git_diff_ignore_whitespace
+      let l:args = 'diff --ignore-all-space' . l:args[4:]
+    endif
+  endif
   " 'silent' is used to suppress 'X more lines'.
-  silent execute 'read! git ' . a:args
+  silent execute 'read! git ' . l:args
   keepjumps normal! ggdd0
   setlocal ft=git nomodifiable buftype=nofile nobuflisted
   " Hiding the buffer leaks memory, but allows navigating away and back.
@@ -314,7 +320,12 @@ function! s:GitBlame() abort
   if !executable('git')
     throw 'git unavailable'
   endif
-  let l:blame = systemlist('git blame --porcelain ' . l:file)
+  let l:cmd = 'git blame --porcelain '
+  if g:git_blame_ignore_whitespace
+    let l:cmd .= '-w '
+  endif
+  let l:cmd .= l:file
+  let l:blame = systemlist(l:cmd)
   if v:shell_error
     echoerr join(l:blame)
     return
@@ -565,6 +576,10 @@ if !has('nvim')
 endif
 " Temporarily highlight search matches (custom setting).
 let g:tmphls = 1
+" Ignore whitespace for git blame.
+let g:git_blame_ignore_whitespace = 1
+" Dont't ignore whitespace for git diff.
+let g:git_diff_ignore_whitespace = 0
 " Customize the status line (takes precedence over 'ruler').
 set statusline=%<%f%(\ %y%m%r%{OptsStl()}%{LspStl()}%)\ %=%-14.(%l,%c%V%)\ %P
 " Add a dictionary file for use with <c-x><c-k> in insert mode.
