@@ -152,6 +152,13 @@ function! s:CreateToggleMaps(char, option) abort
   execute 'nnoremap <silent> yo' . a:char . ' :<c-u>set ' . a:option . '!<cr>'
 endfunction
 
+function! s:CreateVarToggleMaps(char, var) abort
+  execute 'nnoremap <silent> [o' . a:char . ' :<c-u>let ' . a:var . ' = 1<cr>'
+  execute 'nnoremap <silent> ]o' . a:char . ' :<c-u>let ' . a:var . ' = 0<cr>'
+  execute 'nnoremap <silent> yo' . a:char . ' :<c-u>let ' . a:var .
+        \ ' = !(exists("' . a:var . '") ? ' . a:var . ' : 1)<cr>'
+endfunction
+
 function! s:DefaultOptionValue(option) abort
   " WARN: this could have side effects (e.g., search highlighting may show
   " after checking for the default value of hlsearch).
@@ -936,13 +943,8 @@ noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
 call s:CreateNumericToggleMaps('<tab>', 'tabstop', &tabstop)
 call s:CreateNumericToggleMaps('<s-tab>', 'softtabstop', 0)
 call s:CreateNumericToggleMaps('>', 'shiftwidth', 0)
-nnoremap <silent> [o* :<c-u>let g:tmphls = 1<cr>
-nnoremap <silent> ]o* :<c-u>let g:tmphls = 0<cr>
-nnoremap <silent> yo* :<c-u>let g:tmphls = !get(g:, 'tmphls', 1)<cr>
-nnoremap <silent> [o. :<c-u>let g:ctrlp_show_hidden = 1<cr>
-nnoremap <silent> ]o. :<c-u>let g:ctrlp_show_hidden = 0<cr>
-nnoremap <silent> yo. :<c-u>let g:ctrlp_show_hidden
-      \ = !get(g:, 'ctrlp_show_hidden', 0)<cr>
+call s:CreateVarToggleMaps('*', 'g:tmphls')
+call s:CreateVarToggleMaps('.', 'g:ctrlp_show_hidden')
 nnoremap <silent> [o# :<c-u>set number relativenumber<cr>
 nnoremap <silent> ]o# :<c-u>set nonumber norelativenumber<cr>
 nnoremap <silent> <expr> yo# &number \|\| &relativenumber
@@ -962,6 +964,8 @@ call s:CreateToggleMaps('e', 'expandtab')
 nnoremap <silent> [of :<c-u>call <SID>SetFormatOption(1)<cr>
 nnoremap <silent> ]of :<c-u>call <SID>SetFormatOption(-1)<cr>
 nnoremap <silent> yof :<c-u>call <SID>SetFormatOption(0)<cr>
+call s:CreateVarToggleMaps('gb', 'g:git_blame_ignore_whitespace')
+call s:CreateVarToggleMaps('gd', 'g:git_diff_ignore_whitespace')
 call s:CreateToggleMaps('h', 'hlsearch')
 call s:CreateToggleMaps('i', 'ignorecase')
 call s:CreateToggleMaps('l', 'list')
@@ -1056,6 +1060,8 @@ let s:options = [
       \   ['fc', 'formatoptions\ (comment\ autowrap)'],
       \   ['ft', 'formatoptions\ (text\ autowrap)'],
       \   ['\.', 'g:ctrlp_show_hidden'],
+      \   ['gb', 'g:git_blame_ignore_whitespace'],
+      \   ['gd', 'g:git_diff_ignore_whitespace'],
       \   ['*', 'g:tmphls'],
       \   ['h', 'hlsearch'],
       \   ['i', 'ignorecase'],
