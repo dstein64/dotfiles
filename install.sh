@@ -26,9 +26,8 @@ for prog in [ basename ln mkdir readlink realpath; do
   fi
 done
 
-# Check for realpath arguments that are used later. These arguments are
-# available from realpath installed from coreutils, but not available on BusyBox
-# realpath.
+# Check for realpath arguments that are used later. These arguments are available
+# from realpath installed from coreutils, but not available on BusyBox realpath.
 for arg in --no-symlinks --relative-to; do
   if ! realpath --help 2>&1 | grep -e "${arg}" &>/dev/null; then
     echo "unsupported realpath argument: ${arg}" >&2
