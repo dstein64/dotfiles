@@ -618,6 +618,8 @@ if !has('nvim') && &term != 'win32'
 endif
 " Disable cursor blinking in GUI.
 set guicursor+=a:blinkon0
+" Specify Vim's default fillchars, so it's used on Neovim too.
+set fillchars=vert:\|,fold:-,eob:~
 
 " *********************************************************
 " * Commands
@@ -670,6 +672,13 @@ augroup autocommands
   " Break on words for soft wrapping.
   autocmd FileType text set linebreak
 augroup END
+
+" *********************************************************
+" * Highlights
+" *********************************************************
+
+" Specify Vim's default VertSplit highlighting, so it's used on Neovim too.
+highlight VertSplit term=reverse cterm=reverse gui=reverse
 
 " *********************************************************
 " * Mappings
