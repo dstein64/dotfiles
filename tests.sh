@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -o errexit
+tree --version
 
 scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
