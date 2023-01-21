@@ -4,6 +4,11 @@ set -o errexit
 
 scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+head=head
+if [ "$(uname)" = Darwin ]; then
+  head=ghead
+fi
+
 tmpdir="$(mktemp -d)"
 trap "rm -r ${tmpdir}" EXIT
 
@@ -15,7 +20,7 @@ cp -r "${scriptdir}/packages" .
 
 mkdir home
 HOME=home ./install.sh
-tree --charset=ascii -a home | head -n -2 | tee tree
+tree --charset=ascii -a home | "${head}" -n -2 | tee tree
 
 expected=$(cat << 'END'
 home
