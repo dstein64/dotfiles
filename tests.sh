@@ -15,7 +15,7 @@ cp -r "${scriptdir}/packages" .
 
 mkdir home
 HOME=home ./install.sh
-tree --charset=ascii -a home | tee tree
+tree --charset=ascii -a home | head -n -2 | tee tree
 
 expected=$(cat << 'END'
 home
@@ -25,8 +25,6 @@ home
 |-- .gitignore -> ../packages/git/.gitignore
 |-- .screenrc -> ../packages/screen/.screenrc
 `-- .vimrc -> ../packages/vim/.vimrc
-
-2 directories, 4 files
 END
 )
 
