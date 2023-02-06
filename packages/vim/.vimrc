@@ -619,7 +619,8 @@ endif
 " Disable cursor blinking in GUI.
 set guicursor+=a:blinkon0
 " Specify Vim's default fillchars, so it's used on Neovim too.
-set fillchars=vert:\|,fold:-,eob:~
+set fillchars=vert:\|,fold:-
+try | set fillchars+=eob:~ | catch | endtry
 
 " *********************************************************
 " * Commands
