@@ -26,6 +26,7 @@ expected=$(cat << 'END'
 home
 |-- .config
 |   `-- nvim -> ../../packages/nvim/.config/nvim
+|-- .gdbinit -> ../packages/gdb/.gdbinit
 |-- .gitconfig -> ../packages/git/.gitconfig
 |-- .gitignore -> ../packages/git/.gitignore
 |-- .screenrc -> ../packages/screen/.screenrc
