@@ -739,6 +739,10 @@ noremap <silent> <leader>P "+P
 noremap <silent> <leader>q :<c-u>quit!<cr>
 " Toggle quickfix window.
 noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
+" Replace the word under the cursor.
+noremap <silent> <leader>r
+      \ :<c-u>call feedkeys(
+      \ ":%s/\<<c-r><c-w>\>//gc" . repeat(<sid>Left(), 3), 'n')<cr>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
