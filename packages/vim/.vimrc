@@ -743,6 +743,11 @@ noremap <silent> <leader>Q :<c-u>call <sid>ToggleQuickfix()<cr>
 noremap <silent> <leader>r
       \ :<c-u>call feedkeys(
       \ ":%s/\\\<<c-r><c-w>\\\>//gc" . repeat(<sid>Left(), 3), 'n')<cr>
+" Replace the word under the cursor, initialized with the replaced word.
+noremap <silent> <leader>R
+      \ :<c-u>call feedkeys(
+      \ ":%s/\\\<<c-r><c-w>\\\>/<c-r><c-w>/gc"
+      \ . repeat(<sid>Left(), 3), 'n')<cr>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
