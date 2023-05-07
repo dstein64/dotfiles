@@ -199,7 +199,7 @@ function! s:CreateNumericToggleMaps(char, option, ...) abort
   if type(l:default) ==# v:t_string
     let l:default = printf('"%s"', l:default)
   endif
-  let l:fn = '<SID>SetNumericOptionValue'
+  let l:fn = '<sid>SetNumericOptionValue'
   let l:opt = printf('"%s"', a:option)
   execute 'nnoremap <silent> [o' . a:char .
         \ printf(' :<c-u>call %s(%s, %s, %s)<cr>', l:fn, l:opt, 1, l:default)
@@ -314,7 +314,7 @@ function! s:GitCmd(args, ...) abort
   nnoremap <buffer> <silent> K
         \ :<c-u>call system('git show ' . expand('<cword>'))
         \ <bar> if v:shell_error ==# 0
-        \ <bar>   call <SID>GitCmd('show ' . expand('<cword>'), 0)
+        \ <bar>   call <sid>GitCmd('show ' . expand('<cword>'), 0)
         \ <bar> endif<cr>
 endfunction
 
@@ -502,7 +502,7 @@ function! s:GitBlame() abort
         \ :<c-u>if b:commits[line('.') - 1]
         \           !=# '0000000000000000000000000000000000000000'
         \ <bar>   topleft split
-        \ <bar>   call <SID>GitCmd('show ' . b:commits[line('.') - 1], 0)
+        \ <bar>   call <sid>GitCmd('show ' . b:commits[line('.') - 1], 0)
         \ <bar> endif<cr>
 endfunction
 
@@ -696,11 +696,11 @@ noremap <silent> <leader>. :<c-u>cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
 noremap <silent> <leader>.. :<c-u>cd ..<bar>:pwd<cr>
 noremap <silent> <leader>/
-      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<SID>Left(), 2), 'n')<cr>
+      \ :<c-u>call feedkeys(":grep -R  ." . repeat(<sid>Left(), 2), 'n')<cr>
 " Delete current buffer if there are no changes.
-noremap <silent> <leader><bs> :<c-u>call <SID>Bdelete(0)<cr>
+noremap <silent> <leader><bs> :<c-u>call <sid>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
-noremap <silent> <leader><s-bs> :<c-u>call <SID>Bdelete(1)<cr>
+noremap <silent> <leader><s-bs> :<c-u>call <sid>Bdelete(1)<cr>
 " Edit the alternate file.
 noremap <silent> <leader>a <c-^>
 " Open current buffer in new tab.
@@ -714,21 +714,21 @@ noremap <silent> <leader>d "+d
 " Delete remaining line to system clipboard.
 noremap <silent> <leader>D "+D
 " Show git blame for current file.
-nnoremap <silent> <leader>gb :<c-u>call <SID>GitBlame()<cr>
+nnoremap <silent> <leader>gb :<c-u>call <sid>GitBlame()<cr>
 " Show git diff for current file.
-nnoremap <silent> <leader>gd :<c-u>call <SID>GitCmdFile('diff')<cr>
+nnoremap <silent> <leader>gd :<c-u>call <sid>GitCmdFile('diff')<cr>
 " Show git diff for workspace.
-nnoremap <silent> <leader>gD :<c-u>call <SID>GitCmd('diff')<cr>
+nnoremap <silent> <leader>gD :<c-u>call <sid>GitCmd('diff')<cr>
 " Show git log for current file.
-nnoremap <silent> <leader>gl :<c-u>call <SID>GitCmdFile('log')<cr>
+nnoremap <silent> <leader>gl :<c-u>call <sid>GitCmdFile('log')<cr>
 " Show git log for workspace.
-nnoremap <silent> <leader>gL :<c-u>call <SID>GitCmd('log')<cr>
+nnoremap <silent> <leader>gL :<c-u>call <sid>GitCmd('log')<cr>
 " Navigate to previous tab.
 noremap <silent> <leader>h :<c-u>tabprevious<cr>
 " Navigate to next tab.
 noremap <silent> <leader>l :<c-u>tabnext<cr>
 " Open/close location list window.
-noremap <silent> <leader>L :<c-u>call <SID>ToggleLocList()<cr>
+noremap <silent> <leader>L :<c-u>call <sid>ToggleLocList()<cr>
 " Open a new tab.
 noremap <silent> <leader>n :<c-u>tabnew<cr>
 " Put after from system clipboard.
@@ -738,7 +738,7 @@ noremap <silent> <leader>P "+P
 " Quit without checking for changes (like ZQ).
 noremap <silent> <leader>q :<c-u>quit!<cr>
 " Toggle quickfix window.
-noremap <silent> <leader>Q :<c-u>call <SID>ToggleQuickfix()<cr>
+noremap <silent> <leader>Q :<c-u>call <sid>ToggleQuickfix()<cr>
 " Replace the word under the cursor.
 noremap <silent> <leader>r
       \ :<c-u>call feedkeys(
@@ -941,16 +941,16 @@ noremap <silent> ]<space>
       \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
 noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
-noremap <silent> [n :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
-noremap <silent> ]n :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
-noremap <silent> [, :<c-u>call <SID>GotoComment(1)<cr>
-noremap <silent> ], :<c-u>call <SID>GotoComment(0)<cr>
-noremap <silent> [t :<c-u>call <SID>GotoLongLine(1)<cr>
-noremap <silent> ]t :<c-u>call <SID>GotoLongLine(0)<cr>
-noremap <silent> [f :<c-u>call <SID>EditSiblingFile(-v:count1)<cr>
-noremap <silent> ]f :<c-u>call <SID>EditSiblingFile(v:count1)<cr>
-noremap <silent> [F :<c-u>call <SID>EditSiblingFile('^')<cr>
-noremap <silent> ]F :<c-u>call <SID>EditSiblingFile('$')<cr>
+noremap <silent> [n :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
+noremap <silent> ]n :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
+noremap <silent> [, :<c-u>call <sid>GotoComment(1)<cr>
+noremap <silent> ], :<c-u>call <sid>GotoComment(0)<cr>
+noremap <silent> [t :<c-u>call <sid>GotoLongLine(1)<cr>
+noremap <silent> ]t :<c-u>call <sid>GotoLongLine(0)<cr>
+noremap <silent> [f :<c-u>call <sid>EditSiblingFile(-v:count1)<cr>
+noremap <silent> ]f :<c-u>call <sid>EditSiblingFile(v:count1)<cr>
+noremap <silent> [F :<c-u>call <sid>EditSiblingFile('^')<cr>
+noremap <silent> ]F :<c-u>call <sid>EditSiblingFile('$')<cr>
 
 " === Option toggling ===
 " (inspired by vim-unimpaired)
@@ -975,9 +975,9 @@ nnoremap <silent> ]od :<c-u>diffoff<cr>
 nnoremap <silent> <expr> yod
       \ ':<c-u>' . (&diff ? 'diffoff' : 'diffthis') . '<cr>'
 call s:CreateToggleMaps('e', 'expandtab')
-nnoremap <silent> [of :<c-u>call <SID>SetFormatOption(1)<cr>
-nnoremap <silent> ]of :<c-u>call <SID>SetFormatOption(-1)<cr>
-nnoremap <silent> yof :<c-u>call <SID>SetFormatOption(0)<cr>
+nnoremap <silent> [of :<c-u>call <sid>SetFormatOption(1)<cr>
+nnoremap <silent> ]of :<c-u>call <sid>SetFormatOption(-1)<cr>
+nnoremap <silent> yof :<c-u>call <sid>SetFormatOption(0)<cr>
 call s:CreateVarToggleMaps('gb', 'g:git_blame_ignore_whitespace')
 call s:CreateVarToggleMaps('gd', 'g:git_diff_ignore_whitespace')
 call s:CreateToggleMaps('h', 'hlsearch')
@@ -1008,35 +1008,35 @@ call s:CreateNumericToggleMaps('<bar>', 'colorcolumn')
 " Can't use the existing 'Buffers' menu, since it is deleted/recreated from
 " code in menu.vim.
 noremenu <silent> B&uffer.&Delete\ (keep\ window)<tab><leader><bs>
-      \ :<c-u>call <SID>Bdelete(0)<cr>
+      \ :<c-u>call <sid>Bdelete(0)<cr>
 noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
-      \ :<c-u>call <SID>Bdelete(1)<cr>
+      \ :<c-u>call <sid>Bdelete(1)<cr>
 
 " === External Searching ===
 noremenu <silent> &Tools.-sep1- <nop>
 noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
-      \ :<c-u>call feedkeys(':grep -R  .' . repeat(<SID>Left(), 2), 'n')<cr>
+      \ :<c-u>call feedkeys(':grep -R  .' . repeat(<sid>Left(), 2), 'n')<cr>
 noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ <text>\ **/*
-      \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<SID>Left(), 5), 'n')<cr>
+      \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<sid>Left(), 5), 'n')<cr>
 
 " === Navigation ===
 noremenu <silent> &Tools.-sep2- <nop>
 noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
-      \ :<c-u>call <SID>GotoConflictOrDiff(0)<cr>
+      \ :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
 noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
-      \ :<c-u>call <SID>GotoConflictOrDiff(1)<cr>
+      \ :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
 noremenu <silent> &Tools.Next\ Comment<tab>],
-      \ :<c-u>call <SID>GotoComment(0)<cr>
+      \ :<c-u>call <sid>GotoComment(0)<cr>
 noremenu <silent> &Tools.Previous\ Comment<tab>[,
-      \ :<c-u>call <SID>GotoComment(1)<cr>
+      \ :<c-u>call <sid>GotoComment(1)<cr>
 noremenu <silent> &Tools.Next\ Long\ Line<tab>]t
-      \ :<c-u>call <SID>GotoLongLine(0)<cr>
+      \ :<c-u>call <sid>GotoLongLine(0)<cr>
 noremenu <silent> &Tools.Previous\ Long\ Line<tab>[t
-      \ :<c-u>call <SID>GotoLongLine(1)<cr>
+      \ :<c-u>call <sid>GotoLongLine(1)<cr>
 noremenu <silent> &Tools.Next\ File<tab>]f
-      \ :<c-u>call <SID>EditSiblingFile(1)<cr>
+      \ :<c-u>call <sid>EditSiblingFile(1)<cr>
 noremenu <silent> &Tools.Previous\ File<tab>[f
-      \ :<c-u>call <SID>EditSiblingFile(-1)<cr>
+      \ :<c-u>call <sid>EditSiblingFile(-1)<cr>
 noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
@@ -1055,10 +1055,10 @@ noremenu <silent> &Tools.Move\ Selection\ Up\ (format)<tab><m-k> <nop>
 noremenu <silent> &Tools.-sep4- <nop>
 noremenu <silent> &Tools.Git\ Blame<tab><leader>gb :<c-u>GitBlame<cr>
 noremenu <silent> &Tools.Git\ Diff\ <curfile><tab><leader>gd
-      \ :<c-u>call <SID>GitCmdFile('diff')<cr>
+      \ :<c-u>call <sid>GitCmdFile('diff')<cr>
 noremenu <silent> &Tools.Git\ Diff<tab><leader>gD :<c-u>GitDiff<cr>
 noremenu <silent> &Tools.Git\ Log\ <curfile><tab><leader>gl
-      \ :<c-u>call <SID>GitCmdFile('log')<cr>
+      \ :<c-u>call <sid>GitCmdFile('log')<cr>
 noremenu <silent> &Tools.Git\ Log<tab><leader>gL :<c-u>GitLog<cr>
 
 let s:options = [
