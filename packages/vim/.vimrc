@@ -752,6 +752,7 @@ noremap <leader>s :source %<cr>
 " Open a terminal.
 noremap <silent> <leader>t :<c-u>Terminal<cr>
 " Start window command.
+noremap <silent> <leader>v :<c-u>ScrollViewToggle<cr>
 noremap <silent> <leader>w <c-w>
 " Load vim-win.
 noremap <silent> <leader>W :<c-u>Win<cr>
@@ -951,6 +952,10 @@ noremap <silent> [f :<c-u>call <sid>EditSiblingFile(-v:count1)<cr>
 noremap <silent> ]f :<c-u>call <sid>EditSiblingFile(v:count1)<cr>
 noremap <silent> [F :<c-u>call <sid>EditSiblingFile('^')<cr>
 noremap <silent> ]F :<c-u>call <sid>EditSiblingFile('$')<cr>
+noremap <silent> [v :<c-u>ScrollViewPrev<cr>
+noremap <silent> ]v :<c-u>ScrollViewNext<cr>
+noremap <silent> [V :<c-u>ScrollViewFirst<cr>
+noremap <silent> ]V :<c-u>ScrollViewLast<cr>
 
 " === Option toggling ===
 " (inspired by vim-unimpaired)
@@ -1039,6 +1044,10 @@ noremenu <silent> &Tools.Previous\ File<tab>[f
       \ :<c-u>call <sid>EditSiblingFile(-1)<cr>
 noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
+noremenu <silent> &Tools.Next\ ScrollView\ Sign\ Line<tab>]v
+      \ :<c-u>ScrollViewNext<cr>
+noremenu <silent> &Tools.Previous\ ScrollView\ Sign\ Line<tab>[v
+      \ :<c-u>ScrollViewPrev<cr>
 
 " === Buffer Modification Functionality ===
 noremenu <silent> &Tools.-sep3- <nop>
@@ -1151,6 +1160,10 @@ noremenu <silent> &Plugins.:CtrlPBuffer<tab><c-p><c-f> :<c-u>CtrlPBuffer<cr>
 noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
 
 " === nvim-scrollview ===
+" A mapping for:ScrollViewToggle is configured with your <leader> mappings.
+" Menu items for :ScrollViewPrev, :ScrollViewNext, :ScrollViewFirst, and
+" :ScrollViewLast are configured with your paired bracket mappings.
+
 let g:scrollview_excluded_filetypes = ['gitblame']
 
 " *********************************************************
