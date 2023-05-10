@@ -744,10 +744,9 @@ noremap <silent> <leader>r
       \ :<c-u>call feedkeys(
       \ ":%s/\\\<<c-r><c-w>\\\>//gc" . repeat(<sid>Left(), 3), 'n')<cr>
 " Replace the word under the cursor, initialized with the replaced word.
-noremap <silent> <leader>R
-      \ :<c-u>call feedkeys(
-      \ ":%s/\\\<<c-r><c-w>\\\>/<c-r><c-w>/gc"
-      \ . repeat(<sid>Left(), 3), 'n')<cr>
+" WARN: The visual mode mapping clobbers the 'z' named register.
+nnoremap <leader>R :%s/\<<c-r>=expand('<cword>')<cr>\>//gc<left><left><left>
+vnoremap <leader>R "zy:%s/\<<c-r>z\>//gc<left><left><left>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
@@ -872,10 +871,6 @@ noremap q; q:
 " Reselect visual selection after shifting
 vnoremap < <gv
 vnoremap > >gv
-" Substitute the word under the cursor.
-" WARN: The visual mode mapping clobbers the 'z' named register.
-nnoremap <leader>% :%s/\<<c-r>=expand('<cword>')<cr>\>//g<left><left>
-vnoremap <leader>% "zy:%s/<c-r>z//g<left><left>
 " Move visual selection.
 vnoremap <c-j> :move '>+1<cr>gv
 vnoremap <c-k> :move '<-2<cr>gv
@@ -1047,8 +1042,8 @@ noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
 
 " === Buffer Modification Functionality ===
 noremenu <silent> &Tools.-sep3- <nop>
-noremenu <silent> &Tools.Substitute\ Word<tab><leader>%
-      \ :<c-u>call feedkeys('<leader>%', 'm')<cr>
+noremenu <silent> &Tools.Replace\ Word<tab><leader>R
+      \ :<c-u>call feedkeys('<leader>R', 'm')<cr>
 " WARN: The selection movement menu entries are not functional, but rather
 " serve as reminders.
 noremenu <silent> &Tools.Move\ Selection\ Down<tab><c-j> <nop>
