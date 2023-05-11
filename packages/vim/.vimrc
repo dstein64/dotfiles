@@ -739,12 +739,16 @@ noremap <silent> <leader>P "+P
 noremap <silent> <leader>q :<c-u>quit!<cr>
 " Toggle quickfix window.
 noremap <silent> <leader>Q :<c-u>call <sid>ToggleQuickfix()<cr>
-" Replace the word under the cursor, initialized with the replaced word.
+" Replace the word under the cursor.
 " WARN: The visual mode mapping clobbers the 'z' named register.
 nnoremap <leader>r
+      \ :%s/\<<c-r>=expand('<cword>')<cr>\>//gc<left><left><left>
+vnoremap <leader>r "zy:%s/<c-r>z//gc<left><left><left>
+" Also add versions that have an initialized replacement.
+nnoremap <leader>R
       \ :%s/\<<c-r>=expand('<cword>')<cr>\>/
       \<c-r>=expand('<cword>')<cr>/gc<left><left><left>
-vnoremap <leader>r "zy:%s/<c-r>z/<c-r>z/gc<left><left><left>
+vnoremap <leader>R "zy:%s/<c-r>z/<c-r>z/gc<left><left><left>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
@@ -1051,6 +1055,8 @@ noremenu <silent> &Tools.Previous\ ScrollView\ Sign\ Line<tab>[v
 noremenu <silent> &Tools.-sep3- <nop>
 noremenu <silent> &Tools.Replace\ Word<tab><leader>r
       \ :<c-u>call feedkeys('<leader>r', 'm')<cr>
+noremenu <silent> &Tools.Replace\ Word\ (initialized)<tab><leader>R
+      \ :<c-u>call feedkeys('<leader>R', 'm')<cr>
 " WARN: The selection movement menu entries are not functional, but rather
 " serve as reminders.
 noremenu <silent> &Tools.Move\ Selection\ Down<tab><c-j> <nop>
