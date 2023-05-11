@@ -741,8 +741,10 @@ noremap <silent> <leader>q :<c-u>quit!<cr>
 noremap <silent> <leader>Q :<c-u>call <sid>ToggleQuickfix()<cr>
 " Replace the word under the cursor, initialized with the replaced word.
 " WARN: The visual mode mapping clobbers the 'z' named register.
-nnoremap <leader>r :%s/\<<c-r>=expand('<cword>')<cr>\>//gc<left><left><left>
-vnoremap <leader>r "zy:%s/<c-r>z//gc<left><left><left>
+nnoremap <leader>r
+      \ :%s/\<<c-r>=expand('<cword>')<cr>\>/
+      \<c-r>=expand('<cword>')<cr>/gc<left><left><left>
+vnoremap <leader>r "zy:%s/<c-r>z/<c-r>z/gc<left><left><left>
 " Source the current file.
 noremap <leader>s :source %<cr>
 " Open a terminal.
