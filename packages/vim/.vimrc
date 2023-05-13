@@ -713,6 +713,8 @@ noremap <silent> <leader>C "+C
 noremap <silent> <leader>d "+d
 " Delete remaining line to system clipboard.
 noremap <silent> <leader>D "+D
+" Toggle Netrw's left explorer.
+noremap <silent> <leader>e :<c-u>Lexplore<cr>
 " Show git blame for current file.
 nnoremap <silent> <leader>gb :<c-u>call <sid>GitBlame()<cr>
 " Show git diff for current file.
@@ -1134,23 +1136,21 @@ endfor
 silent! packadd! termdebug  " source termdebug
 silent! packadd! matchit    " source matchit
 runtime ftplugin/man.vim
+
+" === Netrw ===
+let g:netrw_liststyle = 3
+let g:netrw_winsize = 25
+let g:netrw_banner = 0
 " Add 'nu' and 'rnu' to the default netrw bufsettings. Setting these with a
 " ftplugin or after/ftplugin file doesn't work, since the setting is clobbered
 " by $VIMRUNTIME/autoload/netrw.vim.
 let g:netrw_bufsettings = "noma nomod nowrap ro nobl nu rnu"
 
-" === NERDTree ===
-noremap <silent> <c-n><c-n> :<c-u>NERDTreeToggle<cr>
-noremap <silent> <c-n><c-o> :<c-u>NERDTreeFocus<cr>
-noremap <silent> <c-n><c-space> :<c-u>NERDTreeFind<cr>
+" A mapping for Lexplore is configured with your <leader> mappings.
 
 noremenu <silent> &Plugins.-sep1- <nop>
-noremenu <silent> &Plugins.:NERDTreeToggle<tab><c-n><c-n>
-      \ :<c-u>NERDTreeToggle<cr>
-noremenu <silent> &Plugins.:NERDTreeFocus<tab><c-n><c-o>
-      \ :<c-u>NERDTreeFocus<cr>
-noremenu <silent> &Plugins.:NERDTreeFind<tab><c-n><c-space>
-      \ :<c-u>NERDTreeFind<cr>
+noremenu <silent> &Plugins.:Lexplore<tab><leader>e
+      \ :<c-u>Lexplore<cr>
 
 " === CtrlP ===
 " Enable CtrlP cross-session caching.
