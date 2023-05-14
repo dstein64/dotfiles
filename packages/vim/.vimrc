@@ -271,9 +271,6 @@ function! OptsStl() abort
   if !empty(l:options)
     let l:result = '[' . join(l:options, ',') . ']'
   endif
-  " Add a workaround for Neovim #23621 (see the first comment, about <silent>
-  " used with :, which is applicable here).
-  redrawstatus!
   return l:result
 endfunction
 
@@ -664,6 +661,10 @@ augroup autocommands
   " Create non-existent directories when saving files.
   autocmd BufWritePre * if !isdirectory(expand('<afile>:p:h'))
         \ | call mkdir(expand('<afile>:p:h'), 'p') | endif
+
+  " Add a workaround for Neovim #23621 (see the first comment, about <silent>
+  " used with :, which is applicable here).
+  autocmd OptionSet * redrawstatus!
 
   " === FileType ===
   " FileType autocommands are used in preference to ftplugin/ and
