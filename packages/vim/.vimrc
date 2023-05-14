@@ -664,7 +664,7 @@ augroup autocommands
 
   " Add a workaround for Neovim #23621 (see the first comment, about <silent>
   " used with :, which is applicable here).
-  autocmd OptionSet * redrawstatus!
+  autocmd OptionSet * silent! redrawstatus!
 
   " === FileType ===
   " FileType autocommands are used in preference to ftplugin/ and
