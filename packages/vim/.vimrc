@@ -271,6 +271,9 @@ function! OptsStl() abort
   if !empty(l:options)
     let l:result = '[' . join(l:options, ',') . ']'
   endif
+  " Add a workaround for Neovim #23621 (see the first comment, about <silent>
+  " used with :, which is applicable here).
+  redrawstatus!
   return l:result
 endfunction
 
