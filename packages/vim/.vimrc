@@ -119,7 +119,6 @@ function! s:EditSiblingFile(offset) abort
   if empty(l:files) | return | endif
   call sort(l:files)
   if type(a:offset) ==# v:t_number
-    " TODO: binary search
     let l:idx = empty(l:file) ? -1 : s:BinarySearch(l:files, l:file)
     let l:idx += a:offset
   elseif a:offset ==# '^'
