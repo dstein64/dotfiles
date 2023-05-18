@@ -52,7 +52,7 @@ function prepare {
   # If there is a e.g., .config directory in $source_dir, make sure this gets
   # created as a directory in $target_dir, so that it's not created as a link
   # when stowing.
-  for name in .config; do
+  for name in .config .config/nvim; do
     if [ -d "${source_dir}/${name}" ] && [ ! -d "${target_dir}/${name}" ]; then
       mkdir "${target_dir}/${name}"
       echo "  MKDIR: ${name}"
