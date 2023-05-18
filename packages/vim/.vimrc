@@ -85,6 +85,23 @@ function! s:GotoLongLine(reverse) abort
   call search(l:pattern, l:flags)
 endfunction
 
+function! s:BinarySearch(l, x) abort
+  let l:lo = 0
+  let l:hi = len(a:l) - 1
+  while l:lo <= l:hi
+    let l:mid = float2nr(l:lo + (l:hi - l:lo) / 2)
+    let l:val = a:l[l:mid]
+    if l:val ==# a:x
+      return l:mid
+    elseif l:val <# a:x
+      let l:lo = l:mid + 1
+    else
+      let l:hi = l:mid - 1
+    endif
+  endwhile
+  return -1
+endfunction
+
 " :edit the sibling file at the specified offset to the current file. '^' and
 " '$' can be used to edit the first and last sibling, respectively.
 function! s:EditSiblingFile(offset) abort
@@ -103,7 +120,7 @@ function! s:EditSiblingFile(offset) abort
   call sort(l:files)
   if type(a:offset) ==# v:t_number
     " TODO: binary search
-    let l:idx = empty(l:file) ? -1 : index(l:files, l:file)
+    let l:idx = empty(l:file) ? -1 : s:BinarySearch(l:files, l:file)
     let l:idx += a:offset
   elseif a:offset ==# '^'
     let l:idx = 0
