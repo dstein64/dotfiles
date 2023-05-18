@@ -25,7 +25,8 @@ tree --charset=ascii -a home | "${head}" -n -2 | tee tree
 expected=$(cat << 'END'
 home
 |-- .config
-|   `-- nvim -> ../../packages/nvim/.config/nvim
+|   `-- nvim
+|       `-- init.vim -> ../../../packages/nvim/.config/nvim/init.vim
 |-- .gdbinit -> ../packages/gdb/.gdbinit
 |-- .gitconfig -> ../packages/git/.gitconfig
 |-- .gitignore -> ../packages/git/.gitignore
