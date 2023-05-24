@@ -717,6 +717,8 @@ noremap <silent> <leader>. :<c-u>cd %:h<bar>:pwd<cr>
 noremap <silent> <leader>.. :<c-u>cd ..<bar>:pwd<cr>
 noremap <silent> <leader>/
       \ :<c-u>call feedkeys(":grep -R  ." . repeat(<sid>Left(), 2), 'n')<cr>
+noremap <silent> <leader>?
+      \ :<c-u>call feedkeys(":vimgrep  **/*" . repeat(<sid>Left(), 5), 'n')<cr>
 " Delete current buffer if there are no changes.
 noremap <silent> <leader><bs> :<c-u>call <sid>Bdelete(0)<cr>
 " Delete current buffer even if there are changes.
@@ -1045,7 +1047,7 @@ noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
 noremenu <silent> &Tools.-sep1- <nop>
 noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
       \ :<c-u>call feedkeys(':grep -R  .' . repeat(<sid>Left(), 2), 'n')<cr>
-noremenu <silent> &Tools.&Vim\ Grep<tab>:vimgrep\ <text>\ **/*
+noremenu <silent> &Tools.&vimgrep\ <text>\ **/*<tab><leader>?
       \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<sid>Left(), 5), 'n')<cr>
 
 " === Navigation ===
