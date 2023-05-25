@@ -1334,7 +1334,7 @@ local on_attach = function(client, bufnr)
   local commands = {
     LspFormatDocument = ':lua vim.lsp.buf.formatting()',
     LspRename = ':lua vim.lsp.buf.rename()',
-    LspListDiagnostics = ':lua vim.lsp.diagnostic.set_loclist()',
+    LspListDiagnostics = ':lua vim.diagnostic.setloclist()',
     LspAddWorkspaceDir = ':lua vim.lsp.buf.add_workspace_folder()',
     LspRemoveWorkspaceDir = ':lua vim.lsp.buf.remove_workspace_folder()',
     LspListWorkspaceDirs =
@@ -1382,7 +1382,7 @@ noremenu <silent> &LSP.&Diagnostics.Show\ Line\ Diagnostics<tab><leader>d
 noremenu <silent> &LSP.&Diagnostics.Code\ Action\ (apply\ fix)<tab><leader>f
       \ <cmd>lua vim.lsp.buf.code_action()<cr>
 noremenu <silent> &LSP.&Diagnostics.List\ Diagnostics<tab>:LspListDiagnostics
-      \ <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
+      \ <cmd>lua vim.diagnostic.setloclist()<cr>
 noremenu <silent> &LSP.&Diagnostics.Next\ Diagnostic<tab>]d
       \ <cmd>lua vim.diagnostic.goto_next()<cr>
 noremenu <silent> &LSP.&Diagnostics.Previous\ Diagnostic<tab>]d
