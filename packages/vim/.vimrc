@@ -1191,6 +1191,7 @@ noremenu <silent> &Plugins.:CtrlPMRU<tab><c-p><c-f><c-f> :<c-u>CtrlPMRU<cr>
 " :ScrollViewLast are configured with your paired bracket mappings.
 
 let g:scrollview_excluded_filetypes = ['gitblame']
+let g:scrollview_signs_on_startup = ['all']
 
 " *********************************************************
 " * LSP
