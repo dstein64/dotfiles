@@ -1197,9 +1197,6 @@ let g:scrollview_excluded_filetypes = ['gitblame']
 " *********************************************************
 
 " nvim-lspconfig is from: https://github.com/neovim/nvim-lspconfig
-" Installation paths:
-"   Unix: ~/.local/share/nvim/site/pack/plugins/opt/nvim-lspconfig
-"   Windows: ~/AppData/Local/nvim-data/site/pack/plugins/opt/nvim-lspconfig
 let s:lsp = 0
 if has('nvim-0.5')
   silent! packadd nvim-lspconfig
