@@ -1198,7 +1198,7 @@ let g:scrollview_excluded_filetypes = ['gitblame']
 
 " nvim-lspconfig is from: https://github.com/neovim/nvim-lspconfig
 let s:lsp = 0
-if has('nvim-0.5')
+if has('nvim-0.7')
   silent! packadd nvim-lspconfig
   let s:lsp = get(g:, 'lspconfig', 0)
 endif
