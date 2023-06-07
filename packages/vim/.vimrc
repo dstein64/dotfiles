@@ -1047,7 +1047,7 @@ noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
 noremenu <silent> &Tools.-sep1- <nop>
 noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
       \ :<c-u>call feedkeys(':grep -R  .' . repeat(<sid>Left(), 2), 'n')<cr>
-noremenu <silent> &Tools.&vimgrep\ <text>\ **/*<tab><leader>?
+noremenu <silent> &Tools.:&vimgrep\ <text>\ **/*<tab><leader>?
       \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<sid>Left(), 5), 'n')<cr>
 
 " === Navigation ===
