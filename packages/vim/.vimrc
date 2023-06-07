@@ -1046,44 +1046,13 @@ noremenu <silent> B&uffer.&Delete\ (keep\ window)<tab><leader><bs>
 noremenu <silent> B&uffer.&Force\ Delete\ (keep\ window)<tab><leader><s-bs>
       \ :<c-u>call <sid>Bdelete(1)<cr>
 
-" === External Searching ===
-noremenu <silent> &Tools.-sep1- <nop>
-noremenu <silent> &Tools.:&grep\ -R\ <text>\ \.<tab><leader>/
-      \ :<c-u>call feedkeys(':grep -R  .' . repeat(<sid>Left(), 2), 'n')<cr>
-noremenu <silent> &Tools.:&vimgrep\ <text>\ **/*<tab><leader>?
-      \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<sid>Left(), 5), 'n')<cr>
-
-" === Navigation ===
-noremenu <silent> &Tools.-sep2- <nop>
-noremenu <silent> &Tools.Next\ Conflict\ or\ Diff<tab>]n
-      \ :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
-noremenu <silent> &Tools.Previous\ Conflict\ or\ Diff<tab>[n
-      \ :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
-noremenu <silent> &Tools.Next\ Comment<tab>],
-      \ :<c-u>call <sid>GotoComment(0)<cr>
-noremenu <silent> &Tools.Previous\ Comment<tab>[,
-      \ :<c-u>call <sid>GotoComment(1)<cr>
-noremenu <silent> &Tools.Next\ Long\ Line<tab>]t
-      \ :<c-u>call <sid>GotoLongLine(0)<cr>
-noremenu <silent> &Tools.Previous\ Long\ Line<tab>[t
-      \ :<c-u>call <sid>GotoLongLine(1)<cr>
-noremenu <silent> &Tools.Next\ File<tab>]f
-      \ :<c-u>call <sid>EditSiblingFile(1)<cr>
-noremenu <silent> &Tools.Previous\ File<tab>[f
-      \ :<c-u>call <sid>EditSiblingFile(-1)<cr>
-noremenu <silent> &Tools.Next\ Mispelled\ Word<tab>]s ]s
-noremenu <silent> &Tools.Previous\ Mispelled\ Word<tab>[s [s
-noremenu <silent> &Tools.Next\ ScrollView\ Sign\ Line<tab>]v
-      \ :<c-u>ScrollViewNext<cr>
-noremenu <silent> &Tools.Previous\ ScrollView\ Sign\ Line<tab>[v
-      \ :<c-u>ScrollViewPrev<cr>
-
 " === Buffer Modification Functionality ===
 noremenu <silent> &Tools.-sep3- <nop>
 noremenu <silent> &Tools.Replace\ Word<tab><leader>r
       \ :<c-u>call feedkeys('<leader>r', 'm')<cr>
 noremenu <silent> &Tools.Replace\ Word\ (initialized)<tab><leader>R
       \ :<c-u>call feedkeys('<leader>R', 'm')<cr>
+noremenu <silent> &Tools.-sep4- <nop>
 " WARN: The selection movement menu entries are not functional, but rather
 " serve as reminders.
 noremenu <silent> &Tools.Move\ Selection\ Down<tab><c-j> <nop>
@@ -1101,6 +1070,38 @@ noremenu <silent> &Tools.Git\ Log\ <curfile><tab><leader>gl
       \ :<c-u>call <sid>GitCmdFile('log')<cr>
 noremenu <silent> &Tools.Git\ Log<tab><leader>gL :<c-u>GitLog<cr>
 
+" === Navigation and Search ===
+noremenu <silent> Search\ and\ &Navigation.:&grep\ -R\ <text>\ \.<tab><leader>/
+      \ :<c-u>call feedkeys(':grep -R  .' . repeat(<sid>Left(), 2), 'n')<cr>
+noremenu <silent> Search\ and\ &Navigation.:&vimgrep\ <text>\ **/*<tab><leader>?
+      \ :<c-u>call feedkeys(':vimgrep  **/*' . repeat(<sid>Left(), 5), 'n')<cr>
+noremenu <silent> Search\ and\ &Navigation.-sep1- <nop>
+menu <silent> Search\ and\ &Navigation.Show\ Matches<tab><leader>* <leader>*
+noremenu <silent> Search\ and\ &Navigation.-sep2- <nop>
+noremenu <silent> Search\ and\ &Navigation.Next\ Conflict\ or\ Diff<tab>]n
+      \ :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ Conflict\ or\ Diff<tab>[n
+      \ :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ Comment<tab>],
+      \ :<c-u>call <sid>GotoComment(0)<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ Comment<tab>[,
+      \ :<c-u>call <sid>GotoComment(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ Long\ Line<tab>]t
+      \ :<c-u>call <sid>GotoLongLine(0)<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ Long\ Line<tab>[t
+      \ :<c-u>call <sid>GotoLongLine(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ File<tab>]f
+      \ :<c-u>call <sid>EditSiblingFile(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ File<tab>[f
+      \ :<c-u>call <sid>EditSiblingFile(-1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ Mispelled\ Word<tab>]s ]s
+noremenu <silent> Search\ and\ &Navigation.Previous\ Mispelled\ Word<tab>[s [s
+noremenu <silent> Search\ and\ &Navigation.Next\ ScrollView\ Sign\ Line<tab>]v
+      \ :<c-u>ScrollViewNext<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ ScrollView\ Sign\ Line<tab>[v
+      \ :<c-u>ScrollViewPrev<cr>
+
+" === Options ===
 let s:options = [
       \   ['b', 'background'],
       \   ['1', 'binary'],
