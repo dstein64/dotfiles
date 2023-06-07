@@ -711,6 +711,9 @@ highlight VertSplit term=reverse cterm=reverse gui=reverse
 " === Leader mappings (alphabetical) ===
 " Turn off highlight.
 noremap <silent> <leader><space> :<c-u>nohlsearch<bar>:echo<cr>
+" Highlight matches with the word under cursor, but don't move the cursor.
+noremap <silent> <leader>*
+      \ :<c-u>let @/="\\<<c-r>=expand('<cword>')<cr>\\>"<cr>:set hlsearch<cr>
 " Change working directory to directory of current file.
 noremap <silent> <leader>. :<c-u>cd %:h<bar>:pwd<cr>
 " Change working directory up a directory.
