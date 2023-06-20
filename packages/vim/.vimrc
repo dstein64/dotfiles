@@ -637,6 +637,10 @@ set guicursor+=a:blinkon0
 " Specify Vim's default fillchars, so it's used on Neovim too.
 set fillchars=vert:\|,fold:-
 try | set fillchars+=eob:~ | catch | endtry
+" Enable mousemoveevent on Neovim (for scrollview hovering).
+if has('nvim') && exists('&mousemoveevent')
+  set mousemoveevent
+endif
 
 " *********************************************************
 " * Commands
