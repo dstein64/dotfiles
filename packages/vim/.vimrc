@@ -985,8 +985,8 @@ noremap <silent> [f :<c-u>call <sid>EditSiblingFile(-v:count1)<cr>
 noremap <silent> ]f :<c-u>call <sid>EditSiblingFile(v:count1)<cr>
 noremap <silent> [F :<c-u>call <sid>EditSiblingFile('^')<cr>
 noremap <silent> ]F :<c-u>call <sid>EditSiblingFile('$')<cr>
-noremap <silent> [v :<c-u>ScrollViewPrev<cr>
-noremap <silent> ]v :<c-u>ScrollViewNext<cr>
+noremap <silent> [v :<c-u><c-r>=v:count1<cr>ScrollViewPrev<cr>
+noremap <silent> ]v :<c-u><c-r>=v:count1<cr>ScrollViewNext<cr>
 noremap <silent> [V :<c-u>ScrollViewFirst<cr>
 noremap <silent> ]V :<c-u>ScrollViewLast<cr>
 
