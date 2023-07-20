@@ -306,8 +306,19 @@ function! s:MoveRelativeToIndent(direction, mode, skip) abort
   let l:line = line('.')
   let l:indent = indent(l:line)
   let l:last = line('$')
+  let l:direction = min([max([a:direction, -1]), 1])
   while 1
-    let l:line += a:direction
+    let l:line += l:direction
+    if &wrapscan
+      if l:line <=# 0
+        let l:line = l:last
+      elseif l:line >=# l:last + 1
+        let l:line = 1
+      endif
+    endif
+    if l:line ==# line('.')
+      break
+    endif
     if l:line <# 1 || l:line ># l:last
       break
     endif
