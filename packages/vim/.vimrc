@@ -297,6 +297,35 @@ function! LspStl() abort
   return ''
 endfunction
 
+" Move to a line based on indentation relative to the current indent.
+" 'direction' can be -1 or 1 and indicates whether to move backward or
+" forward. 'mode' can be -1, 0, 1, and indicates whether the relative indent
+" should be less than, the same, or greater than the current indent. 'skip'
+" specifies whether empty lines should be skipped.
+function! s:MoveRelativeToIndent(direction, mode, skip) abort
+  let l:line = line('.')
+  let l:indent = indent(l:line)
+  let l:last = line('$')
+  while 1
+    let l:line += a:direction
+    if l:line <# 1 || l:line ># l:last
+      break
+    endif
+    let l:indent2 = indent(l:line)
+    if a:skip && virtcol([l:line, '$']) - 1 - l:indent2 <=# 0
+      continue
+    endif
+    let l:diff_sign = min([max([l:indent2 - l:indent, -1]), 1])
+    let l:match = (a:mode == -1 && l:diff_sign ==# a:mode)
+          \ || (a:mode == 1 && l:diff_sign ==# a:mode)
+          \ || (a:mode == 0 && l:diff_sign ==# a:mode)
+    if l:match
+      execute 'normal! ' .. l:line .. 'gg^'
+      break
+    endif
+  endwhile
+endfunction
+
 " === Git ===
 
 " Signature:
@@ -975,6 +1004,12 @@ noremap <silent> ]<space>
       \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
 noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
+noremap <silent> [< :<c-u>call <sid>MoveRelativeToIndent(-1, -1, !v:count)<cr>
+noremap <silent> ]< :<c-u>call <sid>MoveRelativeToIndent(1, -1, !v:count)<cr>
+noremap <silent> [= :<c-u>call <sid>MoveRelativeToIndent(-1, 0, !v:count)<cr>
+noremap <silent> ]= :<c-u>call <sid>MoveRelativeToIndent(1, 0, !v:count)<cr>
+noremap <silent> [> :<c-u>call <sid>MoveRelativeToIndent(-1, 1, !v:count)<cr>
+noremap <silent> ]> :<c-u>call <sid>MoveRelativeToIndent(1, 1, !v:count)<cr>
 noremap <silent> [n :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
 noremap <silent> ]n :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
 noremap <silent> [, :<c-u>call <sid>GotoComment(1)<cr>
@@ -1082,24 +1117,42 @@ noremenu <silent> Search\ and\ &Navigation.:&vimgrep\ <text>\ **/*<tab><leader>?
 noremenu <silent> Search\ and\ &Navigation.-sep1- <nop>
 menu <silent> Search\ and\ &Navigation.Show\ Matches<tab><leader>* <leader>*
 noremenu <silent> Search\ and\ &Navigation.-sep2- <nop>
+noremenu <silent> Search\ and\ &Navigation.Previous\ Lower\ Indent<tab>[<
+      \ :<c-u>call <sid>MoveRelativeToIndent(-1, -1, 1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ Lower\ Indent<tab>]<
+      \ :<c-u>call <sid>MoveRelativeToIndent(1, -1, 1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ Higher\ Indent<tab>[>
+      \ :<c-u>call <sid>MoveRelativeToIndent(-1, 1, 1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ Higher\ Indent<tab>]>
+      \ :<c-u>call <sid>MoveRelativeToIndent(1, 1, 1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Previous\ Same\ Indent<tab>[=
+      \ :<c-u>call <sid>MoveRelativeToIndent(-1, 0, 1)<cr>
+noremenu <silent> Search\ and\ &Navigation.Next\ Same\ Indent<tab>]=
+      \ :<c-u>call <sid>MoveRelativeToIndent(1, 0, 1)<cr>
+noremenu <silent> Search\ and\ &Navigation.-sep3- <nop>
 noremenu <silent> Search\ and\ &Navigation.Next\ Conflict\ or\ Diff<tab>]n
       \ :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
 noremenu <silent> Search\ and\ &Navigation.Previous\ Conflict\ or\ Diff<tab>[n
       \ :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.-sep4- <nop>
 noremenu <silent> Search\ and\ &Navigation.Next\ Comment<tab>],
       \ :<c-u>call <sid>GotoComment(0)<cr>
 noremenu <silent> Search\ and\ &Navigation.Previous\ Comment<tab>[,
       \ :<c-u>call <sid>GotoComment(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.-sep5- <nop>
 noremenu <silent> Search\ and\ &Navigation.Next\ Long\ Line<tab>]t
       \ :<c-u>call <sid>GotoLongLine(0)<cr>
 noremenu <silent> Search\ and\ &Navigation.Previous\ Long\ Line<tab>[t
       \ :<c-u>call <sid>GotoLongLine(1)<cr>
+noremenu <silent> Search\ and\ &Navigation.-sep6- <nop>
 noremenu <silent> Search\ and\ &Navigation.Next\ File<tab>]f
       \ :<c-u>call <sid>EditSiblingFile(1)<cr>
 noremenu <silent> Search\ and\ &Navigation.Previous\ File<tab>[f
       \ :<c-u>call <sid>EditSiblingFile(-1)<cr>
+noremenu <silent> Search\ and\ &Navigation.-sep7- <nop>
 noremenu <silent> Search\ and\ &Navigation.Next\ Mispelled\ Word<tab>]s ]s
 noremenu <silent> Search\ and\ &Navigation.Previous\ Mispelled\ Word<tab>[s [s
+noremenu <silent> Search\ and\ &Navigation.-sep8- <nop>
 noremenu <silent> Search\ and\ &Navigation.Next\ ScrollView\ Sign\ Line<tab>]v
       \ :<c-u>ScrollViewNext<cr>
 noremenu <silent> Search\ and\ &Navigation.Previous\ ScrollView\ Sign\ Line<tab>[v
