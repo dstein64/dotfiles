@@ -1015,12 +1015,12 @@ noremap <silent> ]<space>
       \ :<c-u>put =repeat(nr2char(10), v:count1)<bar>'[-1<cr>
 noremap <silent> [<space>
       \ :<c-u>put! =repeat(nr2char(10), v:count1)<bar>']+1<cr>
-noremap <silent> [< :<c-u>call <sid>MoveRelativeToIndent(-1, -1, !v:count)<cr>
-noremap <silent> ]< :<c-u>call <sid>MoveRelativeToIndent(1, -1, !v:count)<cr>
-noremap <silent> [= :<c-u>call <sid>MoveRelativeToIndent(-1, 0, !v:count)<cr>
-noremap <silent> ]= :<c-u>call <sid>MoveRelativeToIndent(1, 0, !v:count)<cr>
-noremap <silent> [> :<c-u>call <sid>MoveRelativeToIndent(-1, 1, !v:count)<cr>
-noremap <silent> ]> :<c-u>call <sid>MoveRelativeToIndent(1, 1, !v:count)<cr>
+noremap <silent> [< <cmd>call <sid>MoveRelativeToIndent(-1, -1, !v:count)<cr>
+noremap <silent> ]< <cmd>call <sid>MoveRelativeToIndent(1, -1, !v:count)<cr>
+noremap <silent> [= <cmd>call <sid>MoveRelativeToIndent(-1, 0, !v:count)<cr>
+noremap <silent> ]= <cmd>call <sid>MoveRelativeToIndent(1, 0, !v:count)<cr>
+noremap <silent> [> <cmd>call <sid>MoveRelativeToIndent(-1, 1, !v:count)<cr>
+noremap <silent> ]> <cmd>call <sid>MoveRelativeToIndent(1, 1, !v:count)<cr>
 noremap <silent> [n :<c-u>call <sid>GotoConflictOrDiff(1)<cr>
 noremap <silent> ]n :<c-u>call <sid>GotoConflictOrDiff(0)<cr>
 noremap <silent> [, :<c-u>call <sid>GotoComment(1)<cr>
