@@ -606,9 +606,6 @@ set nostartofline       " keep cursor position for various movements commands
 " Jump to the previously used window for quickfix jumps.
 try | set switchbuf+=uselast | catch | endtry
 set tabpagemax=50       " max tab pages for -p command line arg or ':tab all'
-if has('gui_running')
-  set cursorline        " highlight current line
-endif
 " Don't scroll the entire screen for messages (Neovim only as of 2021/1/1)
 try | set display+=msgsep | catch | endtry
 " Save undo history.
