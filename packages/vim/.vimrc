@@ -287,6 +287,13 @@ function! OptsStl() abort
   if !empty(l:options)
     let l:result = '[' . join(l:options, ',') . ']'
   endif
+  " Add a workaround for Neovim #23621 (see the first comment, about <silent>
+  " used with :, which is applicable here). This approach is used instead of
+  " 'autocmd OptionSet * silent! redrawstatus!' since the latter results in a
+  " cursor blinking or disappearing (and status bar blinking) when using
+  " scrollview with all signs and a vertically split window, as of Neovim PR
+  " #25395 (reported in Neovim #25502).
+  redrawstatus!
   return l:result
 endfunction
 
@@ -718,10 +725,6 @@ augroup autocommands
   " Create non-existent directories when saving files.
   autocmd BufWritePre * if !isdirectory(expand('<afile>:p:h'))
         \ | call mkdir(expand('<afile>:p:h'), 'p') | endif
-
-  " Add a workaround for Neovim #23621 (see the first comment, about <silent>
-  " used with :, which is applicable here).
-  autocmd OptionSet * silent! redrawstatus!
 
   " === FileType ===
   " FileType autocommands are used in preference to ftplugin/ and
