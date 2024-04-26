@@ -35,7 +35,9 @@ jobs:
 
     - name: Dependencies (macos)
       if: startsWith(matrix.os, 'macos-')
-      run: brew install coreutils tree
+      run: |
+        brew install coreutils tree
+        echo "PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:${PATH}" >> "${GITHUB_ENV}"
 
     - name: Tests
       run: ./tests.sh
