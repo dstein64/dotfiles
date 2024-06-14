@@ -1224,9 +1224,12 @@ endfor
 " * Plugins
 " *********************************************************
 
-silent! packadd! termdebug  " source termdebug
-silent! packadd! matchit    " source matchit
+silent! packadd! termdebug
+silent! packadd! matchit
 runtime ftplugin/man.vim
+if !has('nvim') && has('patch-9.1.0375')
+  silent! packadd! comment
+endif
 
 " === Netrw ===
 let g:netrw_liststyle = 3
