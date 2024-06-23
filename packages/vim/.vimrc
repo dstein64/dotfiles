@@ -678,6 +678,15 @@ try | set fillchars+=eob:~ | catch | endtry
 if has('nvim') && exists('&mousemoveevent')
   set mousemoveevent
 endif
+set notermguicolors
+
+" *********************************************************
+" * Color scheme
+" *********************************************************
+
+if has('nvim-0.10')
+  colorscheme vim
+endif
 
 " *********************************************************
 " * Commands
