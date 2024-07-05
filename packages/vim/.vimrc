@@ -1306,6 +1306,14 @@ function! LspFormatExpr()
 endfunction
 
 lua << EOF
+local buf_get_clients = function(bufnr)
+  if vim.lsp.get_clients ~= nil then
+    return vim.lsp.get_clients({buffer = bufnr})
+  else
+    return vim.lsp.buf_get_clients(bufnr)
+  end
+end
+
 -- Define a custom synchronous omnifunc, instead of using the asynchronous
 -- built-in, v:lua.lsp.omnifunc. This version supports completeopt=longest,
 -- unlike the built-in (Neovim Issue #15314).
@@ -1317,7 +1325,7 @@ function _G.lsp_omnifunc_sync(findstart, base)
   -- modified prior to the second call.
   local bufnr = vim.fn.bufnr()
   result = {}
-  local has_clients = not vim.tbl_isempty(vim.lsp.buf_get_clients(bufnr))
+  local has_clients = not vim.tbl_isempty(buf_get_clients(bufnr))
   if not has_clients then return -3 end
   local pos = vim.api.nvim_win_get_cursor(0)
   local line = vim.api.nvim_get_current_line()
@@ -1352,7 +1360,7 @@ end
 -- Returns a list of LSP clients attached to the current buffer.
 function _G.lsp_buf_clients()
   local clients = {}
-  for _, client in pairs(vim.lsp.buf_get_clients()) do
+  for _, client in pairs(buf_get_clients()) do
     table.insert(clients, client.name)
   end
   return clients
