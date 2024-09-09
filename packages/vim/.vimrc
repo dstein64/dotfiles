@@ -283,6 +283,9 @@ function! OptsStl() abort
   if !empty(&virtualedit)
     call add(l:options, 've=' . &virtualedit)
   endif
+  if empty(&mouse)
+    call add(l:options, 'mouse=')
+  endif
   let l:result = ''
   if !empty(l:options)
     let l:result = '[' . join(l:options, ',') . ']'
@@ -1073,6 +1076,10 @@ call s:CreateVarToggleMaps('gd', 'g:git_diff_ignore_whitespace')
 call s:CreateToggleMaps('h', 'hlsearch')
 call s:CreateToggleMaps('i', 'ignorecase')
 call s:CreateToggleMaps('l', 'list')
+nnoremap <silent> [om :<c-u>set mouse=a<cr>
+nnoremap <silent> ]om :<c-u>set mouse=<cr>
+nnoremap <silent> <expr> yom ':<c-u>set mouse='
+      \ . (empty(&mouse) ? 'a' : '') . '<cr>'
 call s:CreateToggleMaps('n', 'number')
 call s:CreateToggleMaps('p', 'paste')
 call s:CreateToggleMaps('r', 'relativenumber')
@@ -1195,6 +1202,7 @@ let s:options = [
       \   ['h', 'hlsearch'],
       \   ['i', 'ignorecase'],
       \   ['l', 'list'],
+      \   ['m', 'mouse'],
       \   ['n', 'number'],
       \   ['#', 'number/relativenumber'],
       \   ['p', 'paste'],
