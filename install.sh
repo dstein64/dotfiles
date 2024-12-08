@@ -31,7 +31,13 @@ done
 for arg in --no-symlinks --relative-to; do
   if ! realpath --help 2>&1 | grep -e "${arg}" &>/dev/null; then
     echo "unsupported realpath argument: ${arg}" >&2
-    echo "try installing realpath from coreutils" >&2
+    if [ "$(uname)" = Darwin ] \
+        && which brew &>/dev/null \
+        && [ -f "$(brew --prefix)/opt/coreutils/libexec/gnubin/realpath" ]; then
+      echo 'try setting PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:${PATH}"' >&2
+    else
+      echo "try installing realpath from coreutils" >&2
+    fi
     exit 1
   fi
 done
