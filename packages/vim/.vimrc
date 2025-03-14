@@ -745,7 +745,9 @@ augroup END
 " *********************************************************
 
 " Specify Vim's default VertSplit highlighting, so it's used on Neovim too.
-highlight VertSplit term=reverse cterm=reverse gui=reverse
+" Run asynchronously as a workaround for Neovim #30048.
+call timer_start(0, {-> execute(
+      \ 'highlight VertSplit term=reverse cterm=reverse gui=reverse')})
 
 " *********************************************************
 " * Mappings
