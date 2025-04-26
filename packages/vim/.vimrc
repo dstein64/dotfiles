@@ -681,7 +681,7 @@ set notermguicolors
 " *********************************************************
 
 if has('nvim-0.10')
-  colorscheme vim
+  silent! colorscheme vim
 endif
 
 " *********************************************************
