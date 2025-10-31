@@ -6,5 +6,7 @@
   s = status
 [core]
   excludesfile = ~/.gitignore
+[merge]
+  ff = only
 [pull]
   ff = only
