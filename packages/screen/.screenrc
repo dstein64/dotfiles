@@ -1,3 +1,4 @@
 hardstatus alwayslastline
 hardstatus string "%w"
 startup_message off
+term screen-256color
