@@ -749,6 +749,15 @@ augroup END
 call timer_start(0, {-> execute(
       \ 'highlight VertSplit term=reverse cterm=reverse gui=reverse')})
 
+" Add a workaround for Neovim #37781. Run asynchronously as a workaround for
+" Neovim #30048.
+if has('nvim-0.10')
+  call timer_start(0, {-> execute(
+        \ 'highlight! link @markup.heading.1.delimiter.vimdoc @markup.heading')})
+  call timer_start(0, {-> execute(
+        \ 'highlight! link @markup.heading.2.delimiter.vimdoc @markup.heading')})
+endif
+
 " *********************************************************
 " * Mappings
 " *********************************************************
