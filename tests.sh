@@ -27,6 +27,7 @@ home
 |-- .config
 |   `-- nvim
 |       `-- init.vim -> ../../../packages/nvim/.config/nvim/init.vim
+|-- .docker -> ../packages/docker/.docker
 |-- .gdbinit -> ../packages/gdb/.gdbinit
 |-- .gitconfig -> ../packages/git/.gitconfig
 |-- .gitignore -> ../packages/git/.gitignore
