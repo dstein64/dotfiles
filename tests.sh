@@ -9,6 +9,13 @@ if [ "$(uname)" = Darwin ]; then
   head=ghead
 fi
 
+for prog in "${head}" tree; do
+  if ! which "${prog}" &>/dev/null; then
+    echo "missing dependency: ${prog}" >&2
+    exit 1
+  fi
+done
+
 tmpdir="$(mktemp -d)"
 trap "rm -r ${tmpdir}" EXIT
 
