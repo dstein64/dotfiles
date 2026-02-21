@@ -43,7 +43,7 @@ function! s:Terminal() abort
   " Use a bash login shell on macOS. Updating 'shell' to do this has unwanted
   " side effects (e.g., slowing down execute() calls).
   if has('mac') && match(&shell, '/\?bash$') !=# -1
-    terminal bash -l
+    execute 'terminal ' . &shell . ' --login'
   else
     terminal
   endif
