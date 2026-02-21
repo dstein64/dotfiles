@@ -728,6 +728,13 @@ augroup autocommands
   " used with :, which is applicable here).
   autocmd OptionSet * silent! redrawstatus!
 
+  " Turn off 'expandtab' if the file contains leading tabs and no leading
+  " spaces.
+  autocmd BufReadPost,BufNewFile *
+        \   if search('^\t', 'nw') && !search('^ ', 'nw')
+        \ |  setlocal noexpandtab
+        \ | endif
+
   " === FileType ===
   " FileType autocommands are used in preference to ftplugin/ and
   " after/ftplugin, to 1) keep settings contained to .vimrc and avoid
