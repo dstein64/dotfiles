@@ -3,6 +3,9 @@
   c = commit --verbose
   d = diff
   l = log
+  recent = branch \
+    --sort=-committerdate \
+    --format='%(committerdate:short) %(refname:short)'
   s = status
 [core]
   excludesfile = ~/.gitignore
