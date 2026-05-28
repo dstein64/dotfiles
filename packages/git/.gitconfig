@@ -3,6 +3,8 @@
   c = commit --verbose
   d = diff
   l = log
+  p = push origin HEAD
+  pf = push --force origin HEAD
   recent = branch \
     --sort=-committerdate \
     --format='%(committerdate:short) %(refname:short)'
