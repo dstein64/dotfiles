@@ -694,6 +694,7 @@ command! Tags !ctags -R .
 command! Terminal call s:Terminal()
 command! -nargs=* GitDiff call s:GitCmd('diff <args>')
 command! -nargs=* GitLog call s:GitCmd('log <args>')
+command! -nargs=* GitShow call s:GitCmd('show <args>')
 command! GitBlame call s:GitBlame()
 
 " *********************************************************
